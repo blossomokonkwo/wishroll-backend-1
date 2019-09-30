@@ -11,3 +11,10 @@ greatokonkwo:
   last_name: Okonkwo
   bio: I'm Great and I'm great.
 
+cameronstone:
+  email: cameron@gmail.com
+  password_digest: wweraw45
+  first_name: Cameron
+  last_name: Stone
+  bio: I'm Cameron Stone
+
