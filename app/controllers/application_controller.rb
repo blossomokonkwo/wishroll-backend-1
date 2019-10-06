@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
 
     #this method is called whenever an unauthorization occurs
     private def not_authorized
-        render json: {"error": "not authorized"}, status: :unauthorized
+        render json: {"error" => "not authorized"}, status: :unauthorized
     end
     
 end

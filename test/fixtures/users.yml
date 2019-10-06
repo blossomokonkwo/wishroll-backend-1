@@ -6,15 +6,22 @@
 #
 greatokonkwo: 
   email: gboy@gmail.com
-  password_digest: wweraw45
+  password_digest: $2a$12$tqj2mp27qXyLon.p8/OsOO.FxHKjNPd2glyJjkPHCv4HJnc5KJqSG
   first_name: Great
   last_name: Okonkwo
   bio: I'm Great and I'm great.
 
 cameronstone:
   email: cameron@gmail.com
-  password_digest: wweraw45
+  password_digest: $2a$12$tqj2mp27qXyLon.p8/OsOO.FxHKjNPd2glyJjkPHCv4HJnc5KJqSG
   first_name: Cameron
   last_name: Stone
   bio: I'm Cameron Stone
+
+testuser:
+  email: testuser@gmail.com
+  password_digest: $2a$12$u5VBLwWVn/h.rcRj72P9r.q1.rAR6Nw0f3xGq50CL4tJumMOf89Z.
+  first_name: Test
+  last_name: User
+  bio: "I'm a test user"
 
