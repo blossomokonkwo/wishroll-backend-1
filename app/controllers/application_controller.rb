@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
     rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
     def current_user
-        @current_user ||= User.find(payload[:user_id])
+        @current_user ||= User.find(payload["user_id"])
     end
 
     #this method is called whenever an unauthorization occurs

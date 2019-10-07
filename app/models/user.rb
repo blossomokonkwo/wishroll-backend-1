@@ -10,4 +10,8 @@ class User < ApplicationRecord
     #each user belongs to an orginization like a school or a church
     belongs_to :orginization, class_name: "Orginization", foreign_key: "orginization_id", counter_cache: true, optional: true
     #users will be required to enter their orginization after they have signed up 
+
+
+    #user customization
+    has_one_attached :profile_image
 end
