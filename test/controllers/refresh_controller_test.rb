@@ -4,9 +4,7 @@ require 'json'
 
 class RefreshControllerTest < ActionDispatch::IntegrationTest
     test "recieve new access token" do
-    post login_url, params: {:email => "testuser@gmail.com", :password => "testpassword"}, as: :json
-    tokens = JSON.parse @response.body
-    post refresh_url, headers: {"Authorization" => tokens["access"]}
+    post refresh_url, headers: {"Authorization" => login_and_return_tokens["access"]}
     assert_response :ok
     end
 end
