@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
   def profile
     @user = {:first_name => current_user.first_name, last_name: current_user.last_name, 
-      bio: current_user.bio, orginization: current_user.orginization}
+      bio: current_user.bio}
     render json: @user, status: :ok
   end
 

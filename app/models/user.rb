@@ -6,10 +6,7 @@ class User < ApplicationRecord
     validates :last_name, presence: {message: "Enter your last name so others know who you are"}
     validates :bio, length: {maximum:100, message: "Keep your bio short, so you have more time for people to find about who you really are" }
 
-    #User model asscociations 
-    #each user belongs to an orginization like a school or a church
-    belongs_to :orginization, class_name: "Orginization", foreign_key: "orginization_id", counter_cache: true, optional: true
-    #users will be required to enter their orginization after they have signed up 
+  
 
 
     #user customization
