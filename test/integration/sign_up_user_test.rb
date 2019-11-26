@@ -4,7 +4,7 @@ require 'json'
 class SignUpUserTest < ActionDispatch::IntegrationTest
   test "user_sign_up" do
     post signup_url, params: {email: "Integration@gmail.com", password: "Testpassword", 
-    first_name: "Integration", last_name: "Test", bio: "I'm an integration test"}
+    first_name: "Integration", last_name: "Test", bio: "I'm an integration test", username: "testuser"}
     assert_response :success
   end 
 

@@ -15,7 +15,7 @@ class SignupController < ApplicationController
 
     private 
     def create_account_user_params #checks that the user has entered their neccessary credetnitals
-        params.permit :email, :password, :first_name, :last_name, :bio
+        params.permit :email, :password, :first_name, :last_name, :bio, :username
     end
     
 end
