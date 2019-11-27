@@ -10,6 +10,7 @@ greatokonkwo:
   first_name: Great
   last_name: Okonkwo
   bio: I'm Great and I'm great.
+  username: "greatokonkwo"
 
 cameronstone:
   email: cameron@gmail.com
@@ -17,6 +18,7 @@ cameronstone:
   first_name: Cameron
   last_name: Stone
   bio: I'm Cameron Stone
+  username: "thecamfam"
 
 testuser:
   email: testuser@gmail.com
@@ -24,4 +26,5 @@ testuser:
   first_name: Test
   last_name: User
   bio: "I'm a test user"
+  username: "greatguy101"
 
