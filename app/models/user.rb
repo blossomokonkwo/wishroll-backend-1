@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
     #any given user can have many friends and be a friend to many other users
     has_and_belongs_to_many :friends, class_name: "User", join_table: "friends_table", foreign_key: :user_id, association_foreign_key: :friend_id
-
+    
     #user customization
     has_one_attached :profile_image
 end

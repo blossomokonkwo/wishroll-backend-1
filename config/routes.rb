@@ -7,4 +7,7 @@ Rails.application.routes.draw do
   put 'profile/edit', to: "users#edit"
   post 'profile/edit', to: "profile_picture#update"
   delete 'profile/edit', to: "profile_picture#destroy"
+  post 'friends/add', to: "friends#add"
+  get  'friends', to: "friends#all"
+  delete 'friends', to: "friends#delete"
 end
