@@ -1,11 +1,10 @@
 class FriendsController < ApplicationController
     before_action :authorize_by_access_header!
     def add
-        friend = User.find_by username: params[:friend_username]
+        friend = User.find_by(username: params[:friend_username])
         current_user.friends << friend if friend
-        render plaintext: "You successfully added #{friend.first_name} as a friend", status: :ok
     end
-
+    
     def all
         friends = Array.new
         for f in current_user.friends
@@ -17,6 +16,12 @@ class FriendsController < ApplicationController
             friends << friend
         end
         render json: {friends: friends}, status: :ok
+    end
+
+    def delete
+        friend = User.find_by(username: params[:friend_username])
+        current_user.friends.destroy(friend)
+        render plaintext: "You successfully unfriended #{friend.username}",  status: :ok 
     end
 
 end

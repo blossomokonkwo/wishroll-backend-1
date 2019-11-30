@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   delete 'profile/edit', to: "profile_picture#destroy"
   post 'friends/add', to: "friends#add"
   get  'friends', to: "friends#all"
+  delete 'friends', to: "friends#delete"
 end
