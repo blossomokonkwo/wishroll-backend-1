@@ -7,9 +7,10 @@ class LoginController < ApplicationController
       payload = {user_id: @user.id}
       session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
       tokens = session.login
-      render json: {access: tokens[:access], access_expires_at: tokens[:access_expires_at]} , status: :ok
+      render json: {access: tokens[:access], csrf: tokens[:csrf], access_expires_at: tokens[:access_expires_at]} , status: :ok
     else
-      render json: {"error" => "Invalid credntials. Please provide a valid email and username"}, status: :unauthorized
+      response["Unauthorized"] = "Invalid credntials. Please provide a valid email and password"
+      render status: :unauthorized
     end
   end
 
