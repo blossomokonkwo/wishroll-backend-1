@@ -6,5 +6,10 @@ class UserTest < ActiveSupport::TestCase
     assert_no_match /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, user.email, "Email has to match the standard regex"
   end
 
+  test "validates_presence_of_email" do
+    user = User.new password: "testpassword"
+    assert_not user.save, "The user must provide an email"
+  end
+
 
 end

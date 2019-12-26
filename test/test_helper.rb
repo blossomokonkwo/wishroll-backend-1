@@ -8,8 +8,8 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   def login_and_return_tokens
-    post login_url, params: {email: users(:greatokonkwo).email, password: "wweraw45"}
-    tokens = JSON.parse @response.body 
+    post login_url, params: {email: "gboyokonkwo35@gmail.com", password: "greatokonkwo"}
+    tokens = @response.body 
     return tokens
   end
 end
