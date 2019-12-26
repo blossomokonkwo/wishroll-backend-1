@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :user, except: [:create, :indexç] do
+  resource :user, except: [:create, :index, :destroy] do
     resources :posts, except: [:update], param: :post_id
     resources :tags, only: [:create, :destroy], param: :tag_id
   end
