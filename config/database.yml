@@ -74,12 +74,9 @@ test:
 #   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
-#
-production:
-  url: <%= ENV['DATABASE_URL'] %>
-
+#  database: icebreaker_production
+# username: icebreaker
 production:
   <<: *default
-  database: icebreaker_production
-  username: icebreaker
+  url: <%= ENV['DATABASE_URL'] %>
   password: <%= ENV['ICEBREAKER_DATABASE_PASSWORD'] %>
