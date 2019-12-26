@@ -16,8 +16,15 @@ class PostsController < ApplicationController
     @post.view_count += 1 if current_user.email != User.find(@post.user_id).email
     @post.save
     if @post
+      user_tags = Array.new
+      if @post.tags.count > 0
+        tags = @post.tags 
+        for tag in tags
+          user_tags << tag_hash
+        end
+    end
       post_image = @post.post_image if @post.post_image.attached?
-      render json: {post: {user_id: @post.user_id, view_count: @post.view_count, caption: @post.caption, created_at: @post.created_at, image_url: url_for(post_image)}}, status: :ok
+      render json: {post: {user_id: @post.user_id, view_count: @post.view_count, caption: @post.caption, created_at: @post.created_at, image_url: url_for(post_image)}, tags: user_tags}, status: :ok
     else
       render text: "No such posts", status: :bad
     end
@@ -28,9 +35,17 @@ class PostsController < ApplicationController
     @posts = user.posts
     if @posts.count > 0 
       posts = Array.new
+      user_tags = Array.new
       for post in @posts
         post_image = post.post_image if post.post_image.attached?
-        post_hash = {post_id: post.id, caption: post.caption, created_at: post.created_at, view_count: post.view_count, image_url: url_for(post_image)}
+        if post.tags.count > 0
+          tags = post.tags 
+          for tag in tags
+            tag_hash = {id: tag.id, text: tag.text}
+            user_tags << tag_hash
+          end
+      end
+        post_hash = {post_id: post.id, caption: post.caption, created_at: post.created_at, view_count: post.view_count, image_url: url_for(post_image), tags: user_tags}
         posts << post_hash
       end
       render json: {posts: posts}, status: :ok
