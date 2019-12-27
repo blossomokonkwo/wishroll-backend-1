@@ -20,6 +20,7 @@ class PostsController < ApplicationController
       if @post.tags.count > 0
         tags = @post.tags 
         for tag in tags
+          tag_hash = {id: tag.id, text: tag.text}
           user_tags << tag_hash
         end
     end
