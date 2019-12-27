@@ -6,6 +6,7 @@ class FeedController < ApplicationController
         posts = Post.order(view_count: :desc).first(@num_feed_posts)
         @posts = Array.new
         posts.each do |p|
+            outer_hash = Hash.new
             post = Hash.new
             post[:id] = p.id
             post[:caption] = p.caption
@@ -13,7 +14,8 @@ class FeedController < ApplicationController
             post[:user_id] = p.user_id
             post[:view_count] = p.view_count
             post[:image_url] = url_for(p.post_image) if p.post_image.attached?
-            @posts << post
+            outer_hash[:post] = post
+            @posts << outer_hash
         end
         render json: {posts: @posts}, status: :ok  
     end
