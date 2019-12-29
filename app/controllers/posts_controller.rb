@@ -25,7 +25,7 @@ class PostsController < ApplicationController
         end
     end
       post_image = @post.post_image if @post.post_image.attached?
-      render json: {post: {id: @post.id ,user_id: @post.user_id, view_count: @post.view_count, caption: @post.caption, created_at: @post.created_at, image_url: url_for(post_image)}, tags: user_tags}, status: :ok
+      render json: {id: @post.id ,user_id: @post.user_id, view_count: @post.view_count, caption: @post.caption, created_at: @post.created_at, image_url: url_for(post_image), tags: user_tags}, status: :ok
     else
       render text: "No such posts", status: :bad
     end
