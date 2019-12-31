@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def show
     @user = current_user
     # we want to return a users username and their photos
-    render json: {email: @user.email, posts: @user.posts}, status: :ok
+    render json: @user.posts, status: :ok
   end
   def update
     @user = current_user
