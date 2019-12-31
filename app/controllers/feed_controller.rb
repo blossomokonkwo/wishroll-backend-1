@@ -2,7 +2,7 @@ class FeedController < ApplicationController
     before_action :authorize_by_access_header!
     def feed 
         #the number of posts that are sent to the users feed page. The feed sends the most popular posts
-        @num_feed_posts = 5 
+        @num_feed_posts = 100 
         posts = Post.order(view_count: :desc).first(@num_feed_posts)
         @posts = Array.new
         posts.each do |p|
