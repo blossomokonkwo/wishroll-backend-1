@@ -17,7 +17,7 @@ class SearchController < ApplicationController
         if @posts.empty?
             render status: 404
         else
-            render json: {posts: @posts}, status: :ok
+            render json: @posts, status: :ok
         end
 
     end
