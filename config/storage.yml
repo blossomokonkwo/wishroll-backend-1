@@ -12,7 +12,7 @@ amazon:
   access_key_id: ENV['S3_KEY'] 
   secret_access_key: ENV['S3_SECRET'] 
   region: 'us-east-2'
-  bucket: ENV['BUCKET']
+  bucket: 'reloopapp.herokuapp.com'
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
