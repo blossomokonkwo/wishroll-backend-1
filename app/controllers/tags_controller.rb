@@ -6,7 +6,7 @@ class TagsController < ApplicationController
             render status: :ok
         else
             response["Failure"] = "Unable to save the tag"
-            render status: :bad
+            render json: nil, status: 400
         end
     end
     #removes and deletes a tag from a post
@@ -14,9 +14,9 @@ class TagsController < ApplicationController
         @tag = Tag.find(params[:tag_id])
         if @tag.destroy
          response["Success"] = "The tag was successfully deleted"   
-         render status: :ok
+         render json: nil, status: :ok
         else
-           render json: {error: @tag.error.messages}, status: :bad
+           render json: {error: @tag.error.messages}, status: 400
         end
     end
 
