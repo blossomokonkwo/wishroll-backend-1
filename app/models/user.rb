@@ -12,5 +12,16 @@ class User < ApplicationRecord
     #Associations 
     has_many :posts, class_name: "Post"
     has_many :comments, class_name: "Comment"
-    has_many :replies, class_name: "Reply"
+    
+    #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
+    has_many :active_relationships, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+
+    #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
+    has_many :passive_relationships, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
+
+    #the users that a specific user is currently following 
+    has_many :followed_users, through: :active_relationships, source: :followed_user
+
+    #the users that currently follow a specific user 
+    has_many :follower_users, through: :passive_relationships, source: :follower_user
 end

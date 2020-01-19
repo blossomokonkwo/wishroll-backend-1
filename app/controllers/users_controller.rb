@@ -1,23 +1,10 @@
 class UsersController < ApplicationController
   before_action :authorize_by_access_header!
   def show
-    @user = current_user
-    # we want to return a users username and their photos
-    postsArray = Array.new
-    for post in @user.posts
-      post_hash = Hash.new
-      post_hash["id"] = post.id
-      post_hash["user_id"] = post.user_id
-      post_hash["created_at"] = post.created_at
-      post_hash["view_count"] = post.view_count
-      post_hash["caption"] = post.caption
-      post_hash["image_url"] = url_for post.post_image
-      postsArray << post_hash
-    end
-    render json: postsArray, status: :ok
+    @user = User.find_by(username: params[:username])
+    @current_user = current_user
+    render :show, status: :ok
   end
-
-
 #users can update their password; however, they have to be authenticated via the session and provide their old password
  def update_password
   #on the client side, ensure that the user has only three chances to change their password within a given session
@@ -64,6 +51,20 @@ class UsersController < ApplicationController
     render json: {error: "Your bio could not be updated at this time"}, status: 400
   end
  end
+
+ def destroy
+    #destroys the users record from the database. The user must send their current password to ensure that they have the authorization to delete the current_user's account
+    if current_user.authenticate(params[:password])
+      if current_user.destroy
+        render json: {success: "You successfully deleted your account"}, status: :ok
+      else
+        render json: {error: "Your account could not be deleted at this time"}, status: 400
+      end
+    else
+      render json: nil, status: :unauthorized
+    end
+ end
+ 
 
  
 

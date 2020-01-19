@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_044031) do
+ActiveRecord::Schema.define(version: 2020_01_18_223130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,9 @@ ActiveRecord::Schema.define(version: 2020_01_17_044031) do
     t.bigint "post_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "original_comment_id"
+    t.bigint "replies_count", default: 0, null: false
+    t.index ["original_comment_id"], name: "index_comments_on_original_comment_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -52,19 +55,19 @@ ActiveRecord::Schema.define(version: 2020_01_17_044031) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.bigint "view_count", default: 0, null: false
+    t.bigint "original_post_id"
+    t.bigint "number_of_comments", default: 0, null: false
+    t.index ["original_post_id"], name: "index_posts_on_original_post_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "replies", force: :cascade do |t|
-    t.text "body"
-    t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
-    t.bigint "comment_id", null: false
+  create_table "relationships", force: :cascade do |t|
+    t.integer "followed_id"
+    t.integer "follower_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["comment_id"], name: "index_replies_on_comment_id"
-    t.index ["post_id"], name: "index_replies_on_post_id"
-    t.index ["user_id"], name: "index_replies_on_user_id"
+    t.index ["followed_id"], name: "index_relationships_on_followed_id"
+    t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -87,14 +90,12 @@ ActiveRecord::Schema.define(version: 2020_01_17_044031) do
     t.date "birth_date"
     t.text "bio"
     t.index ["email"], name: "email"
+    t.index ["username"], name: "index_users_on_username"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
-  add_foreign_key "replies", "comments"
-  add_foreign_key "replies", "posts"
-  add_foreign_key "replies", "users"
   add_foreign_key "tags", "posts"
 end
