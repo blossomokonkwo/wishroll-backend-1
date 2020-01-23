@@ -6,6 +6,7 @@ json.post do
     json.created_at @post.created_at
     json.image_url url_for @post.post_image
     json.original_post_id @post.original_post_id
+    json.number_of_comments @post.comments.size
 end
 json.tags do
     if @post.tags.count > 0

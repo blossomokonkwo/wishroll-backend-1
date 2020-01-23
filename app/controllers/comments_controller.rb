@@ -4,6 +4,17 @@ class CommentsController < ApplicationController
         @comment = Comment.new(comment_params)
         @comment.user_id = current_user.id
         if @comment.save
+            activity_phrase = nil
+            user_id = nil
+            if @comment.original_comment_id
+                user_id = Comment.find(params[:original_comment_id]).user_id
+                activity_phrase = "#{current_user.username} replied to to your comment"
+            else
+                user_id = Post.find(params[:post_id]).user_id
+                activity_phrase = "#{current_user.username} commented on your post"
+            end
+            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: "Comment", content_id: @comment.id)
+            activity.save
             render json: nil, status: :created
         else
             render json: {error: "Your comment could not be created at this time"}, status: 400
@@ -14,7 +25,7 @@ class CommentsController < ApplicationController
         #this method ONLY returns a comments replies if any. This method does not return the comment itself.
         #The frontend app is responsible for creating a refrence to the comment and passing it along the views at runtime. 
         @comment = Comment.find(params[:id])
-        if @comment.replies_count > 0
+        if @comment.replies.size > 0
             #if a comment has replies, render the jbuilder file that returns an array of all the replies owned by the comment
             render :show, status: :ok
         else
@@ -47,14 +58,6 @@ class CommentsController < ApplicationController
     def destroy
         #deletes a comment from the database table and decrements the comments count for the comments post and its original comment
         @comment = Comment.find(params[:id])
-        if @comment.original_comment_id
-            original_comment = Comment.find(@comment.original_comment_id)
-            original_comment.replies_count -= 1
-            original_comment.save
-        end
-        post = Post.find(@comment.post_id)
-        post.number_of_comments -= 1
-        post.save
         if @comment.destroy
             render json: nil, status: :ok
         else

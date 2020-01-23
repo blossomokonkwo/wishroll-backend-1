@@ -6,6 +6,7 @@ class RelationshipsController < ApplicationController
             @relationship = current_user.active_relationships.new followed_id: @followed_user.id
             if @relationship.save
                 render json: {relationship_id: @relationship.id}, status: :created
+                Activity.new(user_id: @followed_user.id, active_user_id: current_user.id, activity_type: "Relationship", activity_phrase: "#{current_user.username} began following you", content_id: @relationship_id).save
             else
                 render json: {error: "Your follow request was unsuccessfull"}
             end

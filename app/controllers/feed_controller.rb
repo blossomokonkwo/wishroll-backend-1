@@ -5,7 +5,6 @@ class FeedController < ApplicationController
         if current_user.followed_users.count > 0
             @posts = Array.new
             current_user.followed_users.each do |followed_user|
-                current_date = 
                 #it wouldn't make sense to return all the posts created by the current_users followed users 
                 #it wouldn't make sense because it would be way too much load on the server and the latency would be to high
                 #intuitively, most users only want to see the most recent posts made by the users that they follow. This app can expect up to 

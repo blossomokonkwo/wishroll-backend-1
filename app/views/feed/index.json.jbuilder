@@ -18,7 +18,7 @@ json.array! @posts.each do |post|
         json.original_post_id post.original_post_id
         json.created_at post.created_at
         json.view_count post.view_count
-        json.comments_count post.number_of_comments
+        json.comments_count post.comments.size
         json.caption post.caption
         if post.post_image.attached?
             json.image_url url_for post.post_image

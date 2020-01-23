@@ -24,4 +24,16 @@ class User < ApplicationRecord
 
     #the users that currently follow a specific user 
     has_many :follower_users, through: :passive_relationships, source: :follower_user
+
+    #all activities involving a user will be available when the user makes a request for https://domainname.com/activity
+    #in a sense activity is a type of logger for each user to know the activities that involved their content on the app
+    has_many :activities, class_name: "Activity", foreign_key: :user_id, dependent: :destroy
+
+    #for now users won't be notified of the activities that they caused
+    #for example, there wont be a "You just liked joe's post. I find that this is unneccessary and removes from the validity of the activity feed entirely"
+    has_many :caused_activities, class_name: "Activity", foreign_key: :active_user_id
+
+
+    scope :verified, -> { where(:is_verified => true)} #this scope returns all the verified users in the app
+    # Ex:- scope :active, -> {where(:active => true)}
 end

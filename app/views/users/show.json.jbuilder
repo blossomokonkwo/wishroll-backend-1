@@ -15,7 +15,7 @@ json.user do
         #if the current_user is not the user whose data is being requested, we can check whether or not the user is following the user whose account data is being requested.
         is_following = false
         @user.follower_users.each do |follower|
-            if follower == current_user
+            if follower == @current_user
                 is_following = true
             end
         end
@@ -31,7 +31,7 @@ json.posts @user.posts.each do |post|
     json.original_post_id post.original_post_id
     json.created_at post.created_at
     json.view_count post.view_count
-    json.comments_count post.number_of_comments
+    json.comments_count post.comments.size
     json.caption post.caption
     json.image_url url_for post.post_image
 end if @user.posts #only run the .each block if the user has any posts or a null error will be raised!
