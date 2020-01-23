@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authorize_by_access_header!
   def show
-    @user = User.find_by(username: params[:username])
+    @user = User.includes([:posts]).find_by(username: params[:username])
     @current_user = current_user
     render :show, status: :ok
   end
