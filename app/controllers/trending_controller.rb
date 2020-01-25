@@ -10,9 +10,8 @@ class TrendingController < ApplicationController
             post[:id] = p.id
             post[:caption] = p.caption
             post[:created_at] = p.created_at
-            post[:user_id] = p.user_id
             post[:view_count] = p.view_count
-            post[:image_url] = url_for(p.post_image) if p.post_image.attached?
+            post[:image_url] = p.posts_media_url
             @posts << post
         end
         render json: @posts, status: :ok  

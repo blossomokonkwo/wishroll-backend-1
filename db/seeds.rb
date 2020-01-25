@@ -28,9 +28,23 @@ require 'faker'
 #     end
 #     Like.create(likeable_type: likeable_type, likeable_id: Faker::Number.between(from: 1, to: 50_000), user_id: Faker::Number.between(from: 1, to: 7_238))
 # end
-# 10000.times do 
-#     Relationship.create(follower_id: 2, followed_id: Faker::Number.between(from: 1, to: 12_272))
+100_000.times do 
+    Tag.create(post_id: Faker::Number.between(from: 1, to: 51_018), text: Faker::Lorem.word)
+end
+# Post.all.find_each do |post|
+#     posts_media_url = url_for(post.post_image) if post.post_image.attached?
+#     post.update(posts_media_url: posts_media_url)
 # end
+# User.all.find_each do |user|
+#     puts user.follower_users.count
+#     puts user.followed_users.count
+#     followers = user.followed_users.count
+#     following = user.follower_users.count
+#     user.update(following_count: followers, follower_users: following)
+# end
+    # user.following_count = user.followed_users.count
+    # user.followers_count = user.follower_users.count
+    # puts user.save
 #there are 7,238 seeded users 
 #there are 100,000 seeded comments with the first 100 posts having a dispropotionate ammount of comments at 50,000. This disproportionality models how social networks handle the traffic with more engaging posts.
 #there are 100,000 likes with the first 100 comments or posts having the majority of likes at 50_000 likes

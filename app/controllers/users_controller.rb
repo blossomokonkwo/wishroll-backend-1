@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authorize_by_access_header!
   def show
-    @user = User.includes([:posts]).find_by(username: params[:username])
+    @user = User.find_by(username: params[:username])
     @current_user = current_user
     render :show, status: :ok
   end
@@ -30,6 +30,8 @@ class UsersController < ApplicationController
  #users can easily and frequently update their profile picture
  def update_profile_picture
   current_user.profile_picture.attach params[:profile_picture]
+  current_user.profile_picture_url = url_for current_user.profile_picture
+  current_user.save
   render json: {success: "Your profile picture has successfully been updated"}, status: :ok
  end
 

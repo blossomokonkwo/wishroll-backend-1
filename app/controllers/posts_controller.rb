@@ -4,6 +4,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.post_image.attach params[:post_image]
+    @post.post_media_url = url_for(@post.post_image)
     @post.user_id = current_user.id
     if @post.save
       render json: nil, status: :ok
@@ -16,7 +17,8 @@ class PostsController < ApplicationController
     #render a specific post to the user along with all the involved tags
     @post = Post.find(params[:id])
     if @post 
-      @post.view_count += 1 if current_user.id != @post.user_id
+      @user = User.find(@post.user_id) #the user that posted the content
+      @post.view_count += 1 if current_user.id != @user.id
       @post.save
       render :show, status: 200
     else

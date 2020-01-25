@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_23_215310) do
+ActiveRecord::Schema.define(version: 2020_01_25_044639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_215310) do
     t.bigint "original_post_id"
     t.bigint "comments_count", default: 0
     t.bigint "likes_count", default: 0
+    t.string "posts_media_url"
     t.index ["original_post_id"], name: "index_posts_on_original_post_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -112,6 +113,9 @@ ActiveRecord::Schema.define(version: 2020_01_23_215310) do
     t.boolean "is_verified", default: false, null: false
     t.date "birth_date"
     t.text "bio"
+    t.string "profile_picture_url"
+    t.bigint "followers_count", default: 0
+    t.bigint "following_count", default: 0
     t.index ["email"], name: "email"
     t.index ["username"], name: "index_users_on_username"
   end

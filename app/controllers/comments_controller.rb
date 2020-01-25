@@ -3,18 +3,21 @@ class CommentsController < ApplicationController
     def create
         @comment = Comment.new(comment_params)
         @comment.user_id = current_user.id
+        @post = Post.find(params[:post_id])
         if @comment.save
-            activity_phrase = nil
-            user_id = nil
-            if @comment.original_comment_id
-                user_id = Comment.find(params[:original_comment_id]).user_id
-                activity_phrase = "#{current_user.username} replied to to your comment"
-            else
-                user_id = Post.find(params[:post_id]).user_id
-                activity_phrase = "#{current_user.username} commented on your post"
+            if !current_user.posts.include?(@post) #we are checking to ensure that we are not creating an activity object when a user is commenting on their own post                
+                activity_phrase = nil
+                user_id = nil
+                if @comment.original_comment_id
+                    user_id = Comment.find(params[:original_comment_id]).user_id
+                    activity_phrase = "#{current_user.username} replied to to your comment"
+                else
+                    user_id = Post.find(params[:post_id]).user_id
+                    activity_phrase = "#{current_user.username} commented on your post"
+                end
+                activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: "Comment", content_id: @comment.id)
+                activity.save
             end
-            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: "Comment", content_id: @comment.id)
-            activity.save
             render json: nil, status: :created
         else
             render json: {error: "Your comment could not be created at this time"}, status: 400
@@ -36,7 +39,7 @@ class CommentsController < ApplicationController
 
     def index
         #show all the comments relating to a specific post. All the available replies will 
-        @comments = Comment.where(post_id: params[:post_id],original_comment_id: nil) #where query is used to find all the rows that match the specified condition(s)
+        @comments = Comment.order(:replies_count,likes_count: :desc).where(post_id: params[:post_id], original_comment_id: nil) #where query is used to find all the rows that match the specified condition(s)
         if @comments.count > 0
             render :index, status: :ok
         else
