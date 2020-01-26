@@ -6,6 +6,6 @@ class LogoutController < ApplicationController
     #refresh_by_access_payload : "the refresh payload isn;t stored on the client side and isn't used for authorization"
     session = JWTSessions::Session.new(refresh_by_access_allowed: true, payload: claimless_payload)
     session.flush_by_access_payload
-    render json: {"Success": "You have been successfully logged out"}, status: :ok
+    render json: {success: "You have been successfully logged out"}, status: :ok
   end
 end
