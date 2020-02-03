@@ -3,7 +3,7 @@ class TagsController < ApplicationController
     def create
         @tag = Tag.new(tag_params)
         if @tag.save            
-            render status: :ok
+            render json: nil, status: :ok
         else
             render json: nil, status: 400
         end

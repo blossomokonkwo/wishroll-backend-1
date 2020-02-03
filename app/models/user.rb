@@ -36,4 +36,8 @@ class User < ApplicationRecord
 
     scope :verified, -> { where(:is_verified => true)} #this scope returns all the verified users in the app
     # Ex:- scope :active, -> {where(:active => true)}
+
+    has_many :wishlists, dependent: :destroy
+
+    has_many :wishes, dependent: :destroy
 end
