@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_25_044639) do
+ActiveRecord::Schema.define(version: 2020_01_26_170605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,30 @@ ActiveRecord::Schema.define(version: 2020_01_25_044639) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  create_table "wishes", force: :cascade do |t|
+    t.decimal "price", precision: 8, scale: 2, default: "0.0", null: false, comment: "The price for a wish"
+    t.bigint "user_id", null: false
+    t.text "description"
+    t.string "image_url"
+    t.string "product_name", null: false
+    t.float "amount_covered", default: 0.0, comment: "The amount covered so far for a specific wish"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "wishlist_id"
+    t.index ["user_id"], name: "index_wishes_on_user_id"
+    t.index ["wishlist_id"], name: "index_wishes_on_wishlist_id"
+  end
+
+  create_table "wishlists", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "wishes_count", default: 0
+    t.float "total_amount_raised", default: 0.0, comment: "This column stores the total caches the total amount of money raised for all wishes in a users wishlist"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "name", null: false
+    t.index ["user_id"], name: "index_wishlists_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
   add_foreign_key "comments", "posts"
@@ -127,4 +151,7 @@ ActiveRecord::Schema.define(version: 2020_01_25_044639) do
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "tags", "posts"
+  add_foreign_key "wishes", "users"
+  add_foreign_key "wishes", "wishlists"
+  add_foreign_key "wishlists", "users"
 end

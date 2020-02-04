@@ -1,4 +1,22 @@
 Rails.application.routes.draw do
+  namespace :admin do 
+    resources :users
+    resources :wishlists, only: [:index, :show] do 
+      resources :wishes, only: [:index, :show, :destroy]
+    end
+    resources :posts, except: [:create, :update] do
+      resources :comments, only: [:destroy, :index, :show]
+    end
+  end
+
+  resources :wishlists, except: [:update] do
+    resources :wishes, except: [:update, :index] 
+  end
+  
+  put "wishes/update-wish-picture/:id", to: 'wishes#update_wish_picture'
+  put "wishes/update-wish-description/:id", to: 'wishes#update_wish_description'
+  put "wishes/update-product-name/:id", to: 'wishes#update_product_name'
+  put "wishlists/update-wishlist-name/:id", to: 'wishlists#update_wishlist_name'
   resources :posts, except: [:update] do
     resources :comments 
     resources :likes, only: [:create, :destroy]
@@ -14,11 +32,8 @@ Rails.application.routes.draw do
   get 'activities', to: "activities#index"#this route takes the user to their activities feed which details all the activities that effect a users account 
   
   #user account update routes
-  patch 'user/password', to: "users#update_password"
-  patch 'user/username', to: "users#update_username"
-  patch 'user/picture', to: "users#update_profile_picture"
-  patch 'user/name',   to: "users#update_name"
-  patch 'user/bio',     to: "users#update_bio"
+  put 'user/update-password', to: "users#update_password"
+  put 'user/update', to: "users#update"
 
   #the delete account endpoint. Before the users account is destroyed make sure to flush the users session data and tokens.
   delete 'user/delete', to: "users#destroy"

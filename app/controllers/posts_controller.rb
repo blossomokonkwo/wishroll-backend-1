@@ -2,12 +2,11 @@ class PostsController < ApplicationController
   before_action :authorize_by_access_header!
   #create a post object along with all the tags. Save the post and tags to the DB.
   def create
-    @post = Post.new(post_params)
+    @post = Post.create(caption: params[:caption], user_id: current_user.id, original_post_id: params[:original_post_id])
     @post.post_image.attach params[:post_image]
-    @post.post_media_url = url_for(@post.post_image)
-    @post.user_id = current_user.id
+    @post.posts_media_url = url_for(@post.post_image)
     if @post.save
-      render json: nil, status: :ok
+      render json: {post_id: @post.id}, status: :ok
     else 
       render json: nil, status: :bad
     end
@@ -18,7 +17,8 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     if @post 
       @user = User.find(@post.user_id) #the user that posted the content
-      @post.view_count += 1 if current_user.id != @user.id
+      @id = current_user.id 
+      @post.view_count += 1 if @id != @user.id
       @post.save
       render :show, status: 200
     else
@@ -33,10 +33,5 @@ class PostsController < ApplicationController
     else
       render json: {error: "Your post could not be deleted at this time"}, status: 400
     end
-  end
-
-  private 
-  def post_params
-    params.permit :caption, :post_image, :original_post_id
   end
 end

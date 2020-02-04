@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
     before_action :authorize_by_access_header!
     def search 
+        @id = current_user.id
         @posts = Array.new
         @users = Array.new
         if params[:query_type] == "User"

@@ -1,0 +1,1 @@
+json.(@post,:id, :created_at, :updated_at, :caption, :original_post_id, :posts_media_url, :view_count, :likes_count, :comments_count)

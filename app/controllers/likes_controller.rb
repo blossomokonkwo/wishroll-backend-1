@@ -29,7 +29,7 @@ class LikesController < ApplicationController
                 end
             when "Post"
                 post = Post.find(params[:likeable_id])
-                if !((post.likes.to_a.bsearch do |like| like.likeable_id == post.id end).present?)
+                if !((post.likes.to_a.bsearch do |like| like.likeable_id == post.id end).present?) #run a bsearch on all the likes that belong to a comment to check if that like already exists 
                     like = Like.new(user_id: current_user.id, likeable_type: params[:likeable_type], likeable_id: params[:likeable_id])
                     like.save
                     user_id = User.select(:id).find(post.user_id).id
