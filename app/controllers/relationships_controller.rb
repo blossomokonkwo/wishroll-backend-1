@@ -4,8 +4,8 @@ class RelationshipsController < ApplicationController
         @followed_user = User.find_by(username: params[:username])
         if @followed_user and @followed_user != current_user and !(current_user.followed_users.include? @followed_user)
             @relationship = current_user.active_relationships.new followed_id: @followed_user.id
-            if @relationship.save
-                Activity.create(user_id: @followed_user.id, active_user_id: current_user.id, activity_type: "Relationship", activity_phrase: "#{current_user.username} began following you", content_id: @relationship_id)
+            if @relationship.save                
+                Activity.create(user_id: @followed_user.id, active_user_id: current_user.id, activity_type: "Relationship", activity_phrase: "#{current_user.username} began following you", content_id: @relationship.id)
                 render json: {relationship_id: @relationship.id}, status: :created
             else
                 render json: {error: "Your follow request was unsuccessfull"}
@@ -18,7 +18,7 @@ class RelationshipsController < ApplicationController
     def destroy
         @unfollwed_user = User.find_by(username: params[:username])
         if @unfollwed_user
-            @relationship = Relationship.where(followed_id: @unfollwed_user.id, follower_id: current_user.id)
+            @relationship = Relationship.where(followed_id: @unfollwed_user.id, follower_id: current_user.id).first
             if @relationship
                 if @relationship.destroy
                     render json: nil, status: 200

@@ -15,7 +15,7 @@ cache @user, expires_in: 1.hour do
         #Loop through all of a users followers and check if the current_user is among the follower users.
         if @current_user != @user
             #if the current_user is not the user whose data is being requested, we can check whether or not the user is following the user whose account data is being requested.
-            is_following = @user.follower_users.includes(@current_user) ? true : false
+            is_following = @user.follower_users.include?(@current_user) ? true : false
         end
         json.is_following is_following
         #frontend check: The frontend should check whether or not the is_following field is null, true, or false. If the field is null, then the current_user is requesting his or her own profile data.

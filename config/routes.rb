@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root to: "feed#index"
   namespace :admin do 
     resources :users
     resources :wishlists, only: [:index, :show] do 
@@ -44,8 +45,6 @@ Rails.application.routes.draw do
   #the follow/unfollow endpoints
   post 'follow/:username', to: "relationships#create"
   delete 'unfollow/:username', to: "relationships#destroy"
-
-  get 'feed', to: "feed#index"
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
   delete 'logout', to: "logout#destroy" #the logout route
