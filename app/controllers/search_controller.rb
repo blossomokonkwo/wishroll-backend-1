@@ -4,25 +4,27 @@ class SearchController < ApplicationController
         @id = current_user.id
         @posts = Array.new
         @users = Array.new
-        if params[:query_type] == "User"
+        if !params[:query].empty?
             @users = User.where("username ILIKE ?", "#{search_params[:query]}%")
             .or(User.where("first_name ILIKE ?", "#{search_params[:query]}%"))
-            .or(User.where("last_name ILIKE ?", "#{search_params[:query]}%"))
-        else
+            .or(User.where("last_name ILIKE ?", "#{search_params[:query]}%"))        
             Tag.where("text ILIKE ?", "#{search_params[:query]}%").limit(500).includes([:post]).find_each do |tag|
                 @posts << tag.post
             end
-        end
-        if @posts.empty? and @users.empty?
-            render json: nil, status: 404
+            if @posts.empty? and @users.empty?
+                render json: nil, status: 404
+            else
+                #puts "These are the users #{@users.first.birth_date}\n\n\n\n\n\n\n"
+                render :index, status: :ok
+            end
         else
-            render :index, status: :ok
+            render json: nil, status: 404
         end
     end
 
 
     private 
     def search_params
-        params.permit :query
+        params.permit :query, :query_type
     end
 end
