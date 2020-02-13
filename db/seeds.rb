@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 # seeded the data base with 10000 user accounts to simulate the production level of load
-# 1000.times do
+# 10000.times do
 #     is_verified = Random.new.rand(0...50)
 #     spawned_user = User.create(email: Faker::Internet.safe_email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username(specifier: 1..20), is_verified: is_verified == 1 ? true : false, password: Faker::Internet.password(min_length: 8), birth_date: Faker::Date.birthday(min_age: 13, max_age: 30))
 # end
@@ -15,19 +15,19 @@ require 'faker'
 #     spawned_post = Post.create(user_id: Faker::Number.between(from: 1, to: 7_238), view_count: Faker::Number.within(range: 0...7_238), original_post_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...50000) : nil, caption: Faker::Lorem.sentence)
 # end
 5000.times do 
-    spawned_comment = Comment.create(user_id: Faker::Number.between(from: 1, to: 800), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 5...55), original_comment_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...300) : nil)
+    spawned_comment = Comment.create(user_id: Faker::Number.between(from: 1, to: 800), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 5...25), original_comment_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...300) : nil)
 end
-5_000.times do 
-    num = Random.new.rand(1..2)
-    likeable_type = nil
-    case num
-    when 1
-        likeable_type = "Post"
-    when 2
-        likeable_type = "Comment"
-    end
-    Like.create likeable_type: "Post", likeable_id: Faker::Number.between(from: 1, to: 50), user_id: Faker::Number.between(from: 1, to: 1_000)
-end
+# 5_000.times do 
+#     num = Random.new.rand(1..2)
+#     likeable_type = nil
+#     case num
+#     when 1
+#         likeable_type = "Post"
+#     when 2
+#         likeable_type = "Comment"
+#     end
+#     Like.create likeable_type: "Post", likeable_id: Faker::Number.between(from: 1, to: 25), user_id: Faker::Number.between(from: 1, to: 1_000)
+# end
 # 10_000.times do 
 #     Tag.create(post_id: Faker::Number.between(from: 1, to: 51_018), text: Faker::Lorem.word)
 # end
