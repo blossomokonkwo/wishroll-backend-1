@@ -58,5 +58,5 @@ Rails.application.routes.draw do
   post 'signup', to: "signup#new" #the signup route. This route allows a user to sign up for the service 
 
   #this route allows users to view the account data of other users. Users are found via the username extension
-  get ':username', to: "users#show"
+  get ':username', to: "users#show", constraints: {username: /[0-9a-z_.]{1,20}/}
 end

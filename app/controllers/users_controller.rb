@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by(username: params[:username])
     @current_user = current_user
-    render :show, status: :ok
+    if @user
+      render :show, status: :ok
+    else
+      render json: nil, status: 404
+    end
   end
 
 #users can update their password; however, they have to be authenticated via the session and provide their old password

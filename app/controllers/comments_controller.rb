@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
 
     def index
         #show all the comments relating to a specific post. All the available replies will 
-        @comments = Comment.order(:replies_count,likes_count: :desc).where(post_id: params[:post_id], original_comment_id: nil) #where query is used to find all the rows that match the specified condition(s)
+        @comments = Comment.order(replies_count: :desc, updated_at: :desc, likes_count: :desc).where(post_id: params[:post_id], original_comment_id: nil) #where query is used to find all the rows that match the specified condition(s)
         if @comments.count > 0
             render :index, status: :ok
         else
