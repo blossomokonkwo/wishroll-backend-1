@@ -89,7 +89,9 @@ GEM
       uniform_notifier (~> 1.11)
     byebug (11.0.1)
     concurrent-ruby (1.1.5)
+    connection_pool (2.2.2)
     crass (1.0.5)
+    dalli (2.7.10)
     erubi (1.9.0)
     ffi (1.11.1)
     globalid (0.4.2)
@@ -191,6 +193,8 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bullet
   byebug
+  connection_pool
+  dalli
   faker!
   jbuilder (~> 2.5)
   jwt_sessions
