@@ -20,8 +20,11 @@ class LikesController < ApplicationController
                         else
                             activity_phrase = "#{current_user.username} liked your comment"
                         end
-                        activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type)
-                        activity.save #it is crucial that the activity object is saved and persisted on the DB
+                        post_image_url = Post.find(comment.post_id).posts_media_url
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                            activity.save
+                        end #it is crucial that the activity object is saved and persisted on the DB
                         render json: nil, status: 200
                     end
                 else
@@ -41,8 +44,11 @@ class LikesController < ApplicationController
                         else
                             activity_phrase = "#{current_user.username} liked your post"
                         end
-                        activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type)
-                        activity.save #it is crucial that the activity object is saved and persisted on the DB
+                        post_image_url = post.posts_media_url
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                            activity.save
+                        end #it is crucial that the activity object is saved and persisted on the DB
                     end
                     render json: nil, status: 200
                 else

@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   #these param hash permissions ensure that only the correct data is being passed in to the params hash 
   #that will ultimately alter the state of the users account 
   def update_user
-    params.permit :username, :email, :first_name, :last_name, :profile_picture, :bio, :is_verified
+    params.permit :username, :email, :full_name, :profile_picture, :bio, :is_verified
   end
 
   def update_profile_picture

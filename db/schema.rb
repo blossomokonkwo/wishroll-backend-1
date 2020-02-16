@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_205603) do
+ActiveRecord::Schema.define(version: 2020_02_15_183109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2020_02_04_205603) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "activity_phrase", null: false
     t.bigint "content_id"
+    t.string "post_url"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -108,14 +109,14 @@ ActiveRecord::Schema.define(version: 2020_02_04_205603) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username", limit: 20
-    t.string "first_name", limit: 20, default: "First", null: false
-    t.string "last_name", limit: 20, default: "Last", null: false
     t.boolean "is_verified", default: false, null: false
     t.date "birth_date"
     t.text "bio"
     t.string "profile_picture_url"
     t.bigint "followers_count", default: 0
     t.bigint "following_count", default: 0
+    t.string "full_name"
+    t.bigint "total_view_count", default: 0, null: false
     t.index ["email"], name: "email"
     t.index ["username"], name: "index_users_on_username"
   end

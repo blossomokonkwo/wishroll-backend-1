@@ -3,12 +3,12 @@
 cache @user, expires_in: 1.hour do
     json.user do 
         json.username @user.username
-        json.first_name @user.first_name
-        json.last_name @user.last_name
+        json.full_name @user.full_name
         json.is_verified @user.is_verified
         json.bio @user.bio
         json.followers_count @user.followers_count
         json.following_count @user.following_count
+        json.total_view_count @user.total_view_count
         json.profile_picture_url @user.profile_picture_url
         is_following = nil
         #check first if the requested user is the current_user. If so, then the 'is_following' field isn't nil but must be true or false.

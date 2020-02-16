@@ -11,6 +11,11 @@ json.array! @comments.each do |comment|
             json.original_comment_id comment.original_comment_id
             json.replies_count comment.replies_count
             json.likes_count comment.likes_count
+            if comment.likes.find_by(user_id: @current_user_id).present?
+                json.liked true
+            else
+                json.liked false
+            end
         end
         json.user do
             json.profile_picture_url @user.profile_picture_url
