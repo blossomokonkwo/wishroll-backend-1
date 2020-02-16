@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root to: "feed#index"
   namespace :admin do 
     resources :users
     resources :wishlists, only: [:index, :show] do 
@@ -44,8 +45,6 @@ Rails.application.routes.draw do
   #the follow/unfollow endpoints
   post 'follow/:username', to: "relationships#create"
   delete 'unfollow/:username', to: "relationships#destroy"
-
-  get 'feed', to: "feed#index"
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
   delete 'logout', to: "logout#destroy" #the logout route
@@ -59,5 +58,5 @@ Rails.application.routes.draw do
   post 'signup', to: "signup#new" #the signup route. This route allows a user to sign up for the service 
 
   #this route allows users to view the account data of other users. Users are found via the username extension
-  get ':username', to: "users#show"
+  get ':username', to: "users#show", constraints: {username: /[0-9a-z_.]{1,20}/}
 end

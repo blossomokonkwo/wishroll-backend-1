@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by(username: params[:username])
     @current_user = current_user
-    render :show, status: :ok
+    if @user
+      render :show, status: :ok
+    else
+      render json: nil, status: 404
+    end
   end
 
 #users can update their password; however, they have to be authenticated via the session and provide their old password
@@ -47,7 +51,7 @@ class UsersController < ApplicationController
   #these param hash permissions ensure that only the correct data is being passed in to the params hash 
   #that will ultimately alter the state of the users account 
   def update_user
-    params.permit :username, :email, :first_name, :last_name, :profile_picture, :bio, :is_verified
+    params.permit :username, :email, :full_name, :profile_picture, :bio, :is_verified
   end
 
   def update_profile_picture

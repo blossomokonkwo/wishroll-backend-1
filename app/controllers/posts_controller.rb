@@ -18,8 +18,12 @@ class PostsController < ApplicationController
     if @post 
       @user = User.find(@post.user_id) #the user that posted the content
       @id = current_user.id 
-      @post.view_count += 1 if @id != @user.id
-      @post.save
+      if @id != @user.id
+        @post.view_count += 1
+        @user.total_view_count += 1
+        @user.save 
+        @post.save
+      end
       render :show, status: 200
     else
       render json: nil, status: 404

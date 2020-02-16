@@ -7,7 +7,7 @@ class LikesController < ApplicationController
             case params[:likeable_type]
             when "Comment"
                 comment = Comment.find(params[:likeable_id])
-                if !((comment.likes.to_a.bsearch do |like| like.likeable_id == comment.id end).present?)
+                if !((comment.likes.to_a.bsearch do |like| like.user_id == current_user.id end).present?)
                     like = Like.new(user_id: current_user.id, likeable_type: params[:likeable_type], likeable_id: params[:likeable_id])
                     like.save
                     user_id = User.select(:id).find(comment.user_id).id
@@ -20,8 +20,11 @@ class LikesController < ApplicationController
                         else
                             activity_phrase = "#{current_user.username} liked your comment"
                         end
-                        activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type)
-                        activity.save #it is crucial that the activity object is saved and persisted on the DB
+                        post_image_url = Post.find(comment.post_id).posts_media_url
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                            activity.save
+                        end #it is crucial that the activity object is saved and persisted on the DB
                         render json: nil, status: 200
                     end
                 else
@@ -29,7 +32,7 @@ class LikesController < ApplicationController
                 end
             when "Post"
                 post = Post.find(params[:likeable_id])
-                if !((post.likes.to_a.bsearch do |like| like.likeable_id == post.id end).present?) #run a bsearch on all the likes that belong to a comment to check if that like already exists 
+                if !((post.likes.to_a.bsearch do |like| like.user_id == current_user.id end).present?) #run a bsearch on all the likes that belong to a comment to check if that like already exists 
                     like = Like.new(user_id: current_user.id, likeable_type: params[:likeable_type], likeable_id: params[:likeable_id])
                     like.save
                     user_id = User.select(:id).find(post.user_id).id
@@ -41,8 +44,11 @@ class LikesController < ApplicationController
                         else
                             activity_phrase = "#{current_user.username} liked your post"
                         end
-                        activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type)
-                        activity.save #it is crucial that the activity object is saved and persisted on the DB
+                        post_image_url = post.posts_media_url
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                            activity.save
+                        end #it is crucial that the activity object is saved and persisted on the DB
                     end
                     render json: nil, status: 200
                 else

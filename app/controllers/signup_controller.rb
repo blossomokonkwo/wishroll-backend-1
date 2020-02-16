@@ -22,7 +22,7 @@ class SignupController < ApplicationController
     def new
         @user = User.new(create_account_user_params) #create user w strong params
         if @user.save #if the user is saved to the DB create tokens and send to client
-            payload = {user_id: @user.id}
+            payload = {user_id: @user.id, username: @user.username, is_verified: @user.is_verified, email: @user.email, full_name: @user.full_name, profile_picture: @user.profile_picture_url}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
             tokens = session.login
             render json: {access: tokens[:access], csrf: tokens[:csrf], :access_expires_at => tokens[:access_expires_at]}, status: :created
@@ -34,7 +34,7 @@ class SignupController < ApplicationController
 
     private 
     def create_account_user_params #checks that the user has entered their neccessary credetnitals
-        params.permit :email, :password, :username, :first_name, :last_name, :birth_date
+        params.permit :email, :password, :username, :full_name, :birth_date
     end
     
 end
