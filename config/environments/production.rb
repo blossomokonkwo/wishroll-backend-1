@@ -48,11 +48,20 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :mem_cache_store,
+                    (ENV["MEMCACHIER_SERVERS"] || "").split(","),
+                    {:username => ENV["MEMCACHIER_USERNAME"],
+                     :password => ENV["MEMCACHIER_PASSWORD"],
+                     :failover => true,
+                     :socket_timeout => 1.5,
+                     :socket_failure_delay => 0.2,
+                     :down_retry_delay => 60
+                     :pool_size => 5 #number five represents the max number of threads that the puma server utilizes
+                    }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "icebreaker_#{Rails.env}"
+  config.active_job.queue_adapter     = :sidekiq
+  config.active_job.queue_name_prefix = "wishroll_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
 

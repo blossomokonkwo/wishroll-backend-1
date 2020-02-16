@@ -19,6 +19,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt_sessions'
 gem 'rb-readline'
 gem 'newrelic_rpm'
+gem 'dalli'
+gem 'connection_pool'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
