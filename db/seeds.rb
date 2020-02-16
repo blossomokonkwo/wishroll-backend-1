@@ -49,4 +49,4 @@ require 'faker'
 #there are 100,000 seeded comments with the first 100 posts having a dispropotionate ammount of comments at 50,000. This disproportionality models how social networks handle the traffic with more engaging posts.
 #there are 100,000 likes with the first 100 comments or posts having the majority of likes at 50_000 likes
 #there are 10_000 relationships with users with the first ten users having a disproportionate amount of the followers at 5000
-#user with id 2 is following 10000 other users. This simulates when a user is following alot of other users.
+#user with id 2 is following 10000 other users. This simulates when a user is following alot of other users.a
