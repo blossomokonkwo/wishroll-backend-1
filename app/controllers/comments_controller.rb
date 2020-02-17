@@ -15,10 +15,8 @@ class CommentsController < ApplicationController
                     user_id = Post.find(params[:post_id]).user_id
                     activity_phrase = "#{current_user.username} commented on your post"
                 end
-                if Activity.find_by(user_id: user_id, active_user_id: current_user.id, content_id: @comment.id, activity_type: "Comment") == nil
                     activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: "Comment", content_id: @comment.id, post_url: @post.posts_media_url)
                     activity.save
-                end
             end
             render json: nil, status: :created
         else
