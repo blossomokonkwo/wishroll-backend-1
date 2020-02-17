@@ -26,7 +26,13 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  current_user.profile_picture_url = url_for(current_user.profile_picture) if params[:profile_picture] && current_user.profile_picture.attached?
+  if params[:profile_picture]
+    if current_user.profile_picture.attached?
+      current_user.profile_picture.purge
+      current_user.profile_picture.attach params[:profile_picture]
+      current_user.profile_picture_url = url_for(current_user.profile_picture)
+    end
+  end
   if current_user.save
     render json: {success: "Your bio has been updated"}, status: :ok
   else
