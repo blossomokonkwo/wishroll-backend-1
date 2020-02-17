@@ -21,6 +21,7 @@ gem 'rb-readline'
 gem 'newrelic_rpm'
 gem 'dalli'
 gem 'connection_pool'
+gem 'resque'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
