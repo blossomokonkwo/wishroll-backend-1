@@ -10,7 +10,7 @@ class Comment < ApplicationRecord
 
   private 
   def destroy_comments_activities
-    activities = Activity.where(content_id: self.id, content_type: "Comment")
+    activities = Activity.where(activity_type: self.id, content_type: "Comment")
     activities.each do |activity|
       activity.destroy
     end if activities.present?
