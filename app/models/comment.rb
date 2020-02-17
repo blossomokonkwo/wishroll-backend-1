@@ -4,4 +4,15 @@ class Comment < ApplicationRecord
   has_many :replies, class_name: "Comment", foreign_key: :original_comment_id, dependent: :destroy
   belongs_to :original_comment, class_name: "Comment", optional: true, counter_cache: :replies_count
   has_many :likes, as: :likeable
+
+  before_destroy :destroy_comments_activities
+
+
+  private 
+  def destroy_comments_activities
+    activities = Activity.where(content_id: self.id, content_type: "Comment")
+    activities.each do |activity|
+      activity.destroy
+    end if activities.present?
+  end
 end
