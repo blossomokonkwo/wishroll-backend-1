@@ -22,7 +22,7 @@ gem 'newrelic_rpm'
 gem 'dalli'
 gem 'connection_pool'
 gem 'resque'
-
+gem 'resque-scheduler'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
