@@ -26,18 +26,11 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  if params[:profile_picture]
-    if current_user.profile_picture.attached?
-      current_user.profile_picture.purge
-      current_user.profile_picture.attach params[:profile_picture]
-      current_user.profile_picture_url = url_for(current_user.profile_picture)
-    end
-  end
-  if current_user.save
-    render json: {success: "Your bio has been updated"}, status: :ok
-  else
-    render json: {error: "Your bio could not be updated at this time"}, status: 400
-  end
+  current_user.profile_picture_url = url_for(current_user.profile_picture) if params[:profile_picture]
+  render json: {success: "Your account has been updated"}, status: :ok
+  rescue ActiveRecord::RecordNotSaved
+    ensure
+    render json: {error: "Your account could not be updated at this time"}, status: 400
  end
 
  def destroy
