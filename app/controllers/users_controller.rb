@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   end
 
   def update_profile_picture
-    current_user.profile_picture_url = url_for(current_user.profile_picture) if current_user.profile_picture.attached?
+    UpdateProfileUrlJob.set(wait: 15.seconds).perform_later(current_user)
   end
 
 end
