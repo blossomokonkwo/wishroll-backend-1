@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  UpdateProfileUrlJob.set(wait: 15.seconds).perform_later(current_user)
+  UpdateProfileUrlJob.set(wait: 3.seconds).perform_later(current_user)
   render json: {success: "Your account has been updated"}, status: :ok
  end
 
