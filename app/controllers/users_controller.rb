@@ -25,7 +25,7 @@ class UsersController < ApplicationController
  end
 
  def update
-  current_user.update(update_user)
+  current_user.update!(update_user)
   current_user.profile_picture_url = url_for(current_user.profile_picture) if params[:profile_picture]
   render json: {success: "Your account has been updated"}, status: :ok
   rescue ActiveRecord::RecordNotSaved
