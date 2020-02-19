@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :authorize_by_access_header!
-  after_action :update_profile_picture, only: :update
 
   def show
     @user = User.find_by(username: params[:username])
@@ -26,6 +25,7 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
+  UpdateProfileUrlJob.set(wait: 15.seconds).perform_later(current_user)
   render json: {success: "Your account has been updated"}, status: :ok
  end
 
@@ -48,9 +48,4 @@ class UsersController < ApplicationController
   def update_user
     params.permit :username, :email, :full_name, :profile_picture, :bio, :is_verified
   end
-
-  def update_profile_picture
-    UpdateProfileUrlJob.set(wait: 15.seconds).perform_later(current_user)
-  end
-
 end
