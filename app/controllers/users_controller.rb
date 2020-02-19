@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorize_by_access_header!
-  #after_action :update_profile_picture, only: :update
+  after_action :update_profile_picture, only: :update
 
   def show
     @user = User.find_by(username: params[:username])
@@ -26,7 +26,6 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  current_user.profile_picture_url = url_for(current_user.profile_picture) if params[:profile_picture]
   render json: {success: "Your account has been updated"}, status: :ok
  end
 
