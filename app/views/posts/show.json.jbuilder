@@ -1,7 +1,7 @@
 json.user do 
     json.username @user.username
     json.is_verified @user.is_verified
-    json.profile_picture_url @user.profile_picture_url
+    json.profile_picture_url url_for(@user.profile_picture) if @user.profile_picture.attached?
 end
 json.post do 
     json.id @post.id
