@@ -29,6 +29,27 @@ class UsersController < ApplicationController
   render json: {success: "Your account has been updated"}, status: :ok
  end
 
+  def followers 
+    @user = User.find_by(username: params[:username])
+    @current_user = current_user
+    @followers = @user.follower_users
+    if @followers.present?
+      render :followers, status: 200
+    else
+      render json: nil, status: 404
+    end
+  end
+
+  def following
+    @current_user = current_user
+    @user = User.find_by(username: params[:username])
+    @followed_users = @user.followed_users
+    if @followed_users.present?
+      render :following, status: 200
+    else
+      render json: nil, status: 404
+    end
+  end
  def destroy
     #destroys the users record from the database. The user must send their current password to ensure that they have the authorization to delete the current_user's account
     if current_user.authenticate(params[:password])

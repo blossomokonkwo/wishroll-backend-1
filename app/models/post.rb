@@ -6,4 +6,12 @@ class Post < ApplicationRecord
     belongs_to :user, class_name: "User", foreign_key: "user_id"
     has_many :likes, as: :likeable, dependent: :destroy
     has_one_attached(:post_image)
+
+    private 
+    def destroy_post_activities
+        activities = Activity.where(content_id: self.id, activity_type: "Post")
+        activities.each do |activity|
+        activity.destroy
+    end if activities.present?
+    end
 end

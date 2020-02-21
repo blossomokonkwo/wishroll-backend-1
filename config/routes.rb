@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   #the follow/unfollow endpoints
   post 'follow/:username', to: "relationships#create"
   delete 'unfollow/:username', to: "relationships#destroy"
+  get 'following/:username', to: "users#following"
+  get 'followers/:username', to: "users#followers"
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
   delete 'logout', to: "logout#destroy" #the logout route
