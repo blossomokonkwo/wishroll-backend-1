@@ -1,0 +1,2 @@
+development: localhost:6379 #this is the default Redis port on local machines  
+production: redis://rediscloud:NbtIV1gCMUn7mSso74yZZ7dJYNTAPBjZ@redis-13281.c62.us-east-1-4.ec2.cloud.redislabs.com:13281
