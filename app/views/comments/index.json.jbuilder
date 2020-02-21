@@ -1,6 +1,6 @@
 json.array! @comments.each do |comment|
     cache comment, expires_in: 2.minutes do
-        @user = User.select(:username, :is_verified, :profile_picture).find(comment.user_id)
+        @user = User.select(:username, :is_verified).find(comment.user_id)
         json.comment do 
             json.id comment.id
             json.body comment.body
