@@ -12,7 +12,7 @@ json.array! @activities.each do |activity|
         end
         json.user do 
             json.username user.username
-            json.profile_picture_url url_for(@user.profile_picture) if @user.profile_picture.attached?
+            json.profile_picture_url url_for(user.profile_picture) if user.profile_picture.attached?
             json.is_verified user.is_verified
         end
     end

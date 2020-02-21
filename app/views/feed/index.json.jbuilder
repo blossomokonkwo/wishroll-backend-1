@@ -7,7 +7,7 @@ json.array! @posts.each do |post|
         user = User.find(post.user_id)
         json.user do 
             json.username user.username
-            json.profile_picture_url url_for(@user.profile_picture) if @user.profile_picture.attached?
+            json.profile_picture_url url_for(user.profile_picture) if user.profile_picture.attached?
             json.is_verified user.is_verified
         end
         json.post do
