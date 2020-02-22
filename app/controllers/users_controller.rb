@@ -25,7 +25,11 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  render json: {success: "Your account has been updated"}, status: :ok
+  if current_user.save
+    render json: {success: "Your account has been updated"}, status: :ok
+  else
+    render json: nil, status: 400
+  end
  end
 
   def followers 
