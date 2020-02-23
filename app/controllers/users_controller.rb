@@ -31,7 +31,7 @@ class UsersController < ApplicationController
     current_user.profile_picture.attach params[:profile_picture]
   end
   if current_user.save
-    render json: {success: "Your account has been updated"}, status: :ok
+    render json: {profile_picture_url: url_for(current_user.profile_picture)}, status: :ok
   else
     render json: nil, status: 400
   end
