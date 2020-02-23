@@ -9,7 +9,7 @@ cache @user, expires_in: 1.hour do
         json.followers_count @user.followers_count
         json.following_count @user.following_count
         json.total_view_count @user.total_view_count
-        json.profile_picture_url url_for(@user.profile_picture) if @user.profile_picture.attached?
+        json.profile_picture_url @user.profile_picture_url
         is_following = nil
         #check first if the requested user is the current_user. If so, then the 'is_following' field isn't nil but must be true or false.
         #Loop through all of a users followers and check if the current_user is among the follower users.
@@ -36,7 +36,6 @@ json.posts @user.posts.each do |post|
     end
 end  #only run the .each block if the user has any posts or a null error will be raised!
 json.liked_posts Like.select(:likeable_id).where(likeable_type: "Post", user_id: @user.id).each do |like|
-    puts like.likeable_id
      post = Post.find(like.likeable_id)
      cache post, expires_in: 1.hour do
         json.id post.id

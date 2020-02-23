@@ -18,7 +18,7 @@ json.array! @comments.each do |comment|
             end
         end
         json.user do
-            json.profile_picture_url url_for(@user.profile_picture) if @user.profile_picture.attached?
+            json.profile_picture_url @user.profile_picture_url
             json.username @user.username
             json.is_verified @user.is_verified
         end

@@ -2,7 +2,7 @@ json.users @users.each do |user|
         json.username user.username
         json.full_name user.full_name
         json.is_verified user.is_verified
-        json.profile_picture_url url_for(user.profile_picture) if user.profile_picture.attached?
+        json.profile_picture_url user.profile_picture_url
 end
 json.posts @posts.each do |post|
     json.id post.id
