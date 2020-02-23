@@ -25,13 +25,9 @@ class UsersController < ApplicationController
 
  def update
   current_user.update(update_user)
-  params.permit :profile_picture
-  if params[:profile_picture]
-    current_user.profile_picture.purge_later
-    current_user.profile_picture.attach params[:profile_picture]
-  end
+  current_user.profile_picture_url = url_for(current_user.profile_picture) if current_user.profile_picture.attached? and params[:profile_picture].present?
   if current_user.save
-    render json: {profile_picture_url: url_for(current_user.profile_picture)}, status: :ok
+    render json: {profile_picture_url: current_user.profile_picture_url}, status: :ok
   else
     render json: nil, status: 400
   end
@@ -75,6 +71,6 @@ class UsersController < ApplicationController
   #these param hash permissions ensure that only the correct data is being passed in to the params hash 
   #that will ultimately alter the state of the users account 
   def update_user
-    params.permit :username, :email, :full_name, :bio, :is_verified
+    params.permit :username, :email, :full_name, :bio, :is_verified, :profile_picture
   end
 end
