@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   root to: "feed#index"
   get 'privacy', to: "privacy_policy#privacy"
   get 'terms', to: "terms#terms"
+  get 'contact', to: "support#contact"
+  get 'home', to: "home#home"
+  get 'what-is-wishroll', to: "home#what_is_wishroll"
   namespace :admin do 
     resources :users
     resources :wishlists, only: [:index, :show] do 
