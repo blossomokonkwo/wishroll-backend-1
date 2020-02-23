@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: "feed#index"
+  get 'privacy', to: "privacy_policy#privacy"
+  get 'terms', to: "terms#terms"
   namespace :admin do 
     resources :users
     resources :wishlists, only: [:index, :show] do 
