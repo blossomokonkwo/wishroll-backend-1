@@ -13,7 +13,7 @@ class FeedController < ApplicationController
                 followed_user.posts.each do |post|
                     #we check if each post is newer than 3 days old.
                     #most social media users will only view the most recent posts.
-                   if (DateTime.current - 3.days) < post.created_at
+                   if (DateTime.current - 3.weeks) < post.created_at
                     @posts << post
                    end
                 end
