@@ -1,5 +1,5 @@
 module Admin
-  class Admin::PostsController < Admin::BaseController 
+  class Admin::PostsController < Admin::AdminController 
    def update
        @post = Post.find(params[:id])
        if @post.update(post_params)

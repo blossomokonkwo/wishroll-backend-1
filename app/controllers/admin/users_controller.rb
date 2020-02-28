@@ -1,5 +1,5 @@
 module Admin
-    class UsersController < Admin::BaseController 
+    class UsersController < Admin::AdminController 
         after_action :update_profile_picture, only: :update
         def create
             @user = User.new(create_user)

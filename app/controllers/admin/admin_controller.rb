@@ -1,7 +1,8 @@
 module Admin
-    class BaseController < ActionController::API
+    class AdminController < ActionController::API
         #the base controller is used by both the admin and the application namespace
-        def gg
+        def index
+            
         end
     end  
 end

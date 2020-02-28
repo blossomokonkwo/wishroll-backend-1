@@ -1,5 +1,5 @@
 module Admin
-    class CommentsController < Admin::BaseController 
+    class CommentsController < Admin::AdminController 
         def show
             @comment = Comment.find(params[:id])
             render :show, status: :ok

@@ -6,12 +6,15 @@ Rails.application.routes.draw do
   get 'home', to: "home#home"
   get 'what-is-wishroll', to: "home#what_is_wishroll"
   namespace :admin do 
-    resources :users
-    resources :wishlists, only: [:index, :show] do 
-      resources :wishes, only: [:index, :show, :destroy]
-    end
-    resources :posts, except: [:create, :update] do
-      resources :comments, only: [:destroy, :index, :show]
+    constraints subdomain: 'admin' do 
+      root 'admin#index'
+      resources :users
+      resources :wishlists, only: [:index, :show] do 
+        resources :wishes, only: [:index, :show, :destroy]
+      end
+      resources :posts, except: [:create, :update] do
+        resources :comments, only: [:destroy, :index, :show]
+      end
     end
   end
 
