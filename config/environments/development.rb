@@ -12,6 +12,10 @@ Rails.application.configure do
     Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
   end
 
+  config.hosts << "lvh.me"
+
+  config.hosts << "admin.lvh.me"
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
