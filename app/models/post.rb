@@ -3,7 +3,7 @@ class Post < ApplicationRecord
     has_many :comments, dependent: :destroy
     has_many :reactions, class_name: "Post", foreign_key: :original_post_id
     belongs_to :original_post, class_name: "Post", optional: true
-    belongs_to :user, -> { select([:username, :profile_picture_url, :is_verified, :total_view_count]) }, class_name: "User", foreign_key: "user_id"
+    belongs_to :user, class_name: "User", foreign_key: "user_id"
     has_many :likes, as: :likeable, dependent: :destroy
     has_one_attached(:post_image)
 
