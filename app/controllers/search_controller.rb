@@ -14,7 +14,7 @@ class SearchController < ApplicationController
                 render json: nil, status: 404
             else
                 @users.to_a.keep_if do |user|
-                    !current_user.blocked_users.include?(user) or !user.blocked_users.include?(current_user)
+                    !(current_user.blocked_users.include?(user)) and !(user.blocked_users.include?(current_user))
                 end
                 render :index, status: :ok
             end
