@@ -108,12 +108,6 @@ module Admin
                 render json: {error: "User doesn't exist"}, status: :not_found
             end
         end
-        
-        def block
-            @current_user = User.find_by(username: params[:current_user])
-            @current_user.followed_users.delete_if {|user| user.username == params[:blocked_user]} if @current_user.followed_users.count > 0
-            @current_user.follower_users.delete_if {|user| user.user == params[:blocked_user]} if @current_user.follower_users.count > 0
-        end
 
         private 
         def create_user

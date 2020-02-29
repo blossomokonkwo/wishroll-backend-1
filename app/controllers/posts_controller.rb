@@ -16,17 +16,21 @@ class PostsController < ApplicationController
     #render a specific post to the user along with all the involved tags
     @post = Post.find(params[:id])
     if @post 
-      @user = @post.user #the user that posted the content
-      @id = current_user.id 
-      if @id != @user.id
-        @post.view_count += 1
-        @user.total_view_count += 1
-        @user.save 
-        @post.save
+      @user = @post.user
+      if current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+          render json: nil, status: 403 #user is blocked therefore he is forbidden
+      else
+        @id = current_user.id #the user that posted the content
+        if @id != @user.id
+            @post.view_count += 1
+            @user.total_view_count += 1
+            @user.save 
+            @post.save
+          render :show, status: 200
+        else
+          render json: nil, status: 404
+        end
       end
-      render :show, status: 200
-    else
-      render json: nil, status: 404
     end
   end
 

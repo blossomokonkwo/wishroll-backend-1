@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get 'what-is-wishroll', to: "home#what_is_wishroll"
   constraints subdomain: 'admin' do 
     namespace :admin do
-      delete 'admin/users/block', to: 'admin/users#block'
       delete 'admin/posts/report', to: 'admin/posts#report'
       root to: 'admin#index'
       resources :users
@@ -53,6 +52,7 @@ Rails.application.routes.draw do
   
 
   #the follow/unfollow endpoints
+  delete 'block', to: 'users#block'
   post 'follow/:username', to: "relationships#create"
   delete 'unfollow/:username', to: "relationships#destroy"
   get 'following/:username', to: "users#following"
