@@ -7,13 +7,14 @@ Rails.application.routes.draw do
   get 'what-is-wishroll', to: "home#what_is_wishroll"
   constraints subdomain: 'admin' do 
     namespace :admin do
-      delete 'admin/posts/report', to: 'admin/posts#report'
+      
       root to: 'admin#index'
       resources :users
       resources :wishlists, only: [:index, :show] do 
         resources :wishes, only: [:index, :show, :destroy]
       end
       resources :posts, except: [:create, :update] do
+        delete 'report', to: 'admin/posts#report'
         resources :comments, only: [:destroy, :index, :show]
       end
     end
