@@ -3,8 +3,7 @@ json.array! @users.each do |user|
         json.id user.id
         json.email  user.email
         json.usename user.username
-        json.first_name user.first_name
-        json.last_name user.last_name
+        json.full_name user.full_name
         json.birth_date user.birth_date
         json.is_verified user.is_verified
         json.profile_picture user.profile_picture_url

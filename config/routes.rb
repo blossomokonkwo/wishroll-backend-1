@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   get 'contact', to: "support#contact"
   get 'home', to: "home#home"
   get 'what-is-wishroll', to: "home#what_is_wishroll"
-  namespace :admin do 
-    constraints subdomain: 'admin' do 
-      root 'admin#index'
+  constraints subdomain: 'admin' do 
+    namespace :admin do 
+      root to: 'admin#index'
       resources :users
       resources :wishlists, only: [:index, :show] do 
         resources :wishes, only: [:index, :show, :destroy]

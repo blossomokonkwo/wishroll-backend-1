@@ -13,7 +13,7 @@ module Admin
     end
   def index
     @posts = Post.all
-    render :index, status: :ok
+    render "admin/posts/index.json.jbuilder", status: :ok
   end
 
    def destroy
