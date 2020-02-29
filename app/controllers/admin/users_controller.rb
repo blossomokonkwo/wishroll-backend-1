@@ -1,5 +1,5 @@
 module Admin
-    class UsersController < Admin::BaseController 
+    class UsersController < Admin::AdminController 
         after_action :update_profile_picture, only: :update
         def create
             @user = User.new(create_user)
@@ -97,7 +97,7 @@ module Admin
 
         def index
             @users = User.all
-            render :index, status: :ok
+            render "admin/users/index.json.jbuilder", status: :ok
         end
 
         def show
@@ -108,8 +108,6 @@ module Admin
                 render json: {error: "User doesn't exist"}, status: :not_found
             end
         end
-        
-        
 
         private 
         def create_user

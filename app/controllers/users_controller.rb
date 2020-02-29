@@ -4,10 +4,14 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by(username: params[:username])
     @current_user = current_user
-    if @user
-      render :show, status: :ok
+    if @current_user.blocked_users.include?(@user) or @user.blocked_users.include?(@current_user)
+      render json: nil, status: 403 #the 403 status signifies that a user is blocked/forbidden from the requested content
     else
-      render json: nil, status: 404
+      if @user
+        render :show, status: :ok
+      else
+        render json: nil, status: 404
+      end
     end
   end
 
@@ -54,6 +58,22 @@ class UsersController < ApplicationController
       render json: nil, status: 404
     end
   end
+
+  def block
+    #find and isntatiate User objects based on the parameters passed through the query string
+    #check if the current_user currently follows or is followed by the blocked user
+    #if so destroy the relationship in either way (that is: force the blocked_user to unfollow the current_user)
+    #finally, add the blocked user to the current users blocked users collection
+    @current_user = current_user
+    @blocked_user = User.find_by(username: params[:blocked_user])
+    if @current_user.follower_users.include?(@blocked_user){
+        Relationship.find_by(followed_id: @current_user.id, follower_id: @blocked_user.id).destroy
+    }elsif @current_user.followed_users.include?(@blocked_user){
+        Relationship.find_by(followed_id: @blocked_user.id, follower_id: @current_user.id).destroy
+    }
+    @current_user.blocked_users << @blocked_user
+end
+
  def destroy
     #destroys the users record from the database. The user must send their current password to ensure that they have the authorization to delete the current_user's account
     if current_user.authenticate(params[:password])

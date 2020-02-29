@@ -40,7 +40,7 @@ class CommentsController < ApplicationController
     def index
         #show all the comments relating to a specific post. All the available replies will 
         @current_user_id = current_user.id
-        @comments = Comment.order(replies_count: :desc, likes_count: :desc, updated_at: :desc).where(post_id: params[:post_id]) #where query is used to find all the rows that match the specified condition(s)
+        @comments = Comment.order(replies_count: :desc, likes_count: :desc, created_at: :desc).where(post_id: params[:post_id]) #where query is used to find all the rows that match the specified condition(s)
         #TODO - create the ability for users to request the replies pertaining to a particular comment in version 2.0.0. For now (the first launch) users get a list of all the comments including replies.
         if @comments.count > 0
             render :index, status: :ok

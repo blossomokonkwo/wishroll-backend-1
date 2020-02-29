@@ -1,4 +1,4 @@
-# class WishlistsController < Admin::BaseController 
+# class WishlistsController < Admin::AdminController 
 #     def create
 #         @object = Object.new(params[:object])
 #         if @object.save

@@ -1,5 +1,5 @@
 module Admin
-  class Admin::PostsController < Admin::BaseController 
+  class Admin::PostsController < Admin::AdminController 
    def update
        @post = Post.find(params[:id])
        if @post.update(post_params)
@@ -13,7 +13,7 @@ module Admin
     end
   def index
     @posts = Post.all
-    render :index, status: :ok
+    render "admin/posts/index.json.jbuilder", status: :ok
   end
 
    def destroy
@@ -23,6 +23,10 @@ module Admin
        else
           render json: {error: "Could not delete post"}, status: 400
        end
+   end
+
+   def report
+    
    end
 
    private 

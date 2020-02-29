@@ -1,6 +1,6 @@
 json.array! @comments.each do |comment|
     cache comment, expires_in: 2.minutes do
-        @user = User.find(comment.user_id)
+        @user = comment.user
         json.comment do 
             json.id comment.id
             json.body comment.body

@@ -1,5 +1,5 @@
 json.array! @activities.each do |activity|
-    user = User.find(activity.active_user_id)
+    user = activity.active_user
     cache activity, expires_in: 1.hour do
         json.activity do
             json.happened_at activity.created_at
