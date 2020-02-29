@@ -25,6 +25,10 @@ module Admin
        end
    end
 
+   def report
+    
+   end
+
    private 
    def post_params
      params.permit :caption, :post_image, :original_post_id

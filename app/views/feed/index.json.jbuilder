@@ -4,7 +4,7 @@
 end
 json.array! @posts.each do |post|
     cache post, expires_in: 3.hours do
-        user = User.find(post.user_id)
+        user = post.user
         json.user do 
             json.username user.username
             json.profile_picture_url user.profile_picture_url

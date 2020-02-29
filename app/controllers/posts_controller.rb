@@ -16,7 +16,7 @@ class PostsController < ApplicationController
     #render a specific post to the user along with all the involved tags
     @post = Post.find(params[:id])
     if @post 
-      @user = User.find(@post.user_id) #the user that posted the content
+      @user = @post.user #the user that posted the content
       @id = current_user.id 
       if @id != @user.id
         @post.view_count += 1

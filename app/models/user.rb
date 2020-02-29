@@ -17,16 +17,16 @@ class User < ApplicationRecord
 
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
-
-    has_many :blocked_relationships, class_name: "Relationship", foreign_key: :blocked_user_id, dependent: :destroy 
     
-    has_many :blocked_users, through: :blocked_relationships, source: :blocked_user
+    has_and_belongs_to_many :blocked_users, -> { select([:username, :id])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
     #the users that a specific user is currently following 
     has_many :followed_users, through: :active_relationships, source: :followed_user
 
     #the users that currently follow a specific user 
     has_many :follower_users, through: :passive_relationships, source: :follower_user
+
+    #has_many :blocked_users, through: :blocked_relationships, source: :blocked_user
 
     #all activities involving a user will be available when the user makes a request for https://domainname.com/activity
     #in a sense activity is a type of logger for each user to know the activities that involved their content on the app

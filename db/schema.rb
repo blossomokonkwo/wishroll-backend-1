@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_28_191644) do
+ActiveRecord::Schema.define(version: 2020_02_29_070703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,15 @@ ActiveRecord::Schema.define(version: 2020_02_28_191644) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", null: false
     t.index ["email"], name: "index_admin_users_on_email"
+  end
+
+  create_table "block_relationships", force: :cascade do |t|
+    t.bigint "blocker_id", null: false
+    t.bigint "blocked_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blocked_id"], name: "index_block_relationships_on_blocked_id"
+    t.index ["blocker_id"], name: "index_block_relationships_on_blocker_id"
   end
 
   create_table "comments", force: :cascade do |t|

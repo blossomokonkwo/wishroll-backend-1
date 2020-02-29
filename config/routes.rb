@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   get 'home', to: "home#home"
   get 'what-is-wishroll', to: "home#what_is_wishroll"
   constraints subdomain: 'admin' do 
-    namespace :admin do 
+    namespace :admin do
+      delete 'admin/users/block', to: 'admin/users#block'
+      delete 'admin/posts/report', to: 'admin/posts#report'
       root to: 'admin#index'
       resources :users
       resources :wishlists, only: [:index, :show] do 

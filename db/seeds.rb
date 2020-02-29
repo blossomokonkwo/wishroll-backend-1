@@ -7,10 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 # seeded the data base with 10000 user accounts to simulate the production level of load
-# 100_000.times do
-#     is_verified = Random.new.rand(0...50)
-#     spawned_user = User.create(email: Faker::Internet.safe_email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, username: Faker::Internet.username(specifier: 1..20), is_verified: is_verified == 1 ? true : false, password: Faker::Internet.password(min_length: 8), birth_date: Faker::Date.birthday(min_age: 13, max_age: 30))
-# end
+1000.times do
+    is_verified = Random.new.rand(0...50)
+    spawned_user = User.create(email: Faker::Internet.safe_email, full_name: Faker::Name.name, username: Faker::Internet.username(specifier: 1..20), is_verified: is_verified == 1 ? true : false, password: Faker::Internet.password(min_length: 8), birth_date: Faker::Date.birthday(min_age: 13, max_age: 30))
+end
 # 50000.times do
 #     spawned_post = Post.create(user_id: Faker::Number.between(from: 1, to: 7_238), view_count: Faker::Number.within(range: 0...7_238), original_post_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...50000) : nil, caption: Faker::Lorem.sentence)
 # end
