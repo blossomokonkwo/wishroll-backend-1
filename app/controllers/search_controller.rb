@@ -13,7 +13,7 @@ class SearchController < ApplicationController
             if @posts.empty? and @users.empty?
                 render json: nil, status: 404
             else
-                @users.keep_if do |user|
+                @users.to_a.keep_if do |user|
                     !current_user.blocked_users.include?(user) and !user.blocked_users.include?(current_user)
                 end
                 render :index, status: :ok
