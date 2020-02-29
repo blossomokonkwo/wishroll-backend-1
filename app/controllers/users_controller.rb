@@ -66,11 +66,11 @@ class UsersController < ApplicationController
     #finally, add the blocked user to the current users blocked users collection
     @current_user = current_user
     @blocked_user = User.find_by(username: params[:blocked_user])
-    if @current_user.follower_users.include?(@blocked_user){
+    if @current_user.follower_users.include?(@blocked_user)
         Relationship.find_by(followed_id: @current_user.id, follower_id: @blocked_user.id).destroy
-    }elsif @current_user.followed_users.include?(@blocked_user){
+    elsif @current_user.followed_users.include?(@blocked_user)
         Relationship.find_by(followed_id: @blocked_user.id, follower_id: @current_user.id).destroy
-    }
+    end
     @current_user.blocked_users << @blocked_user
 end
 
