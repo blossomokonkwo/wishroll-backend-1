@@ -4,4 +4,3 @@ class AdminUser < ApplicationRecord
     validates: fullname, presence: true
     validates: password, length: {minimum:12, maximum:72}
 end
-2

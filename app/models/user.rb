@@ -18,6 +18,10 @@ class User < ApplicationRecord
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
 
+    has_many :blocked_relationships, class_name: "Relationship", foreign_key: :blocked_user_id, dependent: :destroy 
+    
+    has_many :blocked_users, through: :blocked_relationships, source: :blocked_user
+    
     #the users that a specific user is currently following 
     has_many :followed_users, through: :active_relationships, source: :followed_user
 
@@ -31,7 +35,6 @@ class User < ApplicationRecord
     #for now users won't be notified of the activities that they caused
     #for example, there wont be a "You just liked joe's post. I find that this is unneccessary and removes from the validity of the activity feed entirely"
     has_many :caused_activities, class_name: "Activity", foreign_key: :active_user_id
-
 
     scope :verified, -> { where(:is_verified => true)} #this scope returns all the verified users in the app
     # Ex:- scope :active, -> {where(:active => true)}
