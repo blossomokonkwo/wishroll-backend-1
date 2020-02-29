@@ -26,11 +26,11 @@ class PostsController < ApplicationController
             @user.total_view_count += 1
             @user.save 
             @post.save
-          render :show, status: 200
-        else
-          render json: nil, status: 404
         end
+          render :show, status: 200
       end
+    else
+      render json: nil, status: 404
     end
   end
 
