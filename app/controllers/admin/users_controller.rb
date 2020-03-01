@@ -97,7 +97,7 @@ module Admin
 
         def index
             @users = User.all
-            render "admin/users/index.json.jbuilder", status: :ok
+            render "admin/users/index.html.erb", status: :ok
         end
 
         def show

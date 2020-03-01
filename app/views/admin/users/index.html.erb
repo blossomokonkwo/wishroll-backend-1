@@ -1,4 +1,4 @@
-json.array! @users.each do |user|
+<%# json.array! @users.each do |user|
     cache user, expires_in: 1.hour do 
         json.id user.id
         json.email  user.email
@@ -13,4 +13,4 @@ json.array! @users.each do |user|
         json.created_at user.created_at
         json.updated_at user.updated_at
     end
-end
+end %>
