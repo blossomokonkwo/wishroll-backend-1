@@ -92,8 +92,8 @@ production:
   primary: 
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
-    
+
   primary_replica:
     <<: *default
-    url: <%= ENV['HEROKU_POSTGRESQL_GREEN_URL'] %>
+    url: <%= ENV['DATABASE_URL'] %>
     replica: true
