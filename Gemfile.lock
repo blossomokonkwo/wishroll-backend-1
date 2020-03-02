@@ -132,7 +132,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     newrelic_rpm (6.7.0.359)
     nio4r (2.5.2)
-    nokogiri (1.10.5)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     pg (1.1.4)
     puma (3.12.3)
