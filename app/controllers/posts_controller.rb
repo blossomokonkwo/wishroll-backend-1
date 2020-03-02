@@ -22,10 +22,12 @@ class PostsController < ApplicationController
       else
         @id = current_user.id #the user that posted the content
         if @id != @user.id
+          ActiveRecord::Base.connected_to(role: :writing) do
             @post.view_count += 1
             @user.total_view_count += 1
             @user.save 
             @post.save
+          end
         end
           render :show, status: 200
       end
