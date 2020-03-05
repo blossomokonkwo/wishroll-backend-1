@@ -35,7 +35,7 @@ json.posts @user.posts.each do |post|
         json.media_url post.posts_media_url
     end
 end  #only run the .each block if the user has any posts or a null error will be raised!
-json.liked_posts Like.select(:likeable_id).where(likeable_type: "Post", user_id: @user.id).limit(50).each do |like|
+json.liked_posts Like.select(:likeable_id).where(likeable_type: "Post", user_id: @user.id).limit(50).order(created_at: :desc).each do |like|
     cache like, expires_in: 1.hour do
         post = Post.find(like.likeable_id)
         cache post, expires_in: 1.hour do

@@ -9,7 +9,7 @@ class User < ApplicationRecord
     #every user can optionally upload a profile picture
     has_one_attached(:profile_picture)
     #Associations 
-    has_many :posts, class_name: "Post"
+    has_many :posts, -> {order "created_at DESC"}, class_name: "Post"
     has_many :comments, class_name: "Comment"
     
     #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
