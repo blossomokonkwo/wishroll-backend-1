@@ -1,9 +1,8 @@
 class TopicsController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        @topic = Topic.new(title: params[:title], hot_topic: params[:hot_topic], user_id: current_user.id)
+        @topic = Topic.new(title: params[:title], hot_topic: params[:hot_topic], user_id: current_user.id, topic_image: params[:topic_image])
         if params[:topic_image]
-            @topic.topic_image.attach params[:topic_image]
             @topic.media_url = url_for(@topic.topic_image)
         end
         if @topic.save
