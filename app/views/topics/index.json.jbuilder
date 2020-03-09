@@ -1,6 +1,6 @@
 if @topics.present?
     json.topics @topics.each do |topic|
-        cache :topic, expires_in: 1.hour do 
+        cache topic, expires_in: 1.hour do 
             json.title topic.title
             json.is_hot_topic topic.hot_topic
             json.media_url topic.media_url

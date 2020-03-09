@@ -29,7 +29,11 @@ class TopicsController < ApplicationController
                 end
             end
         end
-        render :index, status: 200
+        if @hot_topics.present? or @topics.present?
+            render :index, status: 200
+        else
+            render json: {error: "There are no topics for you"}, status: 404
+        end
     end
     
     def destroy 
