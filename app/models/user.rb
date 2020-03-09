@@ -42,4 +42,10 @@ class User < ApplicationRecord
     has_many :wishlists, dependent: :destroy
 
     has_many :wishes, dependent: :destroy
+
+    has_many :chat_room_users
+    has_many :chat_rooms, through: :chat_room_users
+    has_many :messages, foreign_key: :sender_id
+    has_many :topics
+    has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id
 end

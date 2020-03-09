@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_07_234325) do
+ActiveRecord::Schema.define(version: 2020_03_08_182010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,12 +67,24 @@ ActiveRecord::Schema.define(version: 2020_03_07_234325) do
     t.index ["blocker_id"], name: "index_block_relationships_on_blocker_id"
   end
 
+  create_table "chat_room_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_room_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_room_id"], name: "index_chat_room_users_on_chat_room_id"
+    t.index ["user_id", "chat_room_id"], name: "index_chat_room_users_on_user_id_and_chat_room_id", unique: true
+    t.index ["user_id"], name: "index_chat_room_users_on_user_id"
+  end
+
   create_table "chat_rooms", force: :cascade do |t|
     t.bigint "topic_id"
     t.string "name"
-    t.bigint "num_users"
+    t.bigint "num_users", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "creator_id", null: false
+    t.index ["creator_id"], name: "index_chat_rooms_on_creator_id"
     t.index ["topic_id"], name: "index_chat_rooms_on_topic_id"
   end
 
@@ -150,6 +162,9 @@ ActiveRecord::Schema.define(version: 2020_03_07_234325) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "media_url"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -196,7 +211,9 @@ ActiveRecord::Schema.define(version: 2020_03_07_234325) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
-  add_foreign_key "chat_rooms", "topics"
+  add_foreign_key "chat_room_users", "chat_rooms"
+  add_foreign_key "chat_room_users", "users"
+  add_foreign_key "chat_rooms", "users", column: "creator_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "users"
@@ -204,6 +221,7 @@ ActiveRecord::Schema.define(version: 2020_03_07_234325) do
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "posts", "users"
   add_foreign_key "tags", "posts"
+  add_foreign_key "topics", "users"
   add_foreign_key "wishes", "users"
   add_foreign_key "wishes", "wishlists"
   add_foreign_key "wishlists", "users"
