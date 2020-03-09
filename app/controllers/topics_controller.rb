@@ -21,9 +21,9 @@ class TopicsController < ApplicationController
     def index
         @hot_topics = Topic.where(hot_topic: true)
         @chat_rooms = current_user.chat_rooms
-        if @chat_rooms.exists?
+        if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
-                if chat_room.topic.exists?
+                if chat_room.topic.present?
                     @topics << chat_room.topic
                 end
             end
