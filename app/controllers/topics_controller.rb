@@ -16,7 +16,7 @@ class TopicsController < ApplicationController
 
     def index
         @hot_topics = Topic.where(hot_topic: true)
-        @topics = Array.new
+        @topics = Topic.find_by(user_id: current_user.id)
         @chat_rooms = current_user.chat_rooms
         if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
