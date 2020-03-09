@@ -24,21 +24,24 @@ Rails.application.routes.draw do
     resources :wishes, except: [:update, :index] 
   end
   
-  put "wishes/update-wish-picture/:id", to: 'wishes#update_wish_picture'
-  put "wishes/update-wish-description/:id", to: 'wishes#update_wish_description'
-  put "wishes/update-product-name/:id", to: 'wishes#update_product_name'
-  put "wishlists/update-wishlist-name/:id", to: 'wishlists#update_wishlist_name'
   resources :posts, except: [:update] do
     resources :comments 
     resources :likes, only: [:create, :destroy]
     resources :tags, only: [:create]
   end
   
+  #resources for public chatrooms AKA chat rooms that are under a topic 
   resources :topics do 
     resources :chat_rooms do 
+      resources :messages, except: [:show]
     end
   end
-  resources :chat_rooms #resources for private chatrooms
+
+  #resources for private chat rooms 
+  resources :chat_rooms do
+    resources :messages
+  end
+   #resources for private chatrooms
   #these routes represent the access points for liking app content
   #the params of user_id, likeable_type, and likeable_id must be passed in as JSON from the client
   post "like", to: "likes#create"

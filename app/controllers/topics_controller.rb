@@ -42,5 +42,6 @@ class TopicsController < ApplicationController
         else
             render json: {error: "You do not have permission to destroy this topic"}, status: 400
         end
+    end
     
 end

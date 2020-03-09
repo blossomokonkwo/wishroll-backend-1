@@ -8,7 +8,7 @@ class ChatroomsController < ApplicationController
             else
                 render json: {error: "The chatRoom could not be created"}, status: 400
             end
-      end
+        end
 
       def index
         @chatrooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
