@@ -6,7 +6,7 @@ module ApplicationCable
 
     def connect
       self.current_user = get_current_user
-      logger.add_tags "ActionCable", "User #{current_user.username}"
+      # logger.add_tags "ActionCable", "User #{current_user.username}"
     end
 
     protected 
