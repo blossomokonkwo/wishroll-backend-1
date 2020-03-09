@@ -28,7 +28,7 @@ class TopicsController < ApplicationController
                 end
             end
         end
-        render json: :index, status: 404
+        render :index, status: 404
     end
     
     def destroy 
