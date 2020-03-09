@@ -20,6 +20,7 @@ class TopicsController < ApplicationController
 
     def index
         @hot_topics = Topic.where(hot_topic: true)
+        @topics = Array.new
         @chat_rooms = current_user.chat_rooms
         if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
@@ -28,7 +29,7 @@ class TopicsController < ApplicationController
                 end
             end
         end
-        render :index, status: 404
+        render :index, status: 200
     end
     
     def destroy 
