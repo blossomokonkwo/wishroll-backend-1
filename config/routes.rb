@@ -34,7 +34,11 @@ Rails.application.routes.draw do
     resources :tags, only: [:create]
   end
   
-
+  resources :topics do 
+    resources :chat_rooms do 
+    end
+  end
+  resources :chat_rooms #resources for private chatrooms
   #these routes represent the access points for liking app content
   #the params of user_id, likeable_type, and likeable_id must be passed in as JSON from the client
   post "like", to: "likes#create"
