@@ -1,18 +1,18 @@
 class ChatroomsController < ApplicationController
     before_action :authorize_by_access_header!
 
-        def create
-            @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: current_user.id)
-            if @chatroom.save
-                render json: nil, status: 201
-            else
-                render json: {error: "The chatRoom could not be created"}, status: 400
-            end
-        end
+      def create
+          @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: current_user.id)
+          if @chatroom.save
+              render json: nil, status: 201
+          else
+              render json: {error: "The chatRoom could not be created"}, status: 400
+          end
+      end
 
       def index
         @chatrooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
-        if @chatrooms.exists?
+        if @chatrooms.present?
             render :index, status: 200
         else
             render json: {error: "This topic has no chatrooms"}, status: 404
