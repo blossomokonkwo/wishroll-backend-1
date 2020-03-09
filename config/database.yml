@@ -22,8 +22,14 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: icebreaker_development
+  primary: 
+    <<: *default
+    database: wishroll_development
+
+  primary_replica: 
+    <<: *default
+    database: wishroll_development
+    replica: true
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -56,8 +62,14 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: icebreaker_test
+  primary: 
+    <<: *default
+    database: wishroll_test
+
+  primary_replica: 
+    <<: *default
+    database: wishroll_test
+    replica: true
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -77,6 +89,11 @@ test:
 #  database: icebreaker_production
 # username: icebreaker
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
-  # password: <%= ENV['ICEBREAKER_DATABASE_PASSWORD'] %>
+  primary: 
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+
+  primary_replica:
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
+    replica: true

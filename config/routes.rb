@@ -54,10 +54,10 @@ Rails.application.routes.draw do
 
   #the follow/unfollow endpoints
   delete 'block', to: 'users#block'
-  post 'follow/:username', to: "relationships#create"
-  delete 'unfollow/:username', to: "relationships#destroy"
-  get 'following/:username', to: "users#following"
-  get 'followers/:username', to: "users#followers"
+  post 'follow/:username', to: "relationships#create", constraints: {username: /[0-9a-z_.]{1,60}/}
+  delete 'unfollow/:username', to: "relationships#destroy", constraints: {username: /[0-9a-z_.]{1,60}/}
+  get 'following/:username', to: "users#following", constraints: {username: /[0-9a-z_.]{1,60}/}
+  get 'followers/:username', to: "users#followers", constraints: {username: /[0-9a-z_.]{1,60}/}
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
   delete 'logout', to: "logout#destroy" #the logout route
@@ -71,5 +71,5 @@ Rails.application.routes.draw do
   post 'signup', to: "signup#new" #the signup route. This route allows a user to sign up for the service 
 
   #this route allows users to view the account data of other users. Users are found via the username extension
-  get ':username', to: "users#show", constraints: {username: /[0-9a-z_.]{1,20}/}
+  get ':username', to: "users#show", constraints: {username: /[0-9a-z_.]{1,60}/}
 end
