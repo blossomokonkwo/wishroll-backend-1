@@ -13,7 +13,7 @@ if @hot_topics.present?
         cache hot_topic, expires_in: 1.hour do
             json.title hot_topic.title
             json.is_hot_topic hot_topic.hot_topic
-            json.media_url url_for(hot_topic.topic_image) if hot_topic.topic_image.attached?
+            json.media_url polymorphic_url(hot_topic.topic_image) if hot_topic.topic_image.attached?
             json.created_at hot_topic.created_at
         end
     end
