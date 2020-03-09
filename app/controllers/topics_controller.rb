@@ -16,7 +16,8 @@ class TopicsController < ApplicationController
 
     def index
         @hot_topics = Topic.where(hot_topic: true)
-        @topics = Topic.find_by(user_id: current_user.id)
+        @topics = Array.new
+        @topics << Topic.where(user_id: current_user.id).order(created_at: :desc)
         @chat_rooms = current_user.chat_rooms
         if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
