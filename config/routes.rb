@@ -25,22 +25,20 @@ Rails.application.routes.draw do
   end
   
   resources :posts, except: [:update] do
-    resources :comments 
+    resources :comments, shallow: true 
     resources :likes, only: [:create, :destroy]
     resources :tags, only: [:create]
   end
   
   #resources for public chatrooms AKA chat rooms that are under a topic 
-  resources :topics, except: [:show, :update] do 
-    resources :chat_rooms do 
+  resources :topics, except: [:show, :update], shallow: true do 
+    resources :chat_rooms, only: [:create, :index, :destroy, :update] do 
       resources :messages, except: [:show]
     end
   end
 
   #resources for private chat rooms 
-  resources :chat_rooms do
-    resources :messages
-  end
+  resources :chat_rooms, only: [:index]
    #resources for private chatrooms
   #these routes represent the access points for liking app content
   #the params of user_id, likeable_type, and likeable_id must be passed in as JSON from the client
