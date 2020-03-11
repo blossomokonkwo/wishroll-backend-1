@@ -34,6 +34,7 @@ Rails.application.configure do
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
+  config.web_socket_server_url = "wss://www.wishroll.co/cable"
   config.action_cable.log_tags = [
     :action_cable,
     -> request { request.uuid }
