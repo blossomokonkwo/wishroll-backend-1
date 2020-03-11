@@ -3,6 +3,7 @@ class ChatRoomsController < ApplicationController
 
       def create
           @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: current_user.id)
+          @chatroom.users << current_user #automatically add the chatroom creator to the his/her created chat room
           if @chatroom.save
               render json: nil, status: 201
           else
@@ -33,12 +34,17 @@ class ChatRoomsController < ApplicationController
 
       def show
         @chatroom = chatrooms.find(params[:id])
+        if @chatroom.present?
+          render :show, status: 200
+        else
+          render json: {error: "Chat room Not Found"}, status: 404
+        end
       end
     
     
       def update
         #this is called when the current user is joining the chatroom
-        @chatroom = ChatRoom.find(params[:chat_room_id])
+        @chatroom = ChatRoom.find(params[:id])
         @chatroom.update(update_chat_room)
         render json: nil, status: 200
       end
@@ -66,7 +72,7 @@ class ChatRoomsController < ApplicationController
       end
 
       def destroy
-        @chatroom = ChatRoom.find(params[:chat_room_id])
+        @chatroom = ChatRoom.find(params[:id])
         if chatroom.creator == current_user
             if @chatroom.destroy
                 render json: nil, status: 200

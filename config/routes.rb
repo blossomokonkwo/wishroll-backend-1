@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   
   #resources for public chatrooms AKA chat rooms that are under a topic 
   resources :topics, except: [:show, :update], shallow: true do 
-    resources :chat_rooms, only: [:create, :index, :destroy, :update] do 
+    resources :chat_rooms, only: [:create, :index, :destroy, :update, :show] do 
       resources :messages, except: [:show]
     end
   end
