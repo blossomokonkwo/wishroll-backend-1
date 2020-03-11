@@ -11,11 +11,21 @@ class ChatRoomsController < ApplicationController
       end
 
       def index
-        @chatrooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
-        if @chatrooms.present?
+        @chat_rooms = nil
+        if params[:topic_id].present? #if this is under the topics resource 'topics/:id/chat_rooms', then grab all the chatrooms for that topic
+          @chat_rooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
+          if @chatrooms.present?
             render :index, status: 200
-        else
-            render json: {error: "This topic has no chatrooms"}, status: 404
+          else
+            render json: {error: "This topic currently has no chatrooms"}, status: 404
+          end
+        else #grab all of the current users private chat rooms 
+          @chat_rooms = current_user.chat_rooms
+          if @chat_rooms.present?
+            render :index, status: 200
+          else
+            render json: {error: "The current user isn't in any chatrooms"}, status: 404
+          end
         end
       end
     
