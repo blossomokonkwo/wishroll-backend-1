@@ -51,24 +51,28 @@ class ChatRoomsController < ApplicationController
 
       def join 
         #called when the current user is joining a chatroom
-        @chatroom = ChatRoom.find(params[:chat_room_id])
-        @chatroom.users << current_user
-        if @chatroom.save
+        chatroom_user = ChatRoomUser.new(user_id: params[:user_id], chat_room_id: params[:chat_room_id])
+        if chatroom_user.save
             render json: nil, status: 201
         else
-            render json: {error: "You were unable to join this chat room #{@chatroom.name}"}, status: 400
+            render json: {error: "You were unable to join the chat room "}, status: 400
         end
       end
       
       def leave 
         #called when the current_user is leaving a chat room 
         #the current_user should also be removed as a subscriber to the associated channel. Basically, call the unsubscribed method in the associated channel
-        @chatroom = ChatRoom.find(params[:chat_room_id])
-        @chatroom.users.delete current_user #the current user should only be able to leave the chat rooms that they are currently in.
-        #unsubscribe
-
-        
-        render json: nil, status: 200
+        chat_room_user = ChatRoomUser.where(user_id: params[:user_id], chat_room_id: params[:chat_room_id])
+        if chat_room_user.present?
+          if @chat_room_user.destroy
+            render json: nil, status: 200
+          else 
+            render json: {error: "Could not leave chat room"}, status: 400
+          end
+          render json: nil, status: 200
+        else
+          render json: {error: "You can't leave a chat room that you are not a member of"}, status: 404
+        end
       end
 
       def destroy
