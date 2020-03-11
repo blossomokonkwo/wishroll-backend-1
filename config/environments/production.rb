@@ -34,8 +34,11 @@ Rails.application.configure do
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
-  config.action_cable.url = 'wss://www.wishroll.co/cable'
-  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+  config.action_cable.log_tags = [
+    :action_cable,
+    -> request { request.uuid }
+  ]
+  config.action_cable.allowed_request_origins = ['https://www.wishroll.co', /https:\/\/www.wishroll.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
