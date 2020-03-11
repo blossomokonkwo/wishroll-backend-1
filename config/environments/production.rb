@@ -40,7 +40,7 @@ Rails.application.configure do
     :action_cable,
     -> request { request.uuid }
   ]
-  config.action_cable.allowed_request_origins = ['wss://www.wishroll.co', /https:\/\/.*/ ]
+  config.action_cable.allowed_request_origins = ["chrome-extension://omalebghpgejjiaoknljcfmglgbpocdp", /https:\/\/.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
