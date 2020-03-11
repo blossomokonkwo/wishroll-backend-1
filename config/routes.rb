@@ -32,14 +32,17 @@ Rails.application.routes.draw do
   
   #resources for public chatrooms AKA chat rooms that are under a topic 
   resources :topics, except: [:show, :update], shallow: true do 
-    resources :chat_rooms, only: [:create, :index, :destroy, :update] do 
+    resources :chat_rooms, only: [:create, :index, :destroy, :update, :show] do 
       resources :messages, except: [:show]
     end
   end
 
   #resources for private chat rooms 
   resources :chat_rooms, only: [:index]
-   #resources for private chatrooms
+
+  post 'chat_rooms/:chat_room_id/join', to: "chat_rooms#join" #user is joining a new chat room 
+  delete 'chat_rooms/:chat_room_id/leave', to "chat_rooms#leave" #user is leaving a chat room
+
   #these routes represent the access points for liking app content
   #the params of user_id, likeable_type, and likeable_id must be passed in as JSON from the client
   post "like", to: "likes#create"
