@@ -2,7 +2,7 @@ class SearchController < ApplicationController
     before_action :authorize_by_access_header!
     def search 
         @id = current_user.id
-        @posts = Array.new
+        @posts = Set.new #we want a collection of UNIQUE posts sent to the clients, therfore we are using the Set Abstract Data Type
         @users = Array.new
         if !params[:query].empty?
             @users = User.where("username ILIKE ?", "#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]) 

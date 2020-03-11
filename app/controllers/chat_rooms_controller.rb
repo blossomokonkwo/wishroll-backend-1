@@ -15,7 +15,7 @@ class ChatRoomsController < ApplicationController
         @chat_rooms = nil
         if params[:topic_id].present? #if this is under the topics resource 'topics/:id/chat_rooms', then grab all the chatrooms for that topic
           @chat_rooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
-          if @chatrooms.present?
+          if @chat_rooms.present?
             render :index, status: 200
           else
             render json: {error: "This topic currently has no chatrooms"}, status: 404
@@ -44,15 +44,15 @@ class ChatRoomsController < ApplicationController
     
       def update
         #this is called when the current user is joining the chatroom
-        @chatroom = ChatRoom.find(params[:id])
-        @chatroom.update(update_chat_room)
+        @chat_room = ChatRoom.find(params[:id])
+        @chat_room.update(update_chat_room)
         render json: nil, status: 200
       end
 
       def join 
         #called when the current user is joining a chatroom
-        chatroom_user = ChatRoomUser.new(user_id: params[:user_id], chat_room_id: params[:chat_room_id])
-        if chatroom_user.save
+        chat_room_user = ChatRoomUser.new(user_id: params[:user_id], chat_room_id: params[:chat_room_id])
+        if chat_room_user.save
             render json: nil, status: 201
         else
             render json: {error: "You were unable to join the chat room "}, status: 400
