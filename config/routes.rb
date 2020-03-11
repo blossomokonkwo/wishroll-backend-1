@@ -43,6 +43,9 @@ Rails.application.routes.draw do
   post 'chat_rooms/:chat_room_id/join', to: "chat_rooms#join" #user is joining a new chat room 
   delete 'chat_rooms/:chat_room_id/leave', to: "chat_rooms#leave" #user is leaving a chat room
 
+
+  mount ActionCable.server => '/cable'
+
   #these routes represent the access points for liking app content
   #the params of user_id, likeable_type, and likeable_id must be passed in as JSON from the client
   post "like", to: "likes#create"
