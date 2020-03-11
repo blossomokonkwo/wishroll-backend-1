@@ -33,8 +33,8 @@ class ChatRoomsController < ApplicationController
 
 
       def show
-        @chatroom = chatrooms.find(params[:id])
-        if @chatroom.present?
+        @chat_room = ChatRoom.find(params[:id])
+        if @chat_room.present?
           render :show, status: 200
         else
           render json: {error: "Chat room Not Found"}, status: 404

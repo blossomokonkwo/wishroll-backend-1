@@ -1,0 +1,1 @@
+json.(@chat_room, :id, :name, :created_at, :num_users)
