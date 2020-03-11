@@ -69,7 +69,6 @@ class ChatRoomsController < ApplicationController
           else 
             render json: {error: "Could not leave chat room"}, status: 400
           end
-          render json: nil, status: 200
         else
           render json: {error: "You can't leave a chat room that you are not a member of"}, status: 404
         end
