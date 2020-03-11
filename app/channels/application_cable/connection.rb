@@ -4,6 +4,7 @@ module ApplicationCable
     identified_by :current_user
     def connect
        current_user = get_current_user
+       logger.add_tags current_user.username
     end
 
     def disconnect
