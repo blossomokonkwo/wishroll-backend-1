@@ -9,11 +9,6 @@ class TopicsController < ApplicationController
         end
     end
 
-    def show
-        @topic = Topic.find(params[:topic_id])
-        render :show, status: 200
-    end
-
     def index
         @hot_topics = Topic.where(hot_topic: true)
         @topics = Array.new
