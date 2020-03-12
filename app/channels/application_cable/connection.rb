@@ -15,7 +15,13 @@ module ApplicationCable
     private 
     def get_current_user
       #get the current user else reject the unathourized connection
-      User.find(payload["user_id"])
+      begin
+       current_user =  User.find(payload["user_id"])
+       return current_user
+      rescue => exception
+        puts exception
+      end
+      
     end
 
 
