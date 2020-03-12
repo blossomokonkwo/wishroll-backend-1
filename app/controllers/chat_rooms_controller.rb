@@ -3,8 +3,8 @@ class ChatRoomsController < ApplicationController
 
       def create
           @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: current_user.id)
-          @chatroom.users << current_user #automatically add the chatroom creator to the his/her created chat room
           if @chatroom.save
+              @chatroom.users << current_user #automatically add the chatroom creator to the his/her created chat room
               render json: nil, status: 201
           else
               render json: {error: "The chatRoom could not be created"}, status: 400
