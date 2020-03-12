@@ -16,7 +16,7 @@ class TopicsController < ApplicationController
         if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
                 if chat_room.topic.present?
-                    @topics << chat_room.topic
+                    @topics.append(chat_room.topic)
                 end
             end
         end
