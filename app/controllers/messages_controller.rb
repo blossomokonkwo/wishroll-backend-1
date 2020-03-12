@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
     def create
         @chat_room = ChatRoom.find(params[:chat_room_id])
         if @chat_room.users.include?(current_user)
-            @messsage = @chat_room.messages.create(body: params[:body], sender_id: current_user.id, kind: params[:kind])
+            @message = @chat_room.messages.create(body: params[:body], sender_id: current_user.id, kind: params[:kind])
             if params[:media_item]
                 @message.media_item.attach(params[:media_item])
                 @message.media_url = url_for(@message.media_item)
