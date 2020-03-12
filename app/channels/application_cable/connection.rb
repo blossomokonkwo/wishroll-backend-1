@@ -20,6 +20,7 @@ module ApplicationCable
           return current_user
         else
           reject_unauthorized_connection
+        end
       rescue => exception
         reject_unauthorized_connection
       end
