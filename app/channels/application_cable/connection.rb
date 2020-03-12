@@ -1,6 +1,7 @@
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    include JWTSessions::RailsAuthorization   
+    include JWTSessions::RailsAuthorization 
+      
     identified_by :current_user
     def connect
        current_user = get_current_user
@@ -15,7 +16,7 @@ module ApplicationCable
     def get_current_user
       #get the current user else reject the unathourized connection
       begin
-        current_user =  User.find(payload["user_id"])
+        current_user =  User.find(request["Authorization"])
         if current_user.present?
           return current_user
         else
