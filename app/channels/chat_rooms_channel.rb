@@ -4,7 +4,9 @@ class ChatRoomsChannel < ApplicationCable::Channel
     #The user subscribes to this channel when they are 
     @chat_room = ChatRoom.find(params[:chat_room_id])
     if @chat_room.users.include?(current_user)
-       stream_for @chat_room
+       stream_for @chat_room, ActiveSupport::JSON do |message|
+          transmit message
+       end
     end
 
   end
