@@ -19,11 +19,6 @@ json.array! @posts.each do |post|
             json.comments_count post.comments_count
             json.caption post.caption
             json.media_url post.posts_media_url
-            if post.likes.find_by(user_id: user.id)
-                json.liked true
-            else
-                json.liked false
-            end
         end
     end
 end
