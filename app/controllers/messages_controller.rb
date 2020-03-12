@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        @message = Message.new body: params[:body], sender_id: current_user.id, chat_room_id: params[:chat_room_id]
+        @message = Message.create(body: params[:body], sender_id: current_user.id, chat_room_id: params[:chat_room_id], kind: params[:kind])
          if params[:media_item]
             @message.media_item.attach(params[:media_item])
             @message.media_url = url_for(@message.media_item)
