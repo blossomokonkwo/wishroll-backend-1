@@ -1,21 +1,26 @@
 class MessagesController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        @message = Message.create(body: params[:body], sender_id: current_user.id, chat_room_id: params[:chat_room_id], kind: params[:kind])
-         if params[:media_item]
-            @message.media_item.attach(params[:media_item])
-            @message.media_url = url_for(@message.media_item)
-         end
-        if @message.save
-            MessageRelayJob.perform_later(@message)
-            render json: nil, status: 201
+        @chat_room = ChatRoom.find(params[:chat_room_id])
+        if @chat_room.users.include?(current_user)
+            @messsage = @chat_room.messages.create(body: params[:body], sender_id: current_user.id, kind: params[:kind])
+            if params[:media_item]
+                @message.media_item.attach(params[:media_item])
+                @message.media_url = url_for(@message.media_item)
+            end
+            if @message.save
+                MessageRelayJob.perform_later(@message)
+                render json: nil, status: 201
+            else
+                render json: {error: "The message couldn't be created"}, status: 400
+            end
         else
-            render json: {error: "The message couldn't be created"}, status: 400
+            render json: {error: "You are unauthorized to chat in a chat room you have not formally joined"}, status: 401 
         end
     end
     
     def update
-        @message = Message.find(params[:message_id])
+        @message = Message.find(params[:id])
         if @message.update(params[:body])
             render json: nil, status: 200
         else
@@ -24,7 +29,7 @@ class MessagesController < ApplicationController
     end
 
     def destroy
-        @message = Message.find(params[:message_id])
+        @message = Message.find(params[:id])
         if @message.destroy
             render json: nil, status: :ok
         else
