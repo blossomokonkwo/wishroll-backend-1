@@ -8,6 +8,9 @@ class MessagesController < ApplicationController
          end
         if @message.save
             MessageRelayJob.perform_later(@message)
+            render json: nil, status: 201
+        else
+            render json: {error: "The message couldn't be created"}, status: 400
         end
     end
     
