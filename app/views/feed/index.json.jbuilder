@@ -19,6 +19,14 @@ json.array! @posts.each do |post|
             json.comments_count post.comments_count
             json.caption post.caption
             json.media_url post.posts_media_url
+            json.liked false
+            post.likes.each do |like|
+                cache like, expires_in: 5.minutes do
+                    if like.user_id == user.id
+                        json.liked true
+                    end
+                end
+            end
         end
     end
 end
