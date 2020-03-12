@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
                 @message.media_url = url_for(@message.media_item)
             end
             if @message.save
-                ChatRoomsChannel.broadcast_to(@chat_room, message: @message)
+                MessageRelayJob.perform_later(@message)
                 render json: nil, status: 201
             else
                 render json: {error: "The message couldn't be created"}, status: 400
