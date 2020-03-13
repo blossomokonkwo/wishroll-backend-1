@@ -12,7 +12,7 @@ class TopicsController < ApplicationController
     def index
         @hot_topics = Topic.where(hot_topic: true)
         @topics = Array.new
-        #@topics = Topic.where(user_id: current_user.id).order(created_at: :desc)
+        @topics << current_user.topics if current_user.topics.present?
         @chat_rooms = current_user.chat_rooms
         if @chat_rooms.present?
             @chat_rooms.each do |chat_room|
