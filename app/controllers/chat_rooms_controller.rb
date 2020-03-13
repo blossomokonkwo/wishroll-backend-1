@@ -20,9 +20,9 @@ class ChatRoomsController < ApplicationController
             if a.users.include?(current_user) and b.users.include?(current_user)
               return 0
             elsif a.users.include?(current_user)
-              return -1
+              return 1
             elsif b.users.include?(current_user)
-                return 1
+                return -1
             else
               return -1 #if the user isn't in neither of the chat rooms we want to maintain the original ordering 
             end
