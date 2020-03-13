@@ -16,6 +16,17 @@ class ChatRoomsController < ApplicationController
         @current_user = current_user
         if params[:topic_id].present? #if this is under the topics resource 'topics/:id/chat_rooms', then grab all the chatrooms for that topic
           @chat_rooms = ChatRoom.where(topic_id: params[:topic_id]).order(num_users: :desc, updated_at: :desc)
+          @chat_rooms.sort! do |a,b|
+            if a.users.include?(current_user) and b.users.include?(current_user)
+              return 0
+            elsif a.users.include?(current_user)
+              return -1
+            elsif b.users.include?(current_user)
+                return 1
+            elsif 
+              return -1 #if the user isn't in neither of the chat rooms we want to maintain the original ordering 
+            end
+          end
           if @chat_rooms.present?
             render :index, status: 200
           else
