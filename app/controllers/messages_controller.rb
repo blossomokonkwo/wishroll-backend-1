@@ -30,7 +30,7 @@ class MessagesController < ApplicationController
             limit = 75 
             offset = 0
             @messages = @chat_room.messages.offset(0).limit(75)
-            if @messages
+            if @messages.any?
                 render :index, status: 200
             else
                 render json: {error: "This chat room has no messages"}, status: 404
