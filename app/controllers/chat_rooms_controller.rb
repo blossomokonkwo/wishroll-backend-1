@@ -23,7 +23,7 @@ class ChatRoomsController < ApplicationController
               return -1
             elsif b.users.include?(current_user)
                 return 1
-            elsif 
+            else
               return -1 #if the user isn't in neither of the chat rooms we want to maintain the original ordering 
             end
           end
