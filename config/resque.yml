@@ -1,2 +1,0 @@
-development: localhost:6379 #this is the default Redis port on local machines  
-production: <%= ENV['REDISCLOUD_URL'] %>
