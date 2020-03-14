@@ -45,9 +45,15 @@ class ChatRoomsController < ApplicationController
 
 
       def show
+        #returns users in a specific chat room
         @chat_room = ChatRoom.find(params[:id])
         if @chat_room.present?
-          render :show, status: 200
+          @chat_room_users = @chat_room.users
+          if @chat_room_users.any?
+            render :show, status: 200
+          else
+            render json: {error: "There are no users in this chat room"}, status: 404
+          end
         else
           render json: {error: "Chat room Not Found"}, status: 404
         end
