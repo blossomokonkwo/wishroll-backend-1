@@ -12,16 +12,16 @@ class TopicsController < ApplicationController
     def index
         @hot_topics = Topic.where(hot_topic: true)
         @topics = Array.new
-        @topics = current_user.topics if current_user.topics.present?
+        @topics = current_user.topics if current_user.topics.any?
         @chat_rooms = current_user.chat_rooms
-        if @chat_rooms.present?
+        if @chat_rooms.any?
             @chat_rooms.each do |chat_room|
                 if chat_room.topic.present?
-                    @topics << chat_room.topic
+                    @topics << chat_room.topic if !@topics.include?(chat_room.topic)
                 end
             end
         end
-        if @hot_topics.present? or @topics.present?
+        if @hot_topics.any? or @topics.any?
             render :index, status: 200
         else
             render json: {error: "There are no topics for you"}, status: 404
