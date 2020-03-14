@@ -1,3 +1,3 @@
 web: bundle exec puma -C config/puma.rb
-resque: QUEUE=* bundle exec rake resque:work
+worker: bundle exec sidekiq -t 25 -c 5
  

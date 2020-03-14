@@ -13,6 +13,6 @@ class Comment < ApplicationRecord
     activities = Activity.where(content_id: self.id, activity_type: "Comment")
     activities.each do |activity|
       activity.destroy
-    end if activities.present?
+    end if activities.any?
   end
 end
