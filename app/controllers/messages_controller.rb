@@ -9,7 +9,8 @@ class MessagesController < ApplicationController
                 @message.media_url = url_for(@message.media_item)
             end
             if @message.save
-                MessageRelayJob.perform_later(@message)
+                #MessageRelayJob.perform_later(@message)
+                ChatRoomsChannel.broadcast_to(@message.chat_room, message: @message.to_json, sender: @message.user.to_json)
                 #a background job should handle the pushing of notifications to users whom are members of the chat room
                 render json: nil, status: 201
             else
