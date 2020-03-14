@@ -27,9 +27,9 @@ class MessagesController < ApplicationController
         @chat_room = ChatRoom.find(params[:chat_room_id])
         if @chat_room
             #these will be passed in as query params
-            limit = 75 
-            offset = 0
-            @messages = @chat_room.messages.offset(0).limit(75)
+            limit = 5
+            offset = params[:offset]
+            @messages = @chat_room.messages.offset(offset).limit(limit)
             if @messages.any?
                 render :index, status: 200
             else
