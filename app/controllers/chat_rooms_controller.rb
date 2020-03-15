@@ -71,7 +71,7 @@ class ChatRoomsController < ApplicationController
       def join 
         #called when the current user is joining a chatroom
         #find the user by their username and add them to the chat room
-        new_chat_room_member = User.find_by(username: params[:username]).select(:id)
+        new_chat_room_member = User.select(:id).find_by(username: params[:username])
         if new_chat_room_member.present?
           chat_room_user = ChatRoomUser.new(user_id: new_chat_room_member.id, chat_room_id: params[:chat_room_id])
           if chat_room_user.save
