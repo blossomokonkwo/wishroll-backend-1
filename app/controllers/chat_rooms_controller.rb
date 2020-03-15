@@ -89,7 +89,9 @@ class ChatRoomsController < ApplicationController
         #the current_user should also be removed as a subscriber to the associated channel. Basically, call the unsubscribed method in the associated channel
         chat_room_user = ChatRoomUser.find_by(user_id: current_user.id, chat_room_id: params[:chat_room_id])
         if chat_room_user.present?
+          chat_room = chat_room_user.chat_room
           if chat_room_user.destroy
+            chat_room.destroy if chat_room.num_users == 0
             render json: nil, status: 200
           else 
             render json: {error: "Could not leave chat room"}, status: 400
