@@ -2,10 +2,15 @@ class ChatRoomsController < ApplicationController
     before_action :authorize_by_access_header!
 
       def create
-          @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: current_user.id)
+        @current_user = current_user
+          @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: @current_user.id)
           if @chatroom.save
-              @chatroom.users << current_user #automatically add the chatroom creator to the his/her created chat room
-              render json: nil, status: 201
+              @chatroom.users << @current_user #automatically add the chatroom creator to the his/her created chat room
+              unless @chatroom.topic.present?
+                render json: @chatroom, status: 201
+              else
+                render json: nil, status: 201
+              end
           else
               render json: {error: "The chatRoom could not be created"}, status: 400
           end
