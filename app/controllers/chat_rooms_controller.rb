@@ -70,11 +70,17 @@ class ChatRoomsController < ApplicationController
 
       def join 
         #called when the current user is joining a chatroom
-        chat_room_user = ChatRoomUser.new(user_id: current_user.id, chat_room_id: params[:chat_room_id])
-        if chat_room_user.save
-            render json: nil, status: 201
+        #find the user by their username and add them to the chat room
+        new_chat_room_member = User.find_by(params[:username]).select(:id)
+        if new_chat_room_member.present?
+          chat_room_user = ChatRoomUser.new(user_id: new_chat_room_member.id, chat_room_id: params[:chat_room_id])
+          if chat_room_user.save
+              render json: nil, status: 201
+          else
+              render json: {error: "You were unable to join the chat room "}, status: 400
+          end
         else
-            render json: {error: "You were unable to join the chat room "}, status: 400
+          render json: {error: "User does not exist"}, status: 404
         end
       end
       
