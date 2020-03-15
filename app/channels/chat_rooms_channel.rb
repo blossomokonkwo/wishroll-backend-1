@@ -5,8 +5,10 @@ class ChatRoomsChannel < ApplicationCable::Channel
     @chat_room = ChatRoom.find(params[:chat_room_id])
     if @chat_room.users.include?(current_user)
        stream_for @chat_room
+       puts "Streaming\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     else
       reject
+      puts "Rejecting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     end
 
   end
