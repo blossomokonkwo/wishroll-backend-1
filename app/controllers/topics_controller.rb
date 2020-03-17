@@ -10,12 +10,12 @@ class TopicsController < ApplicationController
     end
 
     def index
-        @hot_topics = Topic.where(hot_topic: true)
+        @hot_topics = Topic.where(hot_topic: true).includes([:topic_image_attachment])
         @topics = Array.new
         @topics = current_user.topics if current_user.topics.any?
         @chat_rooms = current_user.chat_rooms
         if @chat_rooms.any?
-            @chat_rooms.each do |chat_room|
+            @chat_rooms.includes(:topic).each do |chat_room|
                 if chat_room.topic.present?
                     @topics << chat_room.topic if !@topics.include?(chat_room.topic)
                 end

@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
     @current_user = current_user
     @followers = @user.follower_users
-    if @followers.present?
+    if @followers.any?
       render :followers, status: 200
     else
       render json: nil, status: 404
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     @current_user = current_user
     @user = User.find_by(username: params[:username])
     @followed_users = @user.followed_users
-    if @followed_users.present?
+    if @followed_users.any?
       render :following, status: 200
     else
       render json: nil, status: 404

@@ -4,24 +4,23 @@ module ApplicationCable
       
     identified_by :current_user
     def connect
-       current_user = get_current_user
-       logger.add_tags "Action Cable", "User #{current_user.username}" 
+       self.current_user = get_current_user
+       logger.add_tags "Action Cable", "User #{self.current_user.username}" 
     end
 
     def disconnect
       
     end
     
-    private 
+    protected 
     def get_current_user
       #get the current user else reject the unathourized connection
-      begin
-        current_user =  User.find(request.headers["Authorization"])
-       return current_user
-      rescue => exception
-        puts exception
-      end
-      
+        current_user =  User.find(request.headers["cookie"])
+        if current_user.present?
+          return current_user
+        else
+          reject_unauthorized_connection
+        end
     end
 
 
