@@ -3,8 +3,8 @@ class ChatRoomsController < ApplicationController
 
       def create
         @current_user = current_user
-          @chatroom = ChatRoom.new(topic_id: params[:topic_id], name: params[:name], creator_id: @current_user.id)
-          if @chatroom.save
+          @chatroom = ChatRoom.create(topic_id: params[:topic_id].present? ? params[:topic_id] : nil, name: params[:name], creator_id: @current_user.id)
+          if @chatroom.present?
               @chatroom.users << @current_user #automatically add the chatroom creator to the his/her created chat room
               unless @chatroom.topic.present?
                 render json: @chatroom, status: 201
@@ -38,7 +38,7 @@ class ChatRoomsController < ApplicationController
             render json: {error: "This topic currently has no chatrooms"}, status: 404
           end
         else #grab all of the current users private chat rooms 
-          @chat_rooms = @current_user.chat_rooms
+          @chat_rooms = @current_user.chat_rooms.order(updated_at: :desc)
           if @chat_rooms.any?
             render :index, status: 200
           else

@@ -5,6 +5,8 @@ json.array! @messages.each do |message|
             json.body message.body
             json.kind message.kind
             json.uuid message.uuid
+            json.sender_id message.user.id
+            json.chat_room_id message.chat_room.id
             json.media_url message.media_url
             json.created_at message.created_at
             json.updated_at message.updated_at
