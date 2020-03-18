@@ -17,7 +17,9 @@ class TopicsController < ApplicationController
         if @chat_rooms.any?
             @chat_rooms.includes(:topic).each do |chat_room|
                 if chat_room.topic.present?
+                    ActiveRecord::Base.connected_to(role: :writing) do
                     @topics << chat_room.topic if !@topics.include?(chat_room.topic)
+                    end
                 end
             end
         end

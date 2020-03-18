@@ -1,4 +1,4 @@
-json.array! @messages.each do |message|
+json.array! @messages.includes([:chat_room, :user]).each do |message|
     cache message, expires_in: 1.hour do
         json.message do
             json.id message.id
