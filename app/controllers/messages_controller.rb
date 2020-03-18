@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
             @message = @chat_room.messages.create(body: params[:body], sender_id: current_user.id, kind: params[:kind])
             if params[:media_item]
                 @message.media_item.attach(params[:media_item])
-                @message.media_url = url_for(@message.media_item)
+                @message.media_url = polymorphic_url(@message.media_item)
             end
             if @message.save
                 MessageRelayJob.perform_later(@message)
