@@ -64,6 +64,13 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
+    anycable (0.6.4)
+      anyway_config (~> 1.4.2)
+      grpc (~> 1.17)
+    anycable-rails (0.6.5)
+      anycable (~> 0.6.0)
+      rails (>= 5)
+    anyway_config (1.4.4)
     aws-eventstream (1.0.3)
     aws-partitions (1.263.0)
     aws-sdk-core (3.88.0)
@@ -96,6 +103,12 @@ GEM
     ffi (1.11.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    google-protobuf (3.11.4)
+    googleapis-common-protos-types (1.0.4)
+      google-protobuf (~> 3.0)
+    grpc (1.27.0)
+      google-protobuf (~> 3.11)
+      googleapis-common-protos-types (~> 1.0)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     jbuilder (2.9.1)
@@ -195,6 +208,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  anycable-rails
   aws-sdk-s3
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)

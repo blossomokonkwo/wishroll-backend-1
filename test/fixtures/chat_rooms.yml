@@ -3,9 +3,11 @@
 one:
   topic: one
   name: MyString
-  num_users: 
+  num_users:
+  creator_id: 1 
 
 two:
   topic: two
   name: MyString
   num_users: 
+  creator_id: 1

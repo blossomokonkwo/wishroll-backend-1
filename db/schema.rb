@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_09_173351) do
+ActiveRecord::Schema.define(version: 2020_03_18_083738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 2020_03_09_173351) do
     t.bigint "following_count", default: 0
     t.string "full_name"
     t.bigint "total_view_count", default: 0, null: false
+    t.string "device_token"
     t.index ["email"], name: "email"
     t.index ["username"], name: "index_users_on_username"
   end

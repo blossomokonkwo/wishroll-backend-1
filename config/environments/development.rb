@@ -51,6 +51,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   
   config.action_cable.disable_request_forgery_protection = true
+
+  config.action_cable.url = "ws://localhost:3334/cable"
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

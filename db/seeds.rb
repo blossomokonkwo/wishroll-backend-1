@@ -6,16 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
-# seeded the data base with 10000 user accounts to simulate the production level of load
-1000.times do
-    is_verified = Random.new.rand(0...50)
-    spawned_user = User.create(email: Faker::Internet.safe_email, full_name: Faker::Name.name, username: Faker::Internet.username(specifier: 1..20), is_verified: is_verified == 1 ? true : false, password: Faker::Internet.password(min_length: 8), birth_date: Faker::Date.birthday(min_age: 13, max_age: 30))
-end
-# 50000.times do
-#     spawned_post = Post.create(user_id: Faker::Number.between(from: 1, to: 7_238), view_count: Faker::Number.within(range: 0...7_238), original_post_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...50000) : nil, caption: Faker::Lorem.sentence)
+# 100000.times do
+#    Post.create(user_id: Faker::Number.between(from: 1, to: 30000), view_count: Faker::Number.within(range: 0...30000), original_post_id: Random.new.rand(0..10000) == 3 ? Faker::Number.within(range: 1...50000) : nil, caption: Faker::Lorem.sentence)
 # end
-# 5000.times do 
-#     spawned_comment = Comment.create(user_id: Faker::Number.between(from: 1, to: 800), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 5...25), original_comment_id: Random.new.rand(0..3) == 3 ? Faker::Number.within(range: 1...300) : nil)
+# 100000.times do 
+#     Comment.create(user_id: Faker::Number.between(from: 1, to: 30000), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 1...99000), original_comment_id: Random.new.rand(0..500) == 3 ? Faker::Number.within(range: 1...1000) : nil)
 # end
 # 5_000.times do 
 #     num = Random.new.rand(1..2)
@@ -26,25 +21,30 @@ end
 #     when 2
 #         likeable_type = "Comment"
 #     end
-#     Like.create likeable_type: "Post", likeable_id: Faker::Number.between(from: 1, to: 25), user_id: Faker::Number.between(from: 1, to: 1_000)
+#     Like.create likeable_type: "Post", likeable_id: Faker::Number.between(from: 1, to: 25000), user_id: Faker::Number.between(from: 1, to: 30000)
 # end
-# 10_000.times do 
-#     Tag.create(post_id: Faker::Number.between(from: 1, to: 51_018), text: Faker::Lorem.word)
+# 100_000.times do 
+#     Tag.create(post_id: Faker::Number.between(from: 1, to: 91_018), text: Faker::Lorem.word)
+# end
+# 1000.times do
+#     Topic.create title: Faker::Book.title, user_id: Faker::Number.between(from: 1, to: 30000), hot_topic: Random.new.rand(0..75) == 3 ? true : false
+# end
+# 10000.times do
+#     ChatRoom.create topic_id:  Random.new.rand(0..50) == 3 ? Faker::Number.within(range: 1...990) : nil, creator_id: Faker::Number.between(from: 1, to: 30000), name: Random.new.rand(0..100) == 3 ? Faker::Book.title : nil
+# end
+# 10000.times do
+#     ChatRoomUser.create user_id: Faker::Number.between(from: 1, to: 30000), chat_room_id: Faker::Number.between(from: 1, to: 10000)
+# end
+# 50000.times do
+#     Message.create sender_id: Faker::Number.between(from: 1, to: 30000), chat_room_id: Faker::Number.between(from: 1, to: 10000), kind: "text", body: Faker::Lorem.sentence 
+# end
+# 15000.times do
+#     Relationship.create follower_id: Faker::Number.between(from: 1, to: 30000), followed_id: Faker::Number.between(from: 1, to: 30000)
 # end
 # Post.all.find_each do |post|
-#     posts_media_url = url_for(post.post_image) if post.post_image.attached?
-#     post.update(posts_media_url: posts_media_url)
+#     post.posts_media_url = Post.last.posts_media_url
+#     post.save
 # end
-# User.all.find_each do |user|
-#     puts user.follower_users.count
-#     puts user.followed_users.count
-#     followers = user.followed_users.count
-#     following = user.follower_users.count
-#     user.update(following_count: followers, follower_users: following)
-# end
-    # user.following_count = user.followed_users.count
-    # user.followers_count = user.follower_users.count
-    # puts user.save
 #there are 7,238 seeded users 
 #there are 100,000 seeded comments with the first 100 posts having a dispropotionate ammount of comments at 50,000. This disproportionality models how social networks handle the traffic with more engaging posts.
 #there are 100,000 likes with the first 100 comments or posts having the majority of likes at 50_000 likes
