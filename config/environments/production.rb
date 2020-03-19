@@ -34,14 +34,14 @@ Rails.application.configure do
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
-  config.web_socket_server_url = "wss://www.wishroll.co/cable"
-  config.action_cable.url = "wss://www.wishroll.co/cable"
+  # config.web_socket_server_url = "wss://www.wishroll.co/cable"
+  config.action_cable.url = "wss://#{ENV["CABLE_URL"]}"
   config.action_cable.log_tags = [
     :action_cable,
     -> request { request.uuid }
   ]
 
-  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.disable_request_forgery_protection = false
   #config.action_cable.allowed_request_origins = ["chrome-extension://omalebghpgejjiaoknljcfmglgbpocdp", /https:\/\/.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
