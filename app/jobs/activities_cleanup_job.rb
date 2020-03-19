@@ -1,5 +1,5 @@
 class ActivitiesCleanupJob < ApplicationJob
-  queue_as :activities_clean_up
+  queue_as :default
 
   def perform(activity)
     activity.destroy

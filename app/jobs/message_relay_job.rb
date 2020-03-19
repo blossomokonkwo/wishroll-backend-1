@@ -1,5 +1,5 @@
 class MessageRelayJob < ApplicationJob
-  queue_as :messages
+  queue_as :default
 
   def perform(message)
     ChatRoomsChannel.broadcast_to(message.chat_room, message: message.to_json, sender: message.user.to_json)
