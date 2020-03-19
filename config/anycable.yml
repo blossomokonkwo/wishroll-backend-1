@@ -3,3 +3,4 @@ development:
   access_logs_disabled: false
 production:
   redis_url: <%= ENV['REDISCLOUD_URL'] %>
+  access_logs_disabled: false
