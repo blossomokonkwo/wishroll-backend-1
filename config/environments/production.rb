@@ -34,7 +34,7 @@ Rails.application.configure do
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
-  config.action_cable.url = "wss://#{ENV["CABLE_URL"]}"
+  config.action_cable.url = "wss://wishroll-cable.herokuapp.com/cable"
   config.action_cable.log_tags = [
     :action_cable,
     -> request { request.uuid }
