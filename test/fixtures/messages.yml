@@ -4,8 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
+one: 
+  sender_id: 2
+  chat_room_id: 1
+  kind: "text"
 #
-two: {}
-# column: value
+two: 
+  sender_id: 1
+  chat_room_id: 1
+  kind: "emoji"

@@ -1,16 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  price: 
-  user: one
+  price: 50
+  user_id: 1
   description: MyText
   image_url: MyString
   product_name: MyString
   amount_covered: 
 
 two:
-  price: 
-  user: two
+  price: 45
+  user_id: 2
   description: MyText
   image_url: MyString
   product_name: MyString

@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   #resources for private chat rooms 
-  resources :chat_rooms, only: [:index]
+  resources :chat_rooms, only: [:index, :create]
 
   post 'chat_rooms/:chat_room_id/join', to: "chat_rooms#join" #user is joining a new chat room 
   delete 'chat_rooms/:chat_room_id/leave', to: "chat_rooms#leave" #user is leaving a chat room
@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   get 'followers/:username', to: "users#followers", constraints: {username: /[0-9a-z_.]{1,60}/}
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
+  #post 'search-topics-and-chatrooms', to: "search_chat_rooms_and_topics#search" version 3
   delete 'logout', to: "logout#destroy" #the logout route
   post 'refresh', to: "refresh#create" #the refresh controller where refresh tokens are returned
   post 'login', to: "login#create" #the login 
