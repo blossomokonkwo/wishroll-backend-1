@@ -91,6 +91,6 @@ end
   #these param hash permissions ensure that only the correct data is being passed in to the params hash 
   #that will ultimately alter the state of the users account 
   def update_user
-    params.permit :username, :email, :full_name, :bio, :is_verified, :profile_picture
+    params.permit :username, :email, :full_name, :bio, :is_verified, :profile_picture, :device_token
   end
 end
