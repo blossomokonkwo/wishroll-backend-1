@@ -7,6 +7,6 @@ class Activity < ApplicationRecord
   #a comment is replied to, and when a reaction post is made to an original post
   after_save do
     #we want to delete instances of the activity class after 3 days.
-    ActivitiesCleanupJob.set(wait: 3.days).perform_later(self)
+    ActivityCleanUpWorker.perform_in(3.days, self.id)
   end
 end
