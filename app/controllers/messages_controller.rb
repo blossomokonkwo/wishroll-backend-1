@@ -8,8 +8,8 @@ class MessagesController < ApplicationController
                 @message.media_item.attach(params[:media_item])
                 @message.media_url = polymorphic_url(@message.media_item)
             end
-            if @message.save
-                MessageRelayJob.perform_later(@message)
+            if @message.save                
+                MessageRelayWorker.perform_async(@message.id)
                 #a background job should handle the pushing of notifications to users whom are members of the chat room
                 render json: nil, status: 201
             else

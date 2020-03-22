@@ -5,8 +5,8 @@ class Activity < ApplicationRecord
   #This class is instantiated everytime a comment or post is liked, 
   #a new follow relationship is created or destroyed, a users post appears on the trending page, 
   #a comment is replied to, and when a reaction post is made to an original post
-  after_save do
+  after_create do
     #we want to delete instances of the activity class after 3 days.
-    ActivitiesCleanupJob.set(wait: 3.days).perform_later(self)
+    ActivityCleanUpWorker.perform_in(3.days, self.id)
   end
 end
