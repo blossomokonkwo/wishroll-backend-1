@@ -268,6 +268,8 @@ class ProfanityFilter
             'Pubes',
             'pumpum',
             'pussy',
+            'pu',
+            'ssy',
             'pussies',
             'PUSSY',
             'Pussy',
