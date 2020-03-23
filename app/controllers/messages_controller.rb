@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
             #protect our users old and young 
             if @chat_room.topic and @chat_room.topic.hot_topic
                 profanity_filter = ProfanityFilter.new #instantiate a new ProfanityFilter object and filter the message body of the message
-                profanity_filter.filter_message(@message.body) if @message.body
+                @message.body = profanity_filter.filter_message(@message.body) if @message.body
             end
             if @message.save                
                 MessageRelayWorker.perform_async(@message.id)
