@@ -8,6 +8,12 @@ class MessagesController < ApplicationController
                 @message.media_item.attach(params[:media_item])
                 @message.media_url = polymorphic_url(@message.media_item)
             end
+            #if the chat room is under a hot topic - which all of our users can view - then the messages passed in these chat rooms should be filtered in order to 
+            #protect our users old and young 
+            if @chat_room.topic and @chat_room.topic.hot_topic
+                profanity_filter = ProfanityFilter.new #instantiate a new ProfanityFilter object and filter the message body of the message
+                profanity_filter.filter_message(@message.body) if @message.body
+            end
             if @message.save                
                 MessageRelayWorker.perform_async(@message.id)
                 #a background job should handle the pushing of notifications to users whom are members of the chat room
