@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+    require 'profanity_filter'
     before_action :authorize_by_access_header!
     def create
         @chat_room = ChatRoom.find(params[:chat_room_id])
@@ -7,6 +8,12 @@ class MessagesController < ApplicationController
             if params[:media_item]
                 @message.media_item.attach(params[:media_item])
                 @message.media_url = polymorphic_url(@message.media_item)
+            end
+            #if the chat room is under a hot topic - which all of our users can view - then the messages passed in these chat rooms should be filtered in order to 
+            #protect our users old and young 
+            if @chat_room.topic and @chat_room.topic.hot_topic
+                profanity_filter = ProfanityFilter.new #instantiate a new ProfanityFilter object and filter the message body of the message
+                @message.body = profanity_filter.filter_message(@message.body) if @message.body
             end
             if @message.save                
                 MessageRelayWorker.perform_async(@message.id)
