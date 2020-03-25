@@ -60,7 +60,10 @@ Rails.application.routes.draw do
   #the delete account endpoint. Before the users account is destroyed make sure to flush the users session data and tokens.
   delete 'user/delete', to: "users#destroy"
 
-  
+  namespace :v2 do
+    get 'search-chats', to: "search_chat_rooms#search"
+    resource :device, only: [:create] 
+  end
   
 
   #the follow/unfollow endpoints
