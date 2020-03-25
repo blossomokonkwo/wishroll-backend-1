@@ -22,8 +22,8 @@ gem 'newrelic_rpm'
 gem 'dalli'
 gem 'connection_pool'
 gem 'sidekiq'
+gem 'houston'
 gem "anycable-rails"
-#gem  'houston'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
