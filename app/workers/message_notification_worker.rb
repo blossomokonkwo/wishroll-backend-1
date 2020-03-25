@@ -1,4 +1,5 @@
 class MessageNotificationWorker
+    require 'houston'
     include Sidekiq::Worker
     sidekiq_options queue: "notifications"
     def perform(message_id)
