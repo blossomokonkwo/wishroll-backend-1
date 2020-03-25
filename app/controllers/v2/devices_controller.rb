@@ -1,4 +1,4 @@
-class DevicesController < ApplicationController
+class V2::DevicesController < ApplicationController
     before_action :authorize_by_access_header!
     def create
         #first search for a device based on the unique device token
