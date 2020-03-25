@@ -1,7 +1,7 @@
 class MessageNotificationWorker
     include Sidekiq::Worker
     sidekiq_options queue: "notifications"
-    require 'houston'
+    # require 'houston'
     APN = Houston::Client.development
     APN.certificate = File.read('wishroll-dev-push.pem')
 
