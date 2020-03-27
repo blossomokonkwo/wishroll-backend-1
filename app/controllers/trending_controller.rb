@@ -6,7 +6,7 @@ class TrendingController < ApplicationController
         @id = current_user.id
         offset = params[:offset] #as the user scrolls the offset is incremented by 100
         #@posts = Post.order(likes_count: :desc, view_count: :desc, created_at: :desc).offset(offset).limit(@num_trending_posts)
-        @posts = Post.take(@num_trending_posts).offset(offset)
+        @posts = Post.all.offset(offset).take(@num_trending_posts)
         render :index, status: :ok  
     end
 end
