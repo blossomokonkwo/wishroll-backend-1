@@ -3,3 +3,4 @@
 :queues:
   - ["messages", 10]
   - ["clean_up", 5]
+  - ["notifications", 9]
