@@ -2,7 +2,12 @@ class AppearancesChannel < ApplicationCable::Channel
   def subscribed
     #the appearance channel handles the appearance of a user in a specified chat room  
     @chat_room = ChatRoom.find(params[:chat_room_id]) #find the specified chat room that hosts the appearances coordination
-    if chat_room.users.include?(current_user) #if the current user is a member of the chat room, then they can are authorized to recieve and send appearance messages
+    if @chat_room.users.include?(current_user) #if the current user is a member of the chat room, then they can are authorized to recieve and send appearance messages
+      @chat_room_user = ChatRoomUser.find_by(chat_room_id: params[:chat_room_id], user_id: current_user.id)
+      if @chat_room_user
+        @chat_room_user.appearance = true
+        @chat_room_user.save
+      end
       stream_for @chat_room
     else
       reject
@@ -12,6 +17,11 @@ class AppearancesChannel < ApplicationCable::Channel
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
+    @chat_room_user = ChatRoomUser.find_by(chat_room_id: params[:chat_room_id, user_id: current_user.id])
+    if @chat_room_user
+      @chat_room_user.appearance = false
+      @chat_room_user.save
+    end
     stop_all_streams
   end
 
@@ -38,7 +48,7 @@ class AppearancesChannel < ApplicationCable::Channel
     end
   end
 
-  def typing(data)
+  def typing(args)
     #check to see if the typer isn't the current user and the user isn't appearing in the chat room and the user
     #if all of these criteria are met, then send a typing broadcast to all of the users in the app who meet the away criteria.
     #the app should display a typing indicator under the user who is typing on the app to indicate that a specific user is typing for those in the chat room
@@ -49,7 +59,7 @@ class AppearancesChannel < ApplicationCable::Channel
     
   end
 
-  def end_typing(data)
+  def end_typing(args)
     #when the user has ended typing, a broadcast should be sent to indicate that the user has ended typing and that the typing indicator shouldn't be activated under that specific user
     chat_room = ChatRoom.find(data[:chat_room_id])
     if end_typing_user and chat_room
