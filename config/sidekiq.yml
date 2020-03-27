@@ -1,4 +1,6 @@
-:concurrency: 2
+:concurrency: 10
 :logfile: ./log/sidekiq.log
 :queues:
-  - default
+  - ["messages", 10]
+  - ["clean_up", 5]
+  - ["notifications", 9]

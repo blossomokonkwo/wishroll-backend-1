@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_18_083738) do
+ActiveRecord::Schema.define(version: 2020_03_23_210718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -102,6 +102,16 @@ ActiveRecord::Schema.define(version: 2020_03_18_083738) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "devices", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "device_token"
+    t.string "platform"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["device_token"], name: "index_devices_on_device_token"
+    t.index ["user_id"], name: "index_devices_on_user_id"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "likeable_type"
@@ -181,7 +191,6 @@ ActiveRecord::Schema.define(version: 2020_03_18_083738) do
     t.bigint "following_count", default: 0
     t.string "full_name"
     t.bigint "total_view_count", default: 0, null: false
-    t.string "device_token"
     t.index ["email"], name: "email"
     t.index ["username"], name: "index_users_on_username"
   end
@@ -217,6 +226,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_083738) do
   add_foreign_key "chat_rooms", "users", column: "creator_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "devices", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "chat_rooms"
   add_foreign_key "messages", "users", column: "sender_id"
