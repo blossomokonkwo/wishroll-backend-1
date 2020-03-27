@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get 'privacy', to: "privacy_policy#privacy"
   get 'terms', to: "terms#terms"
   get 'contact', to: "support#contact"
-  get 'home', to: "home#home"
-  get 'what-is-wishroll', to: "home#what_is_wishroll"
+  get 'home', to: "home#homepage"
+  get 'what-is-wishroll', to: "home#whatis"
   constraints subdomain: 'admin' do 
     namespace :admin do
       
