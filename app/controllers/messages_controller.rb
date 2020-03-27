@@ -17,7 +17,8 @@ class MessagesController < ApplicationController
             end
             if @message.save                
                 MessageRelayWorker.perform_async(@message.id)
-                MessageNotificationWorker.perform_async(@message.id)
+
+               # MessageNotificationWorker.perform_async(@message.id)
                 #a background job should handle the pushing of notifications to users whom are members of the chat room
                 render json: nil, status: 201
             else
