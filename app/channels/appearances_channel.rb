@@ -1,14 +1,14 @@
 class AppearancesChannel < ApplicationCable::Channel
   def subscribed
     #the appearance channel handles the appearance of a user in a specified chat room  
-    @chat_room = ChatRoom.find(params[:chat_room_id]) #find the specified chat room that hosts the appearances coordination
-    if @chat_room.users.include?(current_user) #if the current user is a member of the chat room, then they can are authorized to recieve and send appearance messages
+    chat_room = ChatRoom.find(params[:chat_room_id]) #find the specified chat room that hosts the appearances coordination
+    if chat_room.users.include?(current_user) #if the current user is a member of the chat room, then they can are authorized to recieve and send appearance messages
       @chat_room_user = ChatRoomUser.find_by(chat_room_id: params[:chat_room_id], user_id: current_user.id)
       if @chat_room_user
         @chat_room_user.appearance = true
         @chat_room_user.save
       end
-      stream_for @chat_room
+      stream_for chat_room
     else
       reject
     end 
