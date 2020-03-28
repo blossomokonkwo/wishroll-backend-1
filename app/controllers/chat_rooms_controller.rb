@@ -47,7 +47,48 @@ class ChatRoomsController < ApplicationController
         end
       end
     
+      def appear
+        #called when a user first appears in a chat room. The users appearance data is then broadcasted to all the other chat room members.
+        #The broadcasted data can be used to display to users the active users in the chat room
+        @chat_room_user = ChatRoomUser.find_by(user_id: current_user.id, chat_room_id: params[:id])
+        if @chat_room_user
+          @chat_room_user.appearance = true
+          @chat_room_user.save
+          @chat_room = chatRoom.find(params[:id])
+          AppearancesChannel.broadcast_to(@chat_room, current_user.username, {appearance: true})
+          render json: nil, status: 200
+        else
+          render text: "Not Found", status: 404
+        end
+      end
+      
+      def disappear
+        #called when a user exits the chat room page of a chat room. The broad cast helps viewing users to be updated in real time when another user is no longer active in a chat room
+        @chat_room_user = ChatRoomUser.find_by(user_id: current_user.id, chat_room_id: params[:id])
+        if @chat_room_user
+          @chat_room_user.appearance = false
+          @chat_room_user.save
+          @chat_room = ChatRoom.find(params[:id])
+          AppearancesChannel.broadcast_to(@chat_room, current_user.username, {appearance: false})
+          render json: nil, status: 200
+        else
+          render text: "Not Found", status: 404
+        end
+      end
 
+      def typing
+        #called when a user is typing in a chat room. 
+        #The broadcasted data can be used to display to users who are currently in the chat room any users who are typing 
+        @chat_room = ChatRoom.find(params[:id])
+        AppearancesChannel.broadcast_to(@chat_room, current_user.username, {typing: true})
+      end
+
+      def not_typing
+        #called when a user has finished typing 
+        #used to update the typing status of users who were previously typing in the chat room
+        @chat_room = ChatRoom.find(params[:id])
+        AppearancesChannel.broadcast_to(@chat_room, current_user.username, {typing: false})
+      end
 
       def show
         #returns users in a specific chat room
