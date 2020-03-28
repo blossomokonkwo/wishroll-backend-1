@@ -87,7 +87,7 @@ class ChatRoomsController < ApplicationController
         #called when a user has finished typing 
         #used to update the typing status of users who were previously typing in the chat room
         @chat_room = ChatRoom.find(params[:id])
-        AppearancesChannel.broadcast_to(@chat_room, {current_user.username => {typing: false}}
+        AppearancesChannel.broadcast_to(@chat_room, {current_user.username => {typing: false}})
       end
 
       def show
