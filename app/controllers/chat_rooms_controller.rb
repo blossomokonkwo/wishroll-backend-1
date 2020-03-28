@@ -38,7 +38,7 @@ class ChatRoomsController < ApplicationController
             render json: {error: "This topic currently has no chatrooms"}, status: 404
           end
         else #grab all of the current users private chat rooms 
-          @chat_rooms = @current_user.chat_rooms
+          @chat_rooms = @current_user.chat_rooms.order(updated_at: :desc)
           if @chat_rooms.any?
             render :index, status: 200
           else
