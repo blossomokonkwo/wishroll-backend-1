@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   #resources for private chat rooms 
   resources :chat_rooms, only: [:index, :create]
 
-  post 'chat_room/:id/appear'. to: "chat_rooms#appear"
+  post 'chat_room/:id/appear', to: "chat_rooms#appear"
   delete 'chat_room/:id/disappear', to: "chat_rooms#disappear"
   post 'chat_room/:id/typing', to: 'chat_rooms#typing'
   delete 'chat_room/:id/not-typing', to: 'chat_rooms#not_typing'
