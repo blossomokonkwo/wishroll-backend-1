@@ -40,6 +40,11 @@ Rails.application.routes.draw do
   #resources for private chat rooms 
   resources :chat_rooms, only: [:index, :create]
 
+  post 'chat_room/:id/appear', to: "chat_rooms#appear"
+  delete 'chat_room/:id/disappear', to: "chat_rooms#disappear"
+  post 'chat_room/:id/typing', to: 'chat_rooms#typing'
+  delete 'chat_room/:id/not-typing', to: 'chat_rooms#not_typing'
+
   post 'chat_rooms/:chat_room_id/join', to: "chat_rooms#join" #user is joining a new chat room 
   delete 'chat_rooms/:chat_room_id/leave', to: "chat_rooms#leave" #user is leaving a chat room
 
