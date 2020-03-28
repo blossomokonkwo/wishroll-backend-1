@@ -54,7 +54,7 @@ class ChatRoomsController < ApplicationController
         if @chat_room_user
           @chat_room_user.appearance = true
           @chat_room_user.save
-          @chat_room = chatRoom.find(params[:id])
+          @chat_room = ChatRoom.find(params[:id])
           AppearancesChannel.broadcast_to(@chat_room, current_user.username, {appearance: true})
           render json: nil, status: 200
         else
