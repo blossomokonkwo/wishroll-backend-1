@@ -9,7 +9,7 @@ json.array! @chat_rooms.includes([:recent_message, :chat_room_users, :users]).ea
             json.joined  chat_room.users.include?(@current_user) ? true : false
         end
         json.chat_room_users ChatRoomUser.where(chat_room_id: chat_room.id).includes(:user).each do |chat_room_user|
-            user = chat_room_user.user.select(:username, :profile_picture_url, :full_name, :is_verified)
+            user = chat_room_user.user
             json.username user.username
             json.profile_picture_url user.profile_picture_url
             json.full_name user.full_name
