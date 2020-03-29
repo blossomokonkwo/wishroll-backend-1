@@ -8,6 +8,6 @@ json.array! @chat_room_users.each do |chat_room_user|
             json.is_following @current_user.followed_users.include?(user)
             json.is_verified user.is_verified
             json.appearance  chat_room_user.appearance
-            json.updated_at  chat_room_user.updated_at
+            json.last_seen  chat_room_user.last_seen
     end   
 end 
