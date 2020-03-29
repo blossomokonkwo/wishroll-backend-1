@@ -92,7 +92,7 @@ class ChatRoomsController < ApplicationController
 
       def show
         #returns users in a specific chat room
-        @chat_room_users = ChatRoomUser.where(chat_room_id: params[:id])
+        @chat_room_users = ChatRoomUser.where(chat_room_id: params[:id]).includes(:user)
         @current_user = current_user
         if @chat_room_users.present?
           if @chat_room_users.any?
