@@ -35,24 +35,18 @@ class MessageNotificationWorker
                     user = chat_room_user.user #find the user of the chat room user
                     if (user.id != sender.id) and user.device.present?
                         #if the user has a device in the data base, then append the devices token
-                        sendable_device_tokens << user.device.device_token
+                        notification = Houston::Notification.new(device: user.device.device_token)
+                        if @message.media_url
+                            notification.alert = "[#{user.username}] #{@message.media_url}"
+                        else
+                            notification.alert = "[#{user.username}] #{@message.body}"
+                        end
+                        notification.badge = 11
+                        notification.sound = 'sosumi.aiff'        
+                        APN.push(notification)
                     end
                 end
             end            
         end
-        if sendable_device_tokens.any? 
-            sendable_device_tokens.each do |token|
-                notification = Houston::Notification.new(device: token)
-                if @message.media_url
-                    notification.alert = "#{@user.username}: #{@message.media_url}"
-                else
-                    notification.alert = "[#{@user.username}] #{@message.body}"
-                end
-                notification.badge = 11
-                notification.sound = 'sosumi.aiff'        
-                APN.push(notification)
-            end
-        end
-
     end
 end
