@@ -15,11 +15,16 @@ class MessagesController < ApplicationController
                 profanity_filter = ProfanityFilter.new #instantiate a new ProfanityFilter object and filter the message body of the message
                 @message.body = profanity_filter.filter_message(@message.body) if @message.body
             end
-            if @message.save                
-                MessageRelayWorker.perform_async(@message.id)
-
-               # MessageNotificationWorker.perform_async(@message.id)
-                #a background job should handle the pushing of notifications to users whom are members of the chat room
+            if @message.save  
+                #the message relay worker is responsible for forwarding the message to the channel subscribers. The MessageNotificationWorker is responsible 
+                #for deciding which users are inactive - not in the chat room that the message belongs to - and sending these users a notification.
+                id = @message.id
+                MessageRelayWorker.perform_async(id)
+                MessageNotificationWorker.perform_async(id)
+                #we pass in the id of the messages, the ids of the chat room users, the id of the current user, and the id of the chat room.
+                #the notification worker should handle the filtering of appropriate notification recievers as follows: the current_user - the user who sent the message- 
+                #should not recieve the notification. The users who are present in the chat room should also not recieve the notification. Only the users who are not the
+                #current sender and are not present in the chat room should recieve the notification.
                 render json: nil, status: 201
             else
                 render json: {error: "The message couldn't be created"}, status: 400
@@ -49,7 +54,20 @@ class MessagesController < ApplicationController
         end
     end
      
-    
+    def typing
+        #called when a user has began typing
+    end
+
+    def notTyping
+        #called when user has finished typing
+    end
+    def appearance 
+        #called when a user has joined a chat room
+    end
+    def disappearance
+        #called when a user has left a chat room 
+    end
+
     def update
         @message = Message.find(params[:id])
         if @message.update(params[:body])
