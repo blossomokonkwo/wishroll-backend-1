@@ -16,7 +16,7 @@ class MessageNotificationWorker
 
 
     require 'houston'
-    APN = Houston::Client.development
+    APN = Houston::Client.production
     APN.certificate = File.read('wishroll-dev-push.pem')    
     def perform(message_id)
         #the message_id is used to look find the message object.
@@ -44,6 +44,7 @@ class MessageNotificationWorker
                         notification.badge = 11
                         notification.sound = 'sosumi.aiff'        
                         APN.push(notification)
+                        puts "Error: #{notification.error}." if notification.error
                     end
                 end
             end            
