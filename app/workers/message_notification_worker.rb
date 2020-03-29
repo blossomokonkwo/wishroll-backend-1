@@ -25,7 +25,7 @@ class MessageNotificationWorker
         @message = Message.find(message_id)
         chat_room_users = ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
         sendable_device_tokens = Array.new 
-        sender = @message.sender #the sender is the person who sent the message. They should not recieve any notifications
+        sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
         #first check if there are any chat room users left in the chat room
         if chat_room_users.any?
             #loop through all the chat room users
