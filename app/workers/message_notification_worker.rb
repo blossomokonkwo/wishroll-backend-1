@@ -41,7 +41,6 @@ class MessageNotificationWorker
                         else
                             notification.alert = "[#{user.username}] #{@message.body}"
                         end
-                        notification.badge = 11
                         notification.sound = 'sosumi.aiff'        
                         APN.push(notification)
                         puts "Error: #{notification.error}." if notification.error
