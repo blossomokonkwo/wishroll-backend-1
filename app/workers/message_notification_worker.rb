@@ -21,7 +21,7 @@ class MessageNotificationWorker
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
         @message = Message.find(message_id)
-        chat_room_users = ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
+        chat_room_users = @message.chat_room.users#ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
         sendable_device_tokens = Array.new 
         sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
         #first check if there are any chat room users left in the chat room
@@ -30,8 +30,8 @@ class MessageNotificationWorker
             chat_room_users.each do |chat_room_user|
                 #if the chat room user is not currently present in the chat room, then they are sendable 
                 #if !chat_room_user.appearance
-                    user = chat_room_user.user
-                    device = user.device #find the user of the chat room user
+                    #user = chat_room_user.user
+                    device = chat_room_user.device #find the user of the chat room user
                     #if (user.id != sender.id) and device.present?
                         #if the user has a device in the data base, then append the devices token
                         notification = Houston::Notification.new(device: device.device_token)
