@@ -53,6 +53,7 @@ class ChatRoomsController < ApplicationController
         @chat_room_user = ChatRoomUser.find_by(user_id: current_user.id, chat_room_id: params[:id])
         if @chat_room_user
           @chat_room_user.appearance = true
+          @chat_room_user.last_seen = DateTime.current
           @chat_room_user.save
           @chat_room = ChatRoom.find(params[:id])
           AppearancesChannel.broadcast_to(@chat_room, {current_user.username => {appearance: true}})
