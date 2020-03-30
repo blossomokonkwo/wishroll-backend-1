@@ -13,7 +13,11 @@ class MessageNotificationWorker
     #5. The Message controller class handles all of the logic that is required to send the remote push notifications to the need users - the users in the chat room except for the message sender.
     #6. The notifications should display the sender of the message, the content of the message - if a media item the url - and a sound that allows the app to uniquely recognize the app.
 
-
+    def establish_connection 
+        certificate = File.read('wishroll-dev-push.pem')
+        passphrase = 'greatokonkwopresidentofwishroll'
+        Houston::Connection.new Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate, passphrase
+    end
 
     require 'houston'
     APN = Houston::Client.production
@@ -41,8 +45,12 @@ class MessageNotificationWorker
                         else
                             notification.alert = "[#{user.username}] #{@message.body}"
                         end
-                        notification.sound = 'sosumi.aiff'        
-                        APN.push(notification)
+                        notification.sound = 'sosumi.aiff'
+                        connection = establish_connection
+                        connection.open
+                        connection.write(notification.message)        
+                        #APN.push(notification)
+                        connection.close
                         puts "Error: #{notification.error}." if notification.error
                     end
                 end
