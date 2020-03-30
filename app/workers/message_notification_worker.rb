@@ -12,17 +12,11 @@ class MessageNotificationWorker
     #4. Users should not recieve any notification when they're currently in the chat room that the message was sent from.
     #5. The Message controller class handles all of the logic that is required to send the remote push notifications to the need users - the users in the chat room except for the message sender.
     #6. The notifications should display the sender of the message, the content of the message - if a media item the url - and a sound that allows the app to uniquely recognize the app.
-
-    def establish_connection 
-        certificate = File.read('wishroll-dev-push.pem')
-        passphrase = 'greatokonkwopresidentofwishroll'
-        Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate, passphrase)
-    end
-
     require 'houston'
-    APN = Houston::Client.production
-    APN.certificate = File.read('wishroll-dev-push.pem')    
+   
     def perform(message_id)
+    apn = Houston::Client.production
+    apn.certificate = File.read('wishroll-dev-push.pem') 
         #the message_id is used to look find the message object.
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
@@ -49,12 +43,18 @@ class MessageNotificationWorker
                         connection = establish_connection
                         connection.open
                         connection.write(notification.message)        
-                        #APN.push(notification)
+                        apn.push(notification)
                         connection.close
                         puts "Error: #{notification.error}." if notification.error
                     end
                 end
             end            
         end
+    end
+    private
+    def establish_connection 
+        certificate = File.read("wishroll-dev-push.pem")
+        passphrase = 'greatokonkwopresidentofwishroll'
+        Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate)
     end
 end
