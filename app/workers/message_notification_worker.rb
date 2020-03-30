@@ -36,9 +36,9 @@ class MessageNotificationWorker
                         #if the user has a device in the data base, then append the devices token
                         notification = Houston::Notification.new(device: device.device_token)
                         if @message.media_url
-                            notification.alert = "[#{user.username}] #{@message.media_url}"
+                            notification.alert = "[#{chat_room_user.username}] #{@message.media_url}"
                         else
-                            notification.alert = "[#{user.username}] #{@message.body}"
+                            notification.alert = "[#{chat_room_user.username}] #{@message.body}"
                         end
                         notification.sound = 'sosumi.aiff'
                         connection = establish_connection
