@@ -15,8 +15,8 @@ class MessageNotificationWorker
     require 'houston'
    
     def perform(message_id)
-    # apn = Houston::Client.production
-    # apn.certificate = File.read('wishroll-dev-push.pem') 
+    apn = Houston::Client.production
+    apn.certificate = File.read('wishroll-dev-push.pem') 
         #the message_id is used to look find the message object.
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
@@ -44,7 +44,7 @@ class MessageNotificationWorker
                         connection = establish_connection
                         connection.open
                         connection.write(notification.message)        
-                        #apn.push(notification)
+                        apn.push(notification)
                         connection.close
                         
                     #end
