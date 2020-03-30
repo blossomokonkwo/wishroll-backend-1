@@ -20,7 +20,7 @@ class MessagesController < ApplicationController
                 #for deciding which users are inactive - not in the chat room that the message belongs to - and sending these users a notification.
                 id = @message.id
                 MessageRelayWorker.perform_async(id)
-                MessageNotificationWorker.perform_async(id)
+                MessageNotificationWorker.perform_later(id)
                 #we pass in the id of the messages, the ids of the chat room users, the id of the current user, and the id of the chat room.
                 #the notification worker should handle the filtering of appropriate notification recievers as follows: the current_user - the user who sent the message- 
                 #should not recieve the notification. The users who are present in the chat room should also not recieve the notification. Only the users who are not the
