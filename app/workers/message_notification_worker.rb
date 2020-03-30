@@ -44,8 +44,13 @@ class MessageNotificationWorker
                         connection.open
                         connection.write(notification.message)        
                         apn.push(notification)
+                        if notification.sent?
+                            sleep(10)
+                        else
+                            puts "Error: #{notification.error}\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\nn\n\\n\n\n\nn\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n." if notification.error
+                        end
                         connection.close
-                        puts "Error: #{notification.error}\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\nn\n\\n\n\n\nn\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n." if notification.error
+                        
                     end
                 end
             end            
