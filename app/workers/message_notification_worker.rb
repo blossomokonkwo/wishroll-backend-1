@@ -56,6 +56,6 @@ class MessageNotificationWorker
     def establish_connection 
         certificate = File.read("wishroll-dev-push.pem")
         passphrase = 'greatokonkwopresidentofwishroll'
-        Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate)
+        Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate, passphrase)
     end
 end
