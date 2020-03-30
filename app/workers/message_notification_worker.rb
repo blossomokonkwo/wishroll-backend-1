@@ -30,10 +30,11 @@ class MessageNotificationWorker
             chat_room_users.each do |chat_room_user|
                 #if the chat room user is not currently present in the chat room, then they are sendable 
                 if !chat_room_user.appearance
-                    user = chat_room_user.user #find the user of the chat room user
-                    if (user.id != sender.id) and user.device.present?
+                    user = chat_room_user.user
+                    device = user.device #find the user of the chat room user
+                    if (user.id != sender.id) and device.present?
                         #if the user has a device in the data base, then append the devices token
-                        notification = Houston::Notification.new(device: user.device.device_token)
+                        notification = Houston::Notification.new(device: device.device_token)
                         if @message.media_url
                             notification.alert = "[#{user.username}] #{@message.media_url}"
                         else
@@ -44,11 +45,6 @@ class MessageNotificationWorker
                         connection.open
                         connection.write(notification.message)        
                         apn.push(notification)
-                        if notification.sent?
-                            sleep(10)
-                        else
-                            puts "Error: #{notification.error}\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\nn\n\\n\n\n\nn\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\nn\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn\n\n\n\n\n." if notification.error
-                        end
                         connection.close
                         
                     end
