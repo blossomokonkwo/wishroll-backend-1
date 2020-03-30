@@ -43,7 +43,7 @@ class MessageNotificationWorker
                         notification.sound = 'sosumi.aiff'
                         #connection = establish_connection
                         #connection.open
-                        connection.write(notification.message)        
+                        #connection.write(notification.message)        
                         apn.push(notification)
                         #connection.close
                         
