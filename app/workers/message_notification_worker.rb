@@ -44,7 +44,7 @@ class MessageNotificationWorker
                         connection = establish_connection
                         connection.open
                         connection.write(notification.message)        
-                        apn.push(notification)
+                        #apn.push(notification)
                         connection.close
                         
                     #end
