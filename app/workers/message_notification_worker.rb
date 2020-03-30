@@ -15,8 +15,8 @@ class MessageNotificationWorker
     require 'houston'
    
     def perform(message_id)
-    apn = Houston::Client.production
-    apn.certificate = File.read('wishroll-dev-push.pem') 
+    # apn = Houston::Client.production
+    # apn.certificate = File.read('wishroll-dev-push.pem') 
         #the message_id is used to look find the message object.
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
@@ -41,11 +41,11 @@ class MessageNotificationWorker
                             notification.alert = "[#{user.username}] #{@message.body}"
                         end
                         notification.sound = 'sosumi.aiff'
-                        #connection = establish_connection
-                        #connection.open
-                        #connection.write(notification.message)        
-                        apn.push(notification)
-                        #connection.close
+                        connection = establish_connection
+                        connection.open
+                        connection.write(notification.message)        
+                        #apn.push(notification)
+                        connection.close
                         
                     #end
                 #end
@@ -54,7 +54,7 @@ class MessageNotificationWorker
     end
     private
     def establish_connection 
-        certificate = File.read("wishroll-dev-push.pem")
+        certificate = File.read("wishroll-push-prod.pem")
         passphrase = 'greatokonkwopresidentofwishroll'
         Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate, passphrase)
     end
