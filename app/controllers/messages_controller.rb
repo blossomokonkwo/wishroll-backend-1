@@ -53,21 +53,7 @@ class MessagesController < ApplicationController
             render json: {error: "This chat room does not exist"}, status: 404
         end
     end
-     
-    def typing
-        #called when a user has began typing
-    end
-
-    def notTyping
-        #called when user has finished typing
-    end
-    def appearance 
-        #called when a user has joined a chat room
-    end
-    def disappearance
-        #called when a user has left a chat room 
-    end
-
+    
     def update
         @message = Message.find(params[:id])
         if @message.update(params[:body])
