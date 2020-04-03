@@ -48,4 +48,18 @@ class User < ApplicationRecord
     has_many :topics
     has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id
     has_one :device, class_name: "Device", foreign_key: :user_id, dependent: :destroy
+    #user has many reported posts. We use this array of reported posts to filter content that the user doesn't want to view. This property also allows administrators
+    #to discover posts that users are reporting and find out if this post needs to be deleted of the app
+    has_many :reported_posts_relationships, -> {order "created_at DESC"}, class_name: "UserBlockedPost", foreign_key: :user_id, dependent: :destroy
+    has_many :reported_posts, through: :reported_posts_relationships, source: :post
+
+
+
+    #cache methods
+
+    def cached_reported_posts
+        Rails.cache.fetch([self, "reported_posts"]) {reported_posts.to_a}
+        #we convert the relation object to an array to make it clear that we are using a cached version of the reported_posts
+        #remember to flush the cache when changing the data base schema
+    end
 end
