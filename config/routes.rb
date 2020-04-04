@@ -68,6 +68,8 @@ Rails.application.routes.draw do
   namespace :v2 do
     get 'search-chats', to: "search_chat_rooms#search"
     resource :device, only: [:create] 
+    get 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
+    get 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
   end
   
 
@@ -79,6 +81,10 @@ Rails.application.routes.draw do
   get 'followers/:username', to: "users#followers", constraints: {username: /[0-9a-z_.]{1,60}/}
   get 'trending', to: "trending#trending"
   post 'search', to: "search#search"
+  post 'search-posts', to: 'search#search_posts'
+  post 'search-accounts', to: 'search#search_accounts'
+  post 'search-followers', to: 'search#search_followers'
+  post 'search-followed-users', to: 'search_followed_users#search'
   #post 'search-topics-and-chatrooms', to: "search_chat_rooms_and_topics#search" version 3
   delete 'logout', to: "logout#destroy" #the logout route
   post 'refresh', to: "refresh#create" #the refresh controller where refresh tokens are returned
