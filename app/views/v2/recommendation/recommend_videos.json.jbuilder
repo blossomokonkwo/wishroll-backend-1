@@ -14,7 +14,7 @@ json.posts @recommended_video_posts.each do |post|
         json.caption post.caption
         json.created_at post.created_at
         json.media_url post.posts_media_url
-        json.thumbnail_media_url post.thumbnail_media_url
+        json.thumbnail_media_url post.thumbnail_image_url
     end
     json.user do
         json.username @post_user.username
