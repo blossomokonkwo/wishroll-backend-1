@@ -62,8 +62,8 @@ class SearchController < ApplicationController
     def search_followers
         offset = params[:offset]
         limit = 10
-        @users = current_user.follower_users.where("username ILIKE ?", "#{search_params[:query]}%").order(:is_verified :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).or
-        (current_user.follower_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(:is_verified :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]))
+        @users = current_user.follower_users.where("username ILIKE ?", "#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).or
+        (current_user.follower_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]))
         if @users.any?
             render :index_followers, status: 200
         else
@@ -74,8 +74,8 @@ class SearchController < ApplicationController
     def search_followed_users
         offset = params[:offset]
         limit = 10
-        @users = current_user.followed_users.where("username ILIKE ?", "#{search_params[:query]}%").order(:is_verified :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).or
-        (current_user.followed_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(:is_verified :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url])).offset(offset).limit(limit)
+        @users = current_user.followed_users.where("username ILIKE ?", "#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).or
+        (current_user.followed_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url])).offset(offset).limit(limit)
         if @users.any?
             render :index_followed_users, status: 200
         else
