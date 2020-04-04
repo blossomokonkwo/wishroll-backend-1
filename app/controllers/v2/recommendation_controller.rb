@@ -19,7 +19,7 @@ through the page.
             post = tag.post
             url = post.posts_media_url
             #only add the post to the array if it is in a movie format(mp4, mov)
-            @recommended_video_posts << post if !current_user.reported_posts.include?(post) and (url.end_with?("mov") or url.end_with?("mp4"))
+            @recommended_video_posts << post if !current_user.reported_posts.include?(post) and (url.end_with?("mov") or url.end_with?("mp4")) and (post.id != @post.id)
         end
         if @recommended_video_posts.any? 
             #sort the recommended posts so that the creator of the reference post has his or her content more prevalant.
@@ -48,7 +48,7 @@ through the page.
         @post = Post.find(params[:post_id])
         @post_user = @post.user
         Tag.where("text ILIKE ?", "%#{params[:text]}%").order(view_count: :desc, likes_count: :desc, created_at: :desc).offset(offset).limit(limit).find_each do |tag|
-            @recommend_posts << tag.post
+            @recommend_posts << tag.post if (post.id != @post.id)
         end
         if @recommend_posts.any?
             @recommend_posts.sort! do |a,b|
