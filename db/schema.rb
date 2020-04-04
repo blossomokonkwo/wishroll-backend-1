@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_29_052936) do
+ActiveRecord::Schema.define(version: 2020_04_02_165812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 2020_03_29_052936) do
     t.bigint "comments_count", default: 0
     t.bigint "likes_count", default: 0
     t.string "posts_media_url"
+    t.string "thumbnail_image_url"
     t.index ["original_post_id"], name: "index_posts_on_original_post_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -177,6 +178,16 @@ ActiveRecord::Schema.define(version: 2020_03_29_052936) do
     t.string "media_url"
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_topics_on_user_id"
+  end
+
+  create_table "user_blocked_posts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.string "reason", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_user_blocked_posts_on_post_id"
+    t.index ["user_id"], name: "index_user_blocked_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -235,6 +246,8 @@ ActiveRecord::Schema.define(version: 2020_03_29_052936) do
   add_foreign_key "posts", "users"
   add_foreign_key "tags", "posts"
   add_foreign_key "topics", "users"
+  add_foreign_key "user_blocked_posts", "posts"
+  add_foreign_key "user_blocked_posts", "users"
   add_foreign_key "wishes", "users"
   add_foreign_key "wishes", "wishlists"
   add_foreign_key "wishlists", "users"
