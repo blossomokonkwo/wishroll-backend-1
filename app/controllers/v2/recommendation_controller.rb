@@ -23,7 +23,7 @@ through the page.
         end
         if @recommended_video_posts.any? 
             #sort the recommended posts so that the creator of the reference post has his or her content more prevalant.
-            @recommend_videos.sort! do |a,b|
+            @recommended_video_posts.sort! do |a,b|
                 if a.user == @post_user and b.user != @post_user
                     return -1
                 elsif b.user == @post_user and a.user != @post_user
