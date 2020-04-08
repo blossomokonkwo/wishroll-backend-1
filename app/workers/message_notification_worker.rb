@@ -12,17 +12,12 @@ class MessageNotificationWorker
     #4. Users should not recieve any notification when they're currently in the chat room that the message was sent from.
     #5. The Message controller class handles all of the logic that is required to send the remote push notifications to the need users - the users in the chat room except for the message sender.
     #6. The notifications should display the sender of the message, the content of the message - if a media item the url - and a sound that allows the app to uniquely recognize the app.
-    require 'houston'
-   
-    def perform(message_id)
-    apn ||= Houston::Client.production
-    apn.certificate ||= File.read('wishroll-push-prod.pem') 
+
         #the message_id is used to look find the message object.
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
         @message = Message.find(message_id)
         chat_room_users = @message.chat_room.users#ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
-        sendable_device_tokens = Array.new 
         sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
         #first check if there are any chat room users left in the chat room
         if chat_room_users.any?
@@ -34,28 +29,21 @@ class MessageNotificationWorker
                     device = chat_room_user.device #find the user of the chat room user
                     #if (user.id != sender.id) and device.present?
                         #if the user has a device in the data base, then append the devices token
-                        connection = establish_connection  
-                        connection.open
-                        notification = Houston::Notification.new(device: "<#{device.device_token}>")
+                    if device 
+                        notification = Rpush::Apns2::Notification.new
+                        notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
+                        notification.device_token = device.device_token
                         if @message.media_url
                             notification.alert = "[#{chat_room_user.username}] #{@message.media_url}"
                         else
                             notification.alert = "[#{chat_room_user.username}] #{@message.body}"
                         end
-                        notification.sound = 'sosumi.aiff'                     
-                        connection.write(notification.message)        
-                        apn.push(notification)
-                        connection.close
-                        
-                    #end
-                #end
+                        notification.sound = 'sosumi.aiff'
+                        notification.save!
+                        Rpush.push
+                        Rpush.apns_feedback
+                    end
             end            
         end
-    end
-    private
-    def establish_connection 
-        certificate = File.read("wishroll-push-prod.pem")
-        passphrase = 'greatokonkwopresidentofwishroll'
-        Houston::Connection.new(Houston::APPLE_PRODUCTION_GATEWAY_URI, certificate, passphrase)
     end
 end
