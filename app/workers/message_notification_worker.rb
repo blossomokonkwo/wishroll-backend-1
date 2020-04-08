@@ -40,6 +40,7 @@ class MessageNotificationWorker
                             notification.alert = "[#{chat_room_user.username}] #{@message.body}"
                         end
                         notification.sound = 'sosumi.aiff'
+                        notification.data = {}
                         notification.save!
                         Rpush.push
                     end
