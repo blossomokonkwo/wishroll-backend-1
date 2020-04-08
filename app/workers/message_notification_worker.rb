@@ -16,6 +16,7 @@ class MessageNotificationWorker
         #the message_id is used to look find the message object.
         #the chat room user ids is used to find the chat room user objects that are present or absent from the chat room
         #the sender_id is used to find the user that sent the
+    def perform(message_id)
         @message = Message.find(message_id)
         chat_room_users = @message.chat_room.users#ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
         sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
