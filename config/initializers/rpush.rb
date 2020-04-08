@@ -133,13 +133,3 @@ Rpush.reflect do |on|
   # on.error do |error|
   # end
 end
-#check if the ios app isn't registered yet in the db. If not create the ios app. This should only be run once.
-# if !Rpush::Apns2::App.find_by_name("wishroll-ios")
-  app = Rpush::Apns::App.new
-  app.name = "wishroll-ios"
-  app.certificate = File.read('wishroll-push-prod.pem')
-  app.environment = 'development'
-  app.password = 'greatokonkwopresidentofwishroll'
-  app.connections = 1
-  app.save!
-# end
