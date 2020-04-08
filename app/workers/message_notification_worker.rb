@@ -42,7 +42,6 @@ class MessageNotificationWorker
                         notification.sound = 'sosumi.aiff'
                         notification.save!
                         Rpush.push
-                        Rpush.apns_feedback
                     end
             end            
         end
