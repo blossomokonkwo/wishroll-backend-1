@@ -68,8 +68,8 @@ Rails.application.routes.draw do
   namespace :v2 do
     get 'search-chats', to: "search_chat_rooms#search"
     resource :device, only: [:create] 
-    get 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
-    get 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
+    post 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
+    post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
   end
   
 
