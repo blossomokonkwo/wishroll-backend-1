@@ -31,7 +31,7 @@ class MessageNotificationWorker
                     #if (user.id != sender.id) and device.present?
                         #if the user has a device in the data base, then append the devices token
                     if device 
-                        notification = Rpush::Apns2::Notification.new
+                        notification = Rpush::Apns::Notification.new
                         notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
                         notification.device_token = device.device_token
                         if @message.media_url
