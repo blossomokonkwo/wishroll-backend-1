@@ -23,6 +23,7 @@ gem 'dalli'
 gem 'connection_pool'
 gem 'sidekiq'
 gem 'houston'
+gem 'rpush'
 gem "anycable-rails"
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
