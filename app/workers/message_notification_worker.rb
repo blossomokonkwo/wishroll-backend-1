@@ -35,9 +35,9 @@ class MessageNotificationWorker
                         notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
                         notification.device_token = device.device_token
                         if @message.media_url
-                            notification.alert = "[#{chat_room_user.username}] #{@message.media_url}"
+                            notification.alert = "[#{sender.username}] #{@message.media_url}"
                         else
-                            notification.alert = "[#{chat_room_user.username}] #{@message.body}"
+                            notification.alert = "[#{sender.username}] #{@message.body}"
                         end
                         notification.sound = 'sosumi.aiff'
                         notification.data = {}
