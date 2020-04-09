@@ -27,7 +27,7 @@ class MessageNotificationWorker
                 #if the chat room user is not currently present in the chat room, then they are sendable 
                 #if !chat_room_user.appearance
                     #user = chat_room_user.user
-                    device = chat_room_user.device #find the user of the chat room user
+                    device = chat_room_user.devices.last #find the user of the chat room user
                     #if (user.id != sender.id) and device.present?
                         #if the user has a device in the data base, then append the devices token
                     if device 
@@ -35,9 +35,9 @@ class MessageNotificationWorker
                         notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
                         notification.device_token = device.device_token
                         if @message.media_url
-                            notification.alert = "[#{sender.username}] #{@message.media_url}"
+                            notification.alert = "[#{sender.username}]: #{@message.media_url}"
                         else
-                            notification.alert = "[#{sender.username}] #{@message.body}"
+                            notification.alert = "[#{sender.username}]: #{@message.body}"
                         end
                         notification.sound = 'sosumi.aiff'
                         notification.data = {}
