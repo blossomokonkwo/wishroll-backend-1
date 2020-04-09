@@ -7,6 +7,8 @@ class V2::DevicesController < ApplicationController
         if @device
         render json: nil, status: 201
         else
+            #if the device token isn't unique, we want to set the current users current device to the most recent device token that is sent through the params hash
+            current_user.current_device = Device.where(device_token: params[:device_token]).first
             render text: "This device has already been created", status: 500
         end
     end
