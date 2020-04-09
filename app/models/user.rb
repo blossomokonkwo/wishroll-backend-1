@@ -48,6 +48,8 @@ class User < ApplicationRecord
     has_many :topics
     has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id
     has_many :devices, class_name: "Device", foreign_key: :user_id, dependent: :destroy
+    has_one :current_device, class_name: "Device", foreign_key: :user_id, dependent: :destroy
+    # Ex:- scope :active, -> {where(:active => true)}
     #user has many reported posts. We use this array of reported posts to filter content that the user doesn't want to view. This property also allows administrators
     #to discover posts that users are reporting and find out if this post needs to be deleted of the app
     has_many :reported_posts_relationships, -> {order "created_at DESC"}, class_name: "UserBlockedPost", foreign_key: :user_id, dependent: :destroy
