@@ -13,7 +13,7 @@ class V2::DevicesController < ApplicationController
         render json: nil, status: 201
         else
             #if the device token isn't unique, we want to set the current users current device to the most recent device token that is sent through the params hash
-            render text: "This device has already been created", status: 500
+            render json: {error: "This device has already been created"}, status: 500
         end
     end
         
