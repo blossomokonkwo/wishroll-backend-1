@@ -18,36 +18,39 @@ class MessageNotificationWorker
         #the sender_id is used to find the user that sent the
     def perform(message_id)
         @message = Message.find(message_id)
-        chat_room_users = @message.chat_room.users#ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
         chat_room = @message.chat_room
+        chat_room_users = ChatRoomUser.where(chat_room_id: chat_room.id).includes(:user)
         sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
         #first check if there are any chat room users left in the chat room
         if chat_room_users.any?
             #loop through all the chat room users
             chat_room_users.each do |chat_room_user|
-                if chat_room_user.id != sender.id
-                    device = chat_room_user.current_device  #find the user of the chat room user
-                    if device 
-                        notification = Rpush::Apns::Notification.new
-                        notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
-                        notification.device_token = device.device_token
-                        if chat_room.name
-                            if @message.media_url
-                                notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.media_url}"
+                unless chat_room_user.muted
+                    user = chat_room_user.user
+                    if user.id != sender.id
+                        device = user.current_device  #find the user of the chat room user
+                        if device 
+                            notification = Rpush::Apns::Notification.new
+                            notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
+                            notification.device_token = device.device_token
+                            if chat_room.name
+                                if @message.media_url
+                                    notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.media_url}"
+                                else
+                                    notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.body}"
+                                end
                             else
-                                notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.body}"
+                                if @message.media_url
+                                    notification.alert = "[#{sender.username}]: #{@message.media_url}"
+                                else
+                                    notification.alert = "[#{sender.username}]: #{@message.body}"
+                                end
                             end
-                        else
-                            if @message.media_url
-                                notification.alert = "[#{sender.username}]: #{@message.media_url}"
-                            else
-                                notification.alert = "[#{sender.username}]: #{@message.body}"
-                            end
+                            notification.sound = 'sosumi.aiff'
+                            notification.data = {}
+                            notification.save!
+                            Rpush.push
                         end
-                        notification.sound = 'sosumi.aiff'
-                        notification.data = {}
-                        notification.save!
-                        Rpush.push
                     end
                 end
             end            
