@@ -58,6 +58,9 @@ class User < ApplicationRecord
 
 
     #cache methods
+    def current_device(device)
+        
+    end
 
     def cached_reported_posts
         Rails.cache.fetch([self, "reported_posts"]) {reported_posts.to_a}
