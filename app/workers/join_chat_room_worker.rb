@@ -16,9 +16,9 @@ class JoinChatRoomWorker
                             notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
                             notification.device_token = device.device_token
                             if chat_room.name
-                                notification.alert = "#{chat_room.name}\n#{user.username} has joined the chat..."
+                                notification.alert = "#{chat_room.name}\n#{joined_user.username} has joined the chat..."
                             else
-                                notification.alert = "#{user.username} has joined the chat..."
+                                notification.alert = "#{joined_user.username} has joined the chat..."
                             end
                             notification.sound = 'sosumi.aiff'
                             notification.category = "Chat Room"
