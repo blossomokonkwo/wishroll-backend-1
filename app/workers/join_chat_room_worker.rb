@@ -20,7 +20,7 @@ class JoinChatRoomWorker
                             else
                                 notification.alert = "#{joined_user.username} has joined the chat..."
                             end
-                            notification.sound = ''
+                            notification.sound = 'sosumi.aiff'
                             notification.category = "Chat Room"
                             notification.data = {}
                             notification.save!
