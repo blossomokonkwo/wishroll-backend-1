@@ -7,7 +7,7 @@ class TypingIndicatorWorker
         if chat_room_users.any?
             chat_room_users.each do |chat_room_user|
                 unless chat_room_user.muted
-                    user = chat_room_user
+                    user = chat_room_user.user
                     device = user.current_device
                     if device
                         notification = Rpush::Apns::Notification.new
