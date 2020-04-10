@@ -35,15 +35,15 @@ class MessageNotificationWorker
                             notification.device_token = device.device_token
                             if chat_room.name
                                 if @message.media_url
-                                    notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.media_url}"
+                                    notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.media_url}"
                                 else
-                                    notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.body}"
+                                    notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.body}"
                                 end
                             else
                                 if @message.media_url
-                                    notification.alert = "[#{sender.username}]: #{@message.media_url}"
+                                    notification.alert = "#{sender.username}: #{@message.media_url}"
                                 else
-                                    notification.alert = "[#{sender.username}]: #{@message.body}"
+                                    notification.alert = "#{sender.username}: #{@message.body}"
                                 end
                             end
                             notification.sound = 'sosumi.aiff'
