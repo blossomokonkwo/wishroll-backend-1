@@ -8,16 +8,19 @@ class JoinChatRoomWorker
             chat_room_users.each do |chat_room_user|
                 unless chat_room_user.muted
                     user = chat_room_user.user
-                    device = user.current_device
-                    if device
-                        notification = Rpush::Apns::Notification.new
-                        notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
-                        notification.device_token = device.device_token
-                        notification.alert = "#{user.username} has joined the chat..."
-                        notification.sound = 'sosumi.aiff'
-                        notification.data = {}
-                        notification.save!
-                        Rpush.push
+                    unless user.id == joined_user.id
+                        device = user.current_device
+                        if device
+                            notification = Rpush::Apns::Notification.new
+                            notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
+                            notification.device_token = device.device_token
+                            notification.alert = "#{user.username} has joined the chat..."
+                            notification.sound = 'sosumi.aiff'
+                            notification.category = "Chat Room"
+                            notification.data = {}
+                            notification.save!
+                            Rpush.push
+                        end
                     end
                 end
             end
