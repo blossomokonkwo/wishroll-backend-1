@@ -9,20 +9,23 @@ class TypingIndicatorWorker
             chat_room_users.each do |chat_room_user|
                 unless chat_room_user.muted
                     user = chat_room_user.user
-                    device = user.current_device
-                    if device
-                        notification = Rpush::Apns::Notification.new
-                        notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
-                        notification.device_token = device.device_token
-                        if chat_room.name
-                            notification.alert = "#{chat_room.name}\n#{typer.username} is typing..."
-                        else
-                            notification.alert = "#{typer.username} is typing..."
+                    unless user.id == typer.id
+                        device = user.current_device
+                        if device
+                            notification = Rpush::Apns::Notification.new
+                            notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
+                            notification.device_token = device.device_token
+                            if chat_room.name
+                                notification.alert = "#{chat_room.name}\n#{typer.username} is typing..."
+                            else
+                                notification.alert = "#{typer.username} is typing..."
+                            end
+                            notification.sound = 'sosumi.aiff'
+                            notification.category = "Chat Room"
+                            notification.data = {}
+                            notification.save!
+                            Rpush.push
                         end
-                        notification.sound = 'sosumi.aiff'
-                        notification.data = {}
-                        notification.save!
-                        Rpush.push
                     end
                 end
             end
