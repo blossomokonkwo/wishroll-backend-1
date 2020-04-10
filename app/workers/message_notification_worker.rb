@@ -25,12 +25,8 @@ class MessageNotificationWorker
         if chat_room_users.any?
             #loop through all the chat room users
             chat_room_users.each do |chat_room_user|
-                #if the chat room user is not currently present in the chat room, then they are sendable 
-                #if !chat_room_user.appearance
-                    #user = chat_room_user.user
-                    device = chat_room_user.current_device #find the user of the chat room user
-                    #if (user.id != sender.id) and device.present?
-                        #if the user has a device in the data base, then append the devices token
+                if chat_room_user.id != sender.id
+                    device = chat_room_user.current_device  #find the user of the chat room user
                     if device 
                         notification = Rpush::Apns::Notification.new
                         notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
@@ -53,6 +49,7 @@ class MessageNotificationWorker
                         notification.save!
                         Rpush.push
                     end
+                end
             end            
         end
     end
