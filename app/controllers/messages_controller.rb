@@ -41,7 +41,7 @@ class MessagesController < ApplicationController
         @chat_room = ChatRoom.find(params[:chat_room_id])
         if @chat_room
             #these will be passed in as query params
-            limit = 50
+            limit = 15
             offset = params[:offset]
             @messages = @chat_room.messages.offset(offset).limit(limit)
             if @messages.any?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_07_212118) do
+ActiveRecord::Schema.define(version: 2020_04_10_042505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2020_04_07_212118) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "appearance", default: false
     t.datetime "last_seen"
+    t.boolean "muted", default: false
     t.index ["chat_room_id"], name: "index_chat_room_users_on_chat_room_id"
     t.index ["user_id", "chat_room_id"], name: "index_chat_room_users_on_user_id_and_chat_room_id", unique: true
     t.index ["user_id"], name: "index_chat_room_users_on_user_id"
