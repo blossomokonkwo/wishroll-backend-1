@@ -19,6 +19,7 @@ class MessageNotificationWorker
     def perform(message_id)
         @message = Message.find(message_id)
         chat_room_users = @message.chat_room.users#ChatRoomUser.where(chat_room_id: @message.chat_room.id).includes(:user)
+        chat_room = @message.chat_room
         sender = @message.user #the sender is the person who sent the message. They should not recieve any notifications
         #first check if there are any chat room users left in the chat room
         if chat_room_users.any?
@@ -34,10 +35,18 @@ class MessageNotificationWorker
                         notification = Rpush::Apns::Notification.new
                         notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
                         notification.device_token = device.device_token
-                        if @message.media_url
-                            notification.alert = "[#{sender.username}]: #{@message.media_url}"
+                        if chat_room.name
+                            if @message.media_url
+                                notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.media_url}"
+                            else
+                                notification.alert = "#{chat_room.name}\n[#{sender.username}]: #{@message.body}"
+                            end
                         else
-                            notification.alert = "[#{sender.username}]: #{@message.body}"
+                            if @message.media_url
+                                notification.alert = "[#{sender.username}]: #{@message.media_url}"
+                            else
+                                notification.alert = "[#{sender.username}]: #{@message.body}"
+                            end
                         end
                         notification.sound = 'sosumi.aiff'
                         notification.data = {}
