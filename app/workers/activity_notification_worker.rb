@@ -12,7 +12,7 @@ class ActivityNotificationWorker
                 comment_body = Comment.find(activity.content_id).body
                 n.alert = "#{activity.activity_phrase}: #{comment_body}"
             elsif  activity.activity_type == "Post"
-                n.alert = "#{activity.activity_phrase}\n#{activity.post_url}"
+                n.alert = "#{activity.activity_phrase} 💕\n#{activity.post_url}"
             else
                 n.alert = "#{activity.activity_phrase}"
             end
