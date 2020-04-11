@@ -1,6 +1,6 @@
 class ActivityNotificationWorker 
     include Sidekiq::Worker
-    sidekiq_options queue: "notifications", retry: true
+    sidekiq_options queue: "notifications", retry: false
     def perform(activity_id)
         activity = Activity.find(activity_id)
         if activity
