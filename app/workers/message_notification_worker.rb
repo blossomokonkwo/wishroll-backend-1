@@ -1,6 +1,6 @@
 class MessageNotificationWorker
     include Sidekiq::Worker
-    sidekiq_options queue: "notifications", retry: true
+    sidekiq_options queue: :notifications, retry: true
 
     #The message notification worker encapsulates all of the functionality that is required to push a notification to
     #a user prompting them to check out an unread message. The logic that is needed to perform such an operation is as follows.

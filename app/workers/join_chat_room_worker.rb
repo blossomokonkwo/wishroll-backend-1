@@ -1,6 +1,6 @@
 class JoinChatRoomWorker
     include Sidekiq::Worker
-    sidekiq_options queue: "notifications"
+    sidekiq_options queue: :notifications
     def perform(user_id, chat_room_id)
         joined_user = User.find(user_id)
         chat_room_users = ChatRoomUser.where(chat_room_id: chat_room_id).includes(:user)
