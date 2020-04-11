@@ -20,7 +20,7 @@ class TypingIndicatorWorker
                             else
                                 notification.alert = "#{typer.username} is typing..."
                             end
-                            notification.sound = 'sosumi.aiff'
+                            notification.sound = ''
                             notification.category = "Chat Room"
                             notification.data = {}
                             notification.save!
