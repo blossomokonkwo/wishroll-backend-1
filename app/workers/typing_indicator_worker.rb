@@ -1,6 +1,6 @@
 class TypingIndicatorWorker
     include Sidekiq::Worker
-    sidekiq_options queue: "notifications", retry: true
+    sidekiq_options queue: "notifications", retry: false
     def perform(user_id, chat_room_id)
         typer = User.find user_id
         chat_room = ChatRoom.find(chat_room_id)
