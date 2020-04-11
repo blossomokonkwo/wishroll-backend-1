@@ -1,4 +1,4 @@
-:concurrency: 25
+:concurrency: 15
 :logfile: ./log/sidekiq.log
 :queues:
   - ["messages", 10]
