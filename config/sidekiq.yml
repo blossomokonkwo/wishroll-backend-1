@@ -1,4 +1,4 @@
-:concurrency: 15
+:concurrency: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 :logfile: ./log/sidekiq.log
 :queues:
   - ["messages", 10]
