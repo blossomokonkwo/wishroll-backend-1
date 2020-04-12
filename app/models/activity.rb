@@ -8,6 +8,6 @@ class Activity < ApplicationRecord
   after_create do
     #we want to delete instances of the activity class after 3 days.
     ActivityCleanUpWorker.perform_in(7.days, self.id)
-    ActivityNotificationWorker.perform_async(self.id)
+    ActivityNotificationJob.perform_now(self.id)
   end
 end

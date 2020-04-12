@@ -1,4 +1,4 @@
-class ActivityNotification < ApplicationJob  
+class ActivityNotificationJob < ApplicationJob  
     queue_as :notifications
     def perform(activity_id)
         activity = Activity.find(activity_id)
