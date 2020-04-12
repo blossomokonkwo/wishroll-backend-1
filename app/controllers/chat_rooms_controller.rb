@@ -122,7 +122,7 @@ class ChatRoomsController < ApplicationController
         if new_chat_room_member.present?
           chat_room_user = ChatRoomUser.new(user_id: new_chat_room_member.id, chat_room_id: params[:chat_room_id])
           if chat_room_user.save
-            JoinChatRoomNotificationJob.perform_later(new_chat_room_member.id, params[:chat_room_id])
+            JoinChatRoomNotificationJob.perform_now(new_chat_room_member.id, params[:chat_room_id])
               render json: nil, status: 201
           else
               render json: {error: "You were unable to join the chat room "}, status: 400
