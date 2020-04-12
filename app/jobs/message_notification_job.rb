@@ -48,7 +48,7 @@ class MessageNotificationJob < ApplicationJob
                             notification.sound = 'sosumi.aiff'
                             notification.data = {}
                             notification.save!
-                            Rpush.push
+                            #Rpush.push
                         end
                     end
                 end
