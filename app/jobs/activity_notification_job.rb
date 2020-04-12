@@ -19,7 +19,7 @@ class ActivityNotificationJob < ApplicationJob
                 n.sound = 'sosumi.aiff'
                 n.data = {}
                 n.save!
-                Rpush.push
+                #Rpush.push
             end
         end        
     end

@@ -5,7 +5,6 @@ class CommentsController < ApplicationController
         @comment.user_id = current_user.id
         @post = Post.find(params[:post_id])
         if @comment.save
-            render json: nil, status: :created
             if !current_user.posts.include?(@post) #we are checking to ensure that we are not creating an activity object when a user is commenting on their own post                
                 activity_phrase = nil
                 user_id = nil
@@ -19,6 +18,7 @@ class CommentsController < ApplicationController
                     activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: "Comment", content_id: @comment.id, post_url: @post.posts_media_url)
                     activity.save
             end
+            render json: nil, status: :created
         else
             render json: {error: "Your comment could not be created at this time"}, status: 400
         end

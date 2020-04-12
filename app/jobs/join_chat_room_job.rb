@@ -23,7 +23,7 @@ class JoinChatRoomNotificationJob < ApplicationJob
                             notification.category = "Chat Room"
                             notification.data = {}
                             notification.save!
-                            Rpush.push
+                            #Rpush.push
                         end
                     end
                 end
