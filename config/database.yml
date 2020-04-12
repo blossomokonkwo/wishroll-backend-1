@@ -20,6 +20,7 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("DB_POOL_SIZE") { 5 } %>
+  timeout: 10000
 
 development:
   primary: 
