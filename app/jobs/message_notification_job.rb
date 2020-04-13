@@ -23,6 +23,7 @@ class MessageNotificationJob < ApplicationJob
         #first check if there are any chat room users left in the chat room
         if chat_room_users.any?
             #loop through all the chat room users
+            app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
             chat_room_users.each do |chat_room_user|
                 unless chat_room_user.muted
                     user = chat_room_user.user
@@ -30,7 +31,7 @@ class MessageNotificationJob < ApplicationJob
                         device = user.current_device  #find the user of the chat room user
                         if device 
                             notification = Rpush::Apns::Notification.new
-                            notification.app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
+                            notification.app = app
                             notification.device_token = device.device_token
                             if chat_room.name
                                 if @message.media_url
@@ -48,7 +49,6 @@ class MessageNotificationJob < ApplicationJob
                             notification.sound = 'sosumi.aiff'
                             notification.data = {}
                             notification.save!
-                            #Rpush.push
                         end
                     end
                 end
