@@ -45,8 +45,7 @@ class SearchController < ApplicationController
         @id = current_user.id
         limit = 12
         offset = params[:offset]
-        @users = User.where("username ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]) 
-        .or(User.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url])).offset(offset).limit(limit)
+        @users = User.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).offset(offset).limit(limit)
         #filter the returned users to ensure that users who are blocked do not interact with each other
         @users.to_a.delete_if do |user|
             #if a user is blcoked by the current user or the current user is blocked by the other user, then we remove them from the array
@@ -61,11 +60,10 @@ class SearchController < ApplicationController
 
     def search_followers
         offset = params[:offset]
-        user = User.find_by(username: params[:username])
+        @user = User.find_by(username: params[:username])
+        @current_user = current_user
         limit = 10
-        @users = user.follower_users.where("username ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at])
-                .or(
-                (user.follower_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]))).limit(limit).offset(offset)
+        @users = @user.follower_users.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]).limit(limit).offset(offset)
         if @users.any?
             render :index_followers, status: 200
         else
@@ -76,9 +74,9 @@ class SearchController < ApplicationController
     def search_followed_users
         offset = params[:offset]
         limit = 10
-        user = User.find_by(username: params[:username])
-        @users = user.followed_users.where("username ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]).or(
-        (user.followed_users.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]))).offset(offset).limit(limit)
+        @current_user = current_user
+        @user = User.find_by(username: params[:username])
+        @users = @user.followed_users.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]).offset(offset).limit(limit)
         if @users.any?
             render :index_followed_users, status: 200
         else
@@ -86,8 +84,41 @@ class SearchController < ApplicationController
         end
     end
 
+    def search_chat_room_users
+        offset = params[:offset]
+        limit = 15
+        @chat_room_users = ChatRoomUser.where(chat_room_id: params[:chat_room_id]).select(:user_id).joins(:user).where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").includes([:user]).limit(limit).offset(offset)
+        if @chat_room_users.any?
+            render :chat_room_users_index, status: 200
+        else
+            render json: nil, status: 404
+        end
+    end
+
+    def search_chat_rooms
+        offset = params[:offset]
+        limit = 15
+        @chat_rooms = ChatRoom.where("name ILIKE ?", "%#{search_params[:query]}%").select(:name).order(num_users: :desc, created_at: :desc).limit(limit).offset(offset)
+        if @chat_rooms.any?
+            render :chat_rooms_index, status: 200
+        else
+            render json: nil, status: 404
+        end
+    end
+
+    def search_topics
+        offset = params[:offset]
+        limit = 15
+        @topics = Topic.where("title ILIKE ?", "%#{search_params[:query]}%").select([:title, :media_url]).order(hot_topic: :desc, created_at: :asc).limit(limit).offset(offset)
+        if @topics.any?
+            render :topics_index, status: 200
+        else
+            render json: nil, status: 404
+        end
+    end
+
     private 
     def search_params
-        params.permit :query, :query_type, :offset, :username
+        params.permit :query, :query_type, :offset, :username, :chat_room_id
     end
 end
