@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_13_163909) do
+ActiveRecord::Schema.define(version: 2020_04_13_191140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2020_04_13_163909) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "creator_id", null: false
     t.index ["creator_id"], name: "index_chat_rooms_on_creator_id"
+    t.index ["name"], name: "index_chat_rooms_on_name"
     t.index ["topic_id"], name: "index_chat_rooms_on_topic_id"
   end
 
@@ -248,6 +249,7 @@ ActiveRecord::Schema.define(version: 2020_04_13_163909) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "media_url"
     t.bigint "user_id", null: false
+    t.index ["title"], name: "index_topics_on_title"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
@@ -276,6 +278,7 @@ ActiveRecord::Schema.define(version: 2020_04_13_163909) do
     t.string "full_name"
     t.bigint "total_view_count", default: 0, null: false
     t.index ["email"], name: "email"
+    t.index ["full_name"], name: "index_users_on_full_name"
     t.index ["username"], name: "index_users_on_username"
   end
 
