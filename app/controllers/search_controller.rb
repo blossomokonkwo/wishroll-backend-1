@@ -25,7 +25,7 @@ class SearchController < ApplicationController
     #v2: in version 2 of the WishRoll api, we search for models using specific controller actions instead of using just one action
     def search_posts
         @id = current_user.id
-        limit = 25
+        limit = 15
         offset = params[:offset]
         @posts = Array.new
         Tag.where("text ILIKE ?", "%#{search_params[:query]}%").offset(offset).limit(limit).includes([:post]).find_each do |tag|
