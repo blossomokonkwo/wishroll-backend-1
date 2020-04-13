@@ -25,7 +25,7 @@ class SearchController < ApplicationController
     #v2: in version 2 of the WishRoll api, we search for models using specific controller actions instead of using just one action
     def search_posts
         @id = current_user.id
-        limit = 12
+        limit = 15
         offset = params[:offset]
         @posts = Array.new
         Tag.where("text ILIKE ?", "%#{search_params[:query]}%").offset(offset).limit(limit).includes([:post]).find_each do |tag|
@@ -43,7 +43,7 @@ class SearchController < ApplicationController
 
     def search_accounts
         @id = current_user.id
-        limit = 12
+        limit = 15
         offset = params[:offset]
         @users = User.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]).offset(offset).limit(limit)
         #filter the returned users to ensure that users who are blocked do not interact with each other
