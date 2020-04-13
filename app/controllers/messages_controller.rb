@@ -16,10 +16,9 @@ class MessagesController < ApplicationController
                 @message.body = profanity_filter.filter_message(@message.body) if @message.body
             end
             if @message.save  
-                #the message relay worker is responsible for forwarding the message to the channel subscribers. The MessageNotificationWorker is responsible 
+                #the message relay worker is responsible for forwarding the message to the channel subscribers. The MessageNotificationJob is responsible 
                 #for deciding which users are inactive - not in the chat room that the message belongs to - and sending these users a notification.
                 id = @message.id
-                #MessageRelayWorker.perform_async(id)
                 MessageRelayJob.perform_now(id)
                 MessageNotificationJob.perform_now(id)
                 #we pass in the id of the messages, the ids of the chat room users, the id of the current user, and the id of the chat room.
