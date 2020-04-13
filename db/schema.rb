@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_10_042505) do
+ActiveRecord::Schema.define(version: 2020_04_13_163909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 2020_04_10_042505) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "post_id"
     t.index ["post_id"], name: "index_tags_on_post_id"
+    t.index ["text"], name: "index_tags_on_text"
   end
 
   create_table "topics", force: :cascade do |t|
