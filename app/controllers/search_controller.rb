@@ -27,10 +27,7 @@ class SearchController < ApplicationController
         @id = current_user.id
         limit = 15
         offset = params[:offset]
-        @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{search_params[:query]}%").offset(offset).limit(limit)
-        # Tag.where("text ILIKE ?", "%#{search_params[:query]}%").includes([:post]).offset(offset).limit(limit).find_each do |tag|
-        #     @posts << tag.post
-        # end
+        @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{search_params[:query]}%").order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
         @posts.to_a.delete_if do |post|
             current_user.reported_posts.include?(post)
         end
