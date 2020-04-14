@@ -1,5 +1,5 @@
 #This file contains the configuration options for the JWTSessions jem
-JWTSessions.encryption_key = ENV['RAILS_MASTER_KEY']#the encryption key
+JWTSessions.encryption_key = ENV['RAILS_MASTER_KEY'] || "greatokonkwopresidentofwishroll"#the encryption key
 JWTSessions.access_exp_time = 31_556_952 #The access token will be available for one year
 JWTSessions.refresh_exp_time = (604800 * 110) # The refresh token will be available for 2 years
 JWTSessions.token_store = :redis, {
