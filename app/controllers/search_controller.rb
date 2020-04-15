@@ -106,7 +106,7 @@ class SearchController < ApplicationController
     def search_topics
         offset = params[:offset]
         limit = 15
-        @topics = Topic.where("title ILIKE ?", "%#{search_params[:query]}%").select([:title, :media_url]).order(hot_topic: :desc, created_at: :asc).limit(limit).offset(offset)
+        @topics = Topic.where("title ILIKE ?", "%#{search_params[:query]}%").select([:title, :media_url, :hot_topic, :id, :created_at]).order(hot_topic: :desc, created_at: :asc).limit(limit).offset(offset)
         if @topics.any?
             render :topics_index, status: 200
         else
