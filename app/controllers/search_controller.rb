@@ -95,7 +95,7 @@ class SearchController < ApplicationController
     def search_chat_rooms
         offset = params[:offset]
         limit = 15
-        @chat_rooms = ChatRoom.where("name ILIKE ?", "%#{search_params[:query]}%").select(:name).order(num_users: :desc, created_at: :desc).limit(limit).offset(offset)
+        @chat_rooms = ChatRoom.where("name ILIKE ?", "%#{search_params[:query]}%").order(num_users: :desc, created_at: :desc).limit(limit).offset(offset)
         if @chat_rooms.any?
             render :chat_rooms_index, status: 200
         else
