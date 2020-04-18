@@ -12,10 +12,10 @@ class User < ApplicationRecord
     has_many :comments, class_name: "Comment"
     
     #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
-    has_many :active_relationships, -> {order "created_at DESC"},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+    has_many :active_relationships, -> {order(created_at: :desc, id: :desc)},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
 
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
-    has_many :passive_relationships, -> {order "created_at DESC"}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
+    has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
     
     has_and_belongs_to_many :blocked_users, -> { select([:username, :id])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
@@ -48,7 +48,7 @@ class User < ApplicationRecord
     has_many :topics
     has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id
     has_many :devices, class_name: "Device", foreign_key: :user_id, dependent: :destroy
-    has_one :current_device, -> {order("created_at DESC").limit(1)}, class_name: "Device", foreign_key: :user_id, dependent: :destroy
+    has_one :current_device, -> {where(current_device: true).limit(1)}, class_name: "Device", foreign_key: :user_id, dependent: :destroy
     # Ex:- scope :active, -> {where(:active => true)}
     #user has many reported posts. We use this array of reported posts to filter content that the user doesn't want to view. This property also allows administrators
     #to discover posts that users are reporting and find out if this post needs to be deleted of the app

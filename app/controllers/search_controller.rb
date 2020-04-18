@@ -95,7 +95,7 @@ class SearchController < ApplicationController
     def search_chat_rooms
         offset = params[:offset]
         limit = 15
-        @chat_rooms = ChatRoom.where("name ILIKE ?", "%#{search_params[:query]}%").select(:name).order(num_users: :desc, created_at: :desc).limit(limit).offset(offset)
+        @chat_rooms = ChatRoom.where("name ILIKE ?", "%#{search_params[:query]}%").order(num_users: :desc, created_at: :desc).limit(limit).offset(offset)
         if @chat_rooms.any?
             render :chat_rooms_index, status: 200
         else
@@ -106,7 +106,7 @@ class SearchController < ApplicationController
     def search_topics
         offset = params[:offset]
         limit = 15
-        @topics = Topic.where("title ILIKE ?", "%#{search_params[:query]}%").select([:title, :media_url]).order(hot_topic: :desc, created_at: :asc).limit(limit).offset(offset)
+        @topics = Topic.where("title ILIKE ?", "%#{search_params[:query]}%").select([:title, :media_url, :hot_topic, :id, :created_at]).includes([:topic_image_attachment]).order(hot_topic: :desc, created_at: :asc).limit(limit).offset(offset)
         if @topics.any?
             render :topics_index, status: 200
         else

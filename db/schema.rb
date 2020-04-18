@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_13_191140) do
+ActiveRecord::Schema.define(version: 2020_04_17_184858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_04_13_191140) do
     t.string "platform"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "current_device", default: false
     t.index ["device_token"], name: "index_devices_on_device_token"
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
