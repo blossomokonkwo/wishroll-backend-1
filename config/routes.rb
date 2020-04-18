@@ -70,6 +70,8 @@ Rails.application.routes.draw do
     resource :device, only: [:create] 
     post 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
     post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
+    get 'followers/:username', to: 'relationships#followers'
+    get 'following/:username', to: 'relationships#following'
   end
   
 
