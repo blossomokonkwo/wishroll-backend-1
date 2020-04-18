@@ -22,7 +22,7 @@ class V2::RelationshipsController < ApplicationController
         @user = User.find_by(username: params[:username])
         @followed_users = @user.followed_users.offset(offset).limit(limit)
         if @followed_users.any?
-            render :followed_users, status: :ok
+            render :following, status: :ok
         else
             render json: nil, status: :not_found
         end
