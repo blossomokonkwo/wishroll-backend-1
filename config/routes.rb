@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
     get 'followers/:username', to: 'relationships#followers'
     get 'following/:username', to: 'relationships#following'
+    get 'activities', to: 'activities#index'
   end
   
 
