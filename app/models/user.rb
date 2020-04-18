@@ -12,10 +12,10 @@ class User < ApplicationRecord
     has_many :comments, class_name: "Comment"
     
     #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
-    has_many :active_relationships, -> {order "created_at DESC"},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+    has_many :active_relationships, -> {order(created_at: :desc, id: :desc)},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
 
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
-    has_many :passive_relationships, -> {order "created_at DESC"}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
+    has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
     
     has_and_belongs_to_many :blocked_users, -> { select([:username, :id])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
