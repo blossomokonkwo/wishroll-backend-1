@@ -6,7 +6,7 @@ class V2::RelationshipsController < ApplicationController
         limit = 15
         @user = User.find_by(username: params[:username])
         @current_user = current_user
-        @followers = @user.follower_users.offset(offset)
+        @followers = @user.follower_users.offset(offset).limit(limit)
         if @followers.any?
             render :followers, status: :ok
         else
