@@ -6,9 +6,6 @@ class V2::DevicesController < ApplicationController
         old_current_device = current_user.current_device    
         if @device           
             if !old_current_device 
-                if old_current_device.device_token != @device.device_token
-                    old_current_device.update!(current_device: false)
-                end
                 @device.current_device = true
                 @device.save
             end
