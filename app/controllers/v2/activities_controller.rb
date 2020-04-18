@@ -1,4 +1,5 @@
 class V2::ActivitiesController < ApplicationController
+    before_action :authorize_by_access_header!
     def index
         offset = params[:offset]
         limit = 15
