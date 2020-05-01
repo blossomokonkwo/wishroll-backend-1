@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :tags, only: [:create]
   end
   
+  post 'image_size', to: "image#image_size"
   #resources for public chatrooms AKA chat rooms that are under a topic 
   resources :topics, except: [:show, :update], shallow: true do 
     resources :chat_rooms, only: [:create, :index, :destroy, :update, :show] do 

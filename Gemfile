@@ -25,6 +25,7 @@ gem 'sidekiq'
 gem 'houston'
 gem 'rpush'
 gem "anycable-rails"
+gem 'fastimage'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
