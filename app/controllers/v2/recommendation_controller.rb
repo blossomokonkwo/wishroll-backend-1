@@ -15,7 +15,7 @@ through the page.
         @post = Post.find(params[:post_id]) #the reference post for the recommendations
         @post_user = @post.user #the reference post user
         #loop through the tags of the video in order to derive their associated posts
-        Tag.where("text ILIKE ?", "%#{params[:text]}%").order(view_count: :desc, likes_count: :desc, created_at: :desc).offset(offset).limit(limit).find_each do |tag|
+        Tag.where("text ILIKE ?", "%#{params[:text]}%").order(view_count: :desc, likes_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit).find_each do |tag|
             post = tag.post
             url = post.posts_media_url
             #only add the post to the array if it is in a movie format(mp4, mov)
