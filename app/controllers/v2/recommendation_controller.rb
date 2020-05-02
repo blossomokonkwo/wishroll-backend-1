@@ -9,6 +9,7 @@ through the page.
 =end
     def recommend_videos
         #recommend only videos
+        @id = current_user.id
         @tags = params[:tags]
         limit = 50 / @tags.count
         limit += 1 if limit == 0
