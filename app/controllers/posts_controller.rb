@@ -24,7 +24,7 @@ class PostsController < ApplicationController
         if @id != @user.id
           ActiveRecord::Base.connected_to(role: :writing) do
             @post.view_count += 1
-            @user.total_view_count += 1
+            @user.view_count += 1
             @user.save 
             @post.save
           end
