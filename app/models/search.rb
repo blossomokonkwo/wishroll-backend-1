@@ -1,7 +1,7 @@
 class Search < ApplicationRecord
   validate :increment_occurences_count_on_duplicate_queries, on: :create
   has_one :location, as: :locateable, dependent: :destroy
-  enum :result_type, [:unknown, :roll, :post, :user, :location, :tag]
+  enum result_type: [:unknown, :roll, :post, :user, :location, :tag]
   
   #increment the occurences count of an already present search query if a duplicate query is attempting creation 
   def increment_occurences_count_on_duplicate_queries
