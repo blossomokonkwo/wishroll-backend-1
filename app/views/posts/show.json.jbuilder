@@ -1,7 +1,7 @@
 json.user do 
     json.username @user.username
-    json.is_verified @user.is_verified
-    json.profile_picture_url @user.profile_picture_url
+    json.is_verified @user.verified
+    json.profile_picture_url @user.avatar_url
 end
 json.post do 
     json.id @post.id
@@ -15,7 +15,7 @@ json.post do
     end
     json.caption @post.caption
     json.created_at @post.created_at
-    json.media_url @post.posts_media_url
-    json.original_post_id @post.original_post_id
+    json.media_url @post.media_url
+    json.original_post_id nil
 end
 json.tags @post.tags, :id, :text     

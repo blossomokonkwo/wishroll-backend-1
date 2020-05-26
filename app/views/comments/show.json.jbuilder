@@ -13,9 +13,9 @@ json.array! @replies.each do |comment|
             json.replies_count comment.replies_count
         end
         json.user do 
-            json.profile_picture_url @user.profile_picture_url
+            json.profile_picture_url @user.avatar_url
             json.username @user.username
-            json.is_verified @user.is_verified
+            json.is_verified @user.verified
         end
     end
 end

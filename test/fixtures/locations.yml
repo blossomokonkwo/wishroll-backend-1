@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  lattitude: 1.5
+  longitude: 9.99
+  city: MyString
+  country: MyString
+  ip: MyString
+  region: MyString
+  timezone: MyString
+  postal_code: 
+
+two:
+  user: two
+  lattitude: 1.5
+  longitude: 9.99
+  city: MyString
+  country: MyString
+  ip: MyString
+  region: MyString
+  timezone: MyString
+  postal_code: 

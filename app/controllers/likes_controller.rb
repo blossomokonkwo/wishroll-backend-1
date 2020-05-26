@@ -20,9 +20,9 @@ class LikesController < ApplicationController
                         else
                             activity_phrase = "#{current_user.username} liked your comment"
                         end
-                        post_image_url = Post.find(comment.post_id).posts_media_url
-                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
-                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                        post_image_url = Post.find(comment.post_id).media_url
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, media_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, media_url: post_image_url)
                             activity.save
                         end #it is crucial that the activity object is saved and persisted on the DB
                         render json: nil, status: 200
@@ -39,14 +39,12 @@ class LikesController < ApplicationController
                     if current_user.id != user_id
                         content_id = post.id
                         activity_type = params[:likeable_type]
-                        if post.original_post_id
-                            activity_phrase = "#{current_user.username} liked your reaction"
-                        else
+                        if post
                             activity_phrase = "#{current_user.username} liked your post"
+                            post_image_url = post.media_url
                         end
-                        post_image_url = post.posts_media_url
-                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, post_url: post_image_url) == nil
-                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, post_url: post_image_url)
+                        if Activity.find_by(user_id: user_id, active_user_id: current_user.id, activity_type: activity_type, media_url: post_image_url) == nil
+                            activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, content_id: content_id, activity_type: activity_type, media_url: post_image_url)
                             activity.save
                         end #it is crucial that the activity object is saved and persisted on the DB
                     end

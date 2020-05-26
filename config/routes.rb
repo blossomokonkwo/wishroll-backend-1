@@ -67,13 +67,63 @@ Rails.application.routes.draw do
   delete 'user/delete', to: "users#destroy"
 
   namespace :v2 do
+    namespace :search do
+      get 'posts', to: 'posts#search'
+      get 'users', to: 'users#search'
+      get 'rolls', to: 'rolls#search'
+      get 'chatrooms', to: 'chat_rooms#search'
+      get 'topics', to: 'topics#search'
+    end
+    namespace :trending do
+      get 'posts', to: 'posts#trending'
+      get 'rolls', to: 'rolls#trending'
+      get 'topics', to: 'topics#trending'
+    end
+    namespace :feed do
+      get 'posts', to: 'posts#feed'
+      get 'rolls', to: 'rolls#feed'
+    end
+    resources :rolls do
+      resources :comments, shallow: true do
+        resources :likes, shallow: true
+      end
+      resources :likes, shallow: true
+      resources :tags, shallow: true
+    end
+    resources :posts, only: [:show, :update, :create, :destroy] do
+      resources :comments, shallow: true do
+        resources :likes, shallow: true
+      end
+      resources :likes, shallow: true
+      resources :tags, shallow: true
+    end
+    resources :users, only: [:update, :show] 
+    get 'users/:user_id/posts', to: 'users#posts'
+    get 'users/:user_id/liked-posts', to: 'users#liked_posts'
+    resources :views, only: [:create, :index]
+    resources :activities, only: [:index]
+    post 'follow/:user_id', to: 'relationships#follow'
+    delete 'unfollow/:user_id', to: 'relationships#unfollow'
+    post 'block/:username', to: 'relationships#block', constraints: {username: /[0-9a-z_.]{1,60}/}
+    post 'unblock/:username', to: 'relationships#unblock', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get  'blocked-users', to: 'relationships#blocked_users'
+    get ':username/followers', to: 'relationships#followers', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get ':username/following', to: 'relationships#following', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get ':username/posts', to: 'users#posts', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get ':username/liked-posts', to: 'users#liked_posts', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get 'activities', to: 'activities#index'
     get 'search-chats', to: "search_chat_rooms#search"
     resource :device, only: [:create] 
     post 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
     post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
     get 'followers/:username', to: 'relationships#followers'
     get 'following/:username', to: 'relationships#following'
-    get 'activities', to: 'activities#index'
+    delete 'unlike', to: 'likes#destroy'
+    post 'signup', to: "signup#new"
+    post 'signup/email', to: "signup#validate_email"
+    post 'signup/username', to: "signup#validate_username"
+    post 'login', to: 'login#new'
+    get ':username', to: 'users#show', constraints: {username: /[0-9a-z_.]{1,60}/}
   end
   
 

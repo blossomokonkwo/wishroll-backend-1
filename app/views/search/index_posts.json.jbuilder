@@ -9,7 +9,7 @@ json.array! @posts.each do |post|
     else
         json.liked false
     end
-    json.thumbnail_url post.thumbnail_image_url
+    json.thumbnail_url post.thumbnail_url
     json.comments_count post.comments_count
-    json.media_url post.posts_media_url
+    json.media_url post.media_url
 end

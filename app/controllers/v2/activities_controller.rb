@@ -3,7 +3,12 @@ class V2::ActivitiesController < ApplicationController
     def index
         offset = params[:offset]
         limit = 15
-        @activities = Activity.where(user_id: current_user.id).order(created_at: :desc).limit(limit).offset(offset)
+        @activities = Array.new
+        if offset
+            @activities = current_user.activities.where('created_at < ?', offset).limit(limit).to_a
+        else
+            @activities = current_user.activities.limit(limit).to_a
+        end
         if @activities.any?
             render :index, status: :ok
         else

@@ -17,8 +17,8 @@ json.array! @messages.includes([:chat_room, :user]).each do |message|
         json.user do
             json.id messenger.id
             json.username messenger.username
-            json.profile_picture_url messenger.profile_picture_url
-            json.is_verified messenger.is_verified
+            json.profile_picture_url messenger.avatar_url
+            json.is_verified messenger.verified
         end 
     end
 end

@@ -7,4 +7,10 @@ class ChatRoom < ApplicationRecord
   has_one :recent_message, -> {(order "updated_at DESC").limit(1)}, class_name: "Message", foreign_key: :chat_room_id
   #validations
   validates :creator, presence: true
+
+  def cached_messages
+    Rails.cache.fetch("#{cache_key_with_version}/cached_messages") {self.messages}
+  end
+  
+  
 end

@@ -1,8 +1,8 @@
 json.users @users.each do |user|
         json.username user.username
-        json.full_name user.full_name
-        json.is_verified user.is_verified
-        json.profile_picture_url user.profile_picture_url
+        json.full_name user.name
+        json.is_verified user.verified
+        json.profile_picture_url user.avatar_url
 end
 json.posts @posts.each do |post|
     json.id post.id
@@ -15,8 +15,8 @@ json.posts @posts.each do |post|
         json.liked false
     end
     json.comments_count post.comments_count
-    json.original_post_id post.original_post_id
+    json.original_post_id nil
     json.caption post.caption
     json.created_at post.created_at
-    json.media_url post.posts_media_url
+    json.media_url post.media_url
 end

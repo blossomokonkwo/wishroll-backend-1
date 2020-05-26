@@ -22,12 +22,13 @@ gem 'newrelic_rpm'
 gem 'dalli'
 gem 'connection_pool'
 gem 'sidekiq'
-gem 'houston'
 gem 'rpush'
 gem "anycable-rails"
 gem 'fastimage'
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+gem 'mini_magick', '~> 4.8'
+gem  'geocoder'
+gem 'ruby-continent', '~> 0.1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_184858) do
+ActiveRecord::Schema.define(version: 2020_05_23_050900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -45,7 +45,8 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "activity_phrase", null: false
     t.bigint "content_id"
-    t.string "post_url"
+    t.string "media_url"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -95,14 +96,17 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
   create_table "comments", force: :cascade do |t|
     t.text "body"
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
+    t.bigint "post_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "original_comment_id"
     t.bigint "replies_count", default: 0
     t.bigint "likes_count", default: 0
+    t.bigint "roll_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["original_comment_id"], name: "index_comments_on_original_comment_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["roll_id"], name: "index_comments_on_roll_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -123,8 +127,29 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.bigint "likeable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id", "likeable_id", "likeable_type"], name: "index_likes_on_user_id_and_likeable_id_and_likeable_type", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "locateable_type"
+    t.bigint "locateable_id"
+    t.float "latitude"
+    t.decimal "longitude"
+    t.string "city"
+    t.string "country"
+    t.string "ip"
+    t.string "region"
+    t.string "timezone"
+    t.integer "postal_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["city"], name: "index_locations_on_city"
+    t.index ["country"], name: "index_locations_on_country"
+    t.index ["latitude"], name: "index_locations_on_latitude"
+    t.index ["locateable_type", "locateable_id"], name: "index_locations_on_locateable_type_and_locateable_id"
+    t.index ["longitude"], name: "index_locations_on_longitude"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -147,13 +172,18 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.bigint "view_count", default: 0, null: false
-    t.bigint "original_post_id"
     t.bigint "comments_count", default: 0
     t.bigint "likes_count", default: 0
-    t.string "posts_media_url"
-    t.string "thumbnail_image_url"
-    t.index ["original_post_id"], name: "index_posts_on_original_post_id"
+    t.string "media_url"
+    t.string "thumbnail_url"
+    t.bigint "share_count", default: 0, null: false
+    t.json "meta_data"
+    t.string "content_type"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["media_url"], name: "index_posts_on_media_url"
+    t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["uuid"], name: "index_posts_on_uuid"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -163,6 +193,28 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "rolls", force: :cascade do |t|
+    t.string "media_url"
+    t.bigint "user_id", null: false
+    t.bigint "view_count", default: 0
+    t.string "caption"
+    t.bigint "comments_count", default: 0
+    t.string "thumbnail_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "likes_count", default: 0
+    t.bigint "original_roll_id"
+    t.bigint "share_count", default: 0, null: false
+    t.json "meta_data"
+    t.string "content_type"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["media_url"], name: "index_rolls_on_media_url"
+    t.index ["original_roll_id"], name: "index_rolls_on_original_roll_id"
+    t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
+    t.index ["user_id"], name: "index_rolls_on_user_id"
+    t.index ["uuid"], name: "index_rolls_on_uuid"
   end
 
   create_table "rpush_apps", force: :cascade do |t|
@@ -234,13 +286,41 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.index ["delivered", "failed", "processing", "deliver_after", "created_at"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))"
   end
 
+  create_table "searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "query"
+    t.bigint "occurences"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "result_type", default: 0
+    t.index ["created_at"], name: "index_searches_on_created_at"
+    t.index ["query"], name: "index_searches_on_query"
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "shareable_type"
+    t.bigint "shareable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "shared_service", default: 0
+    t.uuid "uuid", null: false
+    t.index ["user_id", "shareable_id", "shareable_type", "shared_service"], name: "index_unique_share", unique: true
+    t.index ["user_id", "shareable_id"], name: "index_shares_on_user_id_and_shareable_id", unique: true
+    t.index ["user_id"], name: "index_shares_on_user_id"
+    t.index ["uuid"], name: "index_shares_on_uuid"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.text "text"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "post_id"
+    t.bigint "roll_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["post_id"], name: "index_tags_on_post_id"
+    t.index ["roll_id"], name: "index_tags_on_roll_id"
     t.index ["text"], name: "index_tags_on_text"
+    t.index ["uuid"], name: "index_tags_on_uuid"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -269,18 +349,35 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username"
-    t.boolean "is_verified", default: false, null: false
-    t.date "birth_date"
+    t.string "username", null: false
+    t.boolean "verified", default: false, null: false
+    t.date "birth_date", null: false
     t.text "bio"
-    t.string "profile_picture_url"
+    t.string "avatar_url"
     t.bigint "followers_count", default: 0
     t.bigint "following_count", default: 0
-    t.string "full_name"
-    t.bigint "total_view_count", default: 0, null: false
+    t.string "name"
+    t.bigint "view_count", default: 0, null: false
+    t.string "profile_background_url"
+    t.integer "gender", default: 2
     t.index ["email"], name: "email"
-    t.index ["full_name"], name: "index_users_on_full_name"
-    t.index ["username"], name: "index_users_on_username"
+    t.index ["name"], name: "index_users_on_name"
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "views", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "viewable_type"
+    t.bigint "viewable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "duration"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["user_id", "viewable_id", "viewable_type"], name: "index_views_on_user_id_and_viewable_id_and_viewable_type", unique: true
+    t.index ["user_id"], name: "index_views_on_user_id"
+    t.index ["uuid"], name: "index_views_on_uuid"
+    t.index ["viewable_id"], name: "index_views_on_viewable_id"
+    t.index ["viewable_type", "viewable_id"], name: "index_views_on_viewable_type_and_viewable_id"
   end
 
   create_table "wishes", force: :cascade do |t|
@@ -313,16 +410,21 @@ ActiveRecord::Schema.define(version: 2020_04_17_184858) do
   add_foreign_key "chat_room_users", "users"
   add_foreign_key "chat_rooms", "users", column: "creator_id"
   add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "rolls"
   add_foreign_key "comments", "users"
   add_foreign_key "devices", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "chat_rooms"
   add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "posts", "users"
+  add_foreign_key "rolls", "users"
+  add_foreign_key "shares", "users"
   add_foreign_key "tags", "posts"
+  add_foreign_key "tags", "rolls"
   add_foreign_key "topics", "users"
   add_foreign_key "user_blocked_posts", "posts"
   add_foreign_key "user_blocked_posts", "users"
+  add_foreign_key "views", "users"
   add_foreign_key "wishes", "users"
   add_foreign_key "wishes", "wishlists"
   add_foreign_key "wishlists", "users"

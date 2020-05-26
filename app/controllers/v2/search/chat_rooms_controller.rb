@@ -1,4 +1,4 @@
-class V2::SearchChatRoomsController < ApplicationController
+class V2::Search::ChatRoomsController < ApplicationController
     before_action :authorize_by_access_header!
     def search
         @topics = Topic.where("title ILIKE ?", "#{params[:title]}%").order(hot_topic: :desc, media_url: :desc, updated_at: :desc)

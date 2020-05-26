@@ -11,8 +11,8 @@ class ActivityNotificationJob < ApplicationJob
                 if activity.activity_type == "Comment"
                     comment_body = Comment.find(activity.content_id).body
                     n.alert = "#{activity.activity_phrase}: #{comment_body}"
-                elsif  activity.activity_type == "Post"
-                    n.alert = "#{activity.activity_phrase} 💕\n#{activity.post_url}"
+                elsif activity.activity_type == "Post" or activity.activity_type == "Roll"
+                    n.alert = "#{activity.activity_phrase} 💕\n#{activity.media_url}"
                 else
                     n.alert = "#{activity.activity_phrase}"
                 end
