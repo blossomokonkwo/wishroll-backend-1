@@ -95,8 +95,6 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.0.1)
-    commander (4.5.2)
-      highline (~> 2.0.0)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.5)
@@ -104,6 +102,7 @@ GEM
     erubi (1.9.0)
     fastimage (2.1.7)
     ffi (1.11.1)
+    geocoder (1.6.3)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-protobuf (3.11.4)
@@ -112,17 +111,12 @@ GEM
     grpc (1.27.0)
       google-protobuf (~> 3.11)
       googleapis-common-protos-types (~> 1.0)
-    highline (2.0.3)
-    houston (2.4.0)
-      commander (~> 4.4)
-      json
     http-2 (0.10.1)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
     jmespath (1.4.0)
-    json (2.3.0)
     jwt (2.2.1)
     jwt_sessions (2.4.3)
       jwt (>= 2.1.1, < 3)
@@ -139,6 +133,7 @@ GEM
       mimemagic (~> 0.3.2)
     method_source (0.9.2)
     mimemagic (0.3.3)
+    mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.13.0)
@@ -201,6 +196,7 @@ GEM
       railties
       rainbow
       thor (>= 0.18.1, < 2.0)
+    ruby-continent (0.1.0)
     ruby_dep (1.5.0)
     sidekiq (6.0.5)
       connection_pool (>= 2.2.2)
@@ -242,10 +238,11 @@ DEPENDENCIES
   dalli
   faker!
   fastimage
-  houston
+  geocoder
   jbuilder (~> 2.5)
   jwt_sessions
   listen (>= 3.0.5, < 3.2)
+  mini_magick (~> 4.8)
   newrelic_rpm
   pg (>= 0.18, < 2.0)
   puma (~> 3.12.4)
@@ -253,6 +250,7 @@ DEPENDENCIES
   rb-readline
   redis (~> 4.0)
   rpush
+  ruby-continent (~> 0.1.0)
   sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)

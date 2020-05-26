@@ -10,9 +10,9 @@ json.array! @chat_rooms.includes([:recent_message, :chat_room_users, :users]).ea
         end
         json.chat_room_users chat_room.users.each do |user|
             json.username user.username
-            json.profile_picture_url user.profile_picture_url
-            json.full_name user.full_name
-            json.is_verified user.is_verified
+            json.profile_picture_url user.avatar_url
+            json.full_name user.name
+            json.is_verified user.verified
         end
     end
 end

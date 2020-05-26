@@ -5,8 +5,8 @@ class SearchController < ApplicationController
         @posts = Array.new #we want a collection of UNIQUE posts sent to the clients, therfore we are using the Set Abstract Data Type
         @users = Array.new
         if !params[:query].empty?
-            @users = User.where("username ILIKE ?", "#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]) 
-            .or(User.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url]))     
+            @users = User.where("username ILIKE ?", "#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]) 
+            .or(User.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]))     
             if params[:query_type] != "User"
                 Tag.where("text ILIKE ?", "%#{search_params[:query]}%").limit(5000).includes([:post]).find_each do |tag|
                     @posts << tag.post
@@ -42,7 +42,7 @@ class SearchController < ApplicationController
         @id = current_user.id
         limit = 15
         offset = params[:offset]
-        @users = User.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").select([:username, :is_verified, :full_name, :profile_picture_url]).order(is_verified: :desc, followers_count: :desc, following_count: :asc, id: :asc).offset(offset).limit(limit)
+        @users = User.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").select([:username, :verified, :name, :avatar_url]).order(verified: :desc, followers_count: :desc, following_count: :asc, id: :asc).offset(offset).limit(limit)
         #filter the returned users to ensure that users who are blocked do not interact with each other
         @users.to_a.delete_if do |user|
             #if a user is blcoked by the current user or the current user is blocked by the other user, then we remove them from the array
@@ -60,7 +60,7 @@ class SearchController < ApplicationController
         @user = User.find_by(username: params[:username])
         @current_user = current_user
         limit = 10
-        @users = @user.follower_users.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(is_verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :is_verified, :full_name, :profile_picture_url, :created_at]).limit(limit).offset(offset)
+        @users = @user.follower_users.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url, :created_at]).limit(limit).offset(offset)
         if @users.any?
             render :index_followers, status: 200
         else
@@ -84,7 +84,7 @@ class SearchController < ApplicationController
     def search_chat_room_users
         offset = params[:offset]
         limit = 15
-        @chat_room_users = ChatRoomUser.where(chat_room_id: params[:chat_room_id]).select(:user_id).joins(:user).where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").includes([:user]).limit(limit).offset(offset)
+        @chat_room_users = ChatRoomUser.where(chat_room_id: params[:chat_room_id]).select(:user_id).joins(:user).where("username ILIKE ? OR name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").includes([:user]).limit(limit).offset(offset)
         if @chat_room_users.any?
             render :chat_room_users_index, status: 200
         else

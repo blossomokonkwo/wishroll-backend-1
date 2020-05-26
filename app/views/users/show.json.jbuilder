@@ -3,13 +3,13 @@
 cache @user, expires_in: 1.hour do
     json.user do 
         json.username @user.username
-        json.full_name @user.full_name
-        json.is_verified @user.is_verified
+        json.full_name @user.name
+        json.is_verified @user.verified
         json.bio @user.bio
         json.followers_count @user.followers_count
         json.following_count @user.following_count
         json.total_view_count @user.total_view_count
-        json.profile_picture_url @user.profile_picture_url
+        json.profile_picture_url @user.avatar_url
         is_following = nil
         #check first if the requested user is the current_user. If so, then the 'is_following' field isn't nil but must be true or false.
         #Loop through all of a users followers and check if the current_user is among the follower users.
@@ -26,13 +26,13 @@ end
 json.posts @user.posts.each do |post|
     cache post, expires_in: 1.hour do
         json.id post.id
-        json.original_post_id post.original_post_id
+        json.original_post_id nil
         json.created_at post.created_at
         json.view_count post.view_count
         json.comments_count post.comments_count
         json.likes_count post.likes_count
         json.caption post.caption
-        json.media_url post.posts_media_url
+        json.media_url post.media_url
     end
 end  #only run the .each block if the user has any posts or a null error will be raised!
 json.liked_posts Like.select(:likeable_id).where(likeable_type: "Post", user_id: @user.id).limit(100).order(created_at: :desc).each do |like|
@@ -40,13 +40,13 @@ json.liked_posts Like.select(:likeable_id).where(likeable_type: "Post", user_id:
         post = Post.find(like.likeable_id)
         cache post, expires_in: 1.hour do
             json.id post.id
-            json.original_post_id post.original_post_id
+            json.original_post_id nil
             json.created_at post.created_at
             json.view_count post.view_count
             json.comments_count post.comments_count
             json.likes_count post.likes_count
             json.caption post.caption
-            json.media_url post.posts_media_url
+            json.media_url post.media_url
         end
     end
  end

@@ -28,10 +28,21 @@ class UsersController < ApplicationController
  end
 
  def update
-  current_user.update(update_user)
-  current_user.profile_picture_url = url_for(current_user.profile_picture) if current_user.profile_picture.attached? and params[:profile_picture].present?
+  puts params.to_s
+  if params[:full_name]
+    current_user.update!(name: params[:full_name])
+  elsif params[:username]
+    current_user.update!(username: params[:username])
+  elsif params[:bio]
+    current_user.update!(bio: params[:bio])
+  elsif params[:email]
+    current_user.update!(email: params[:email])
+  elsif params[:profile_picture]
+    current_user.update!(avatar: params[:profile_picture])
+    current_user.avatar_url = url_for(current_user.avatar) if current_user.avatar.attached? 
+  end
   if current_user.save
-    render json: {profile_picture_url: current_user.profile_picture_url}, status: :ok
+    render json: {profile_picture_url: current_user.avatar_url}, status: :ok
   else
     render json: nil, status: 400
   end
