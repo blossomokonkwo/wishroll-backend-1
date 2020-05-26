@@ -42,7 +42,7 @@ class SearchController < ApplicationController
         @id = current_user.id
         limit = 15
         offset = params[:offset]
-        @users = User.where("username ILIKE ? OR full_name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").select([:username, :verified, :name, :avatar_url]).order(verified: :desc, followers_count: :desc, following_count: :asc, id: :asc).offset(offset).limit(limit)
+        @users = User.where("username ILIKE ? OR name ILIKE ?", "%#{search_params[:query]}%", "%#{search_params[:query]}%").select([:username, :verified, :name, :avatar_url]).order(verified: :desc, followers_count: :desc, following_count: :asc, id: :asc).offset(offset).limit(limit)
         #filter the returned users to ensure that users who are blocked do not interact with each other
         @users.to_a.delete_if do |user|
             #if a user is blcoked by the current user or the current user is blocked by the other user, then we remove them from the array
