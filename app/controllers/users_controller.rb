@@ -28,16 +28,19 @@ class UsersController < ApplicationController
  end
 
  def update
-  puts params.to_s
   if params[:full_name]
     current_user.update!(name: params[:full_name])
-  elsif params[:username]
+  end
+  if params[:username]
     current_user.update!(username: params[:username])
-  elsif params[:bio]
+  end
+  if params[:bio]
     current_user.update!(bio: params[:bio])
-  elsif params[:email]
+  end
+  if params[:email]
     current_user.update!(email: params[:email])
-  elsif params[:profile_picture]
+  end
+  if params[:profile_picture]
     current_user.update!(avatar: params[:profile_picture])
     current_user.avatar_url = url_for(current_user.avatar) if current_user.avatar.attached? 
   end
