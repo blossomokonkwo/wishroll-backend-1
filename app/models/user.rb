@@ -505,7 +505,7 @@ class User < ApplicationRecord
     end
 
     def self.current_user(user_id)
-        Rails.cache.fetch("Current user is: #{user_id}") {User.find(user_id)}
+       User.find(user_id)
     end
 
     def following?(user)
