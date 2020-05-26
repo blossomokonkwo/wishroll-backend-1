@@ -6,7 +6,7 @@ class SearchController < ApplicationController
         @users = Array.new
         if !params[:query].empty?
             @users = User.where("username ILIKE ?", "#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]) 
-            .or(User.where("full_name ILIKE ?", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]))     
+            .or(User.where("name ILIKE ?", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]))     
             if params[:query_type] != "User"
                 Tag.where("text ILIKE ?", "%#{search_params[:query]}%").limit(5000).includes([:post]).find_each do |tag|
                     @posts << tag.post
