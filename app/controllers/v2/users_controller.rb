@@ -2,7 +2,7 @@ class V2::UsersController < ApplicationController
     before_action :authorize_by_access_header!
 
     def show
-        @user = User.find(params[:id])
+        @user = User.find(params[:id]) || User.find_by(params[:username])
         if @user
             if current_user.blocked_users.include?(@user)
                 render json: {error: "#{current_user.username} has blocked #{@user.username}"}, status: :forbidden
@@ -24,18 +24,18 @@ class V2::UsersController < ApplicationController
     def posts
         @user = User.find(params[:user_id])
         offset = params[:offset] #use the created at field to offset the data
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
                 @posts = Array.new
                 if offset 
-                    @posts = @user.posts.where('created_at < ?', offset).order(created_at: :desc).limit(limit)
+                    @posts = @user.created_posts(limit: limit, offset: offset)
                 else 
-                    @posts = @user.posts.order(created_at: :desc)
+                    @posts = @user.created_posts(limit: limit)
                 end
                 if @posts.any?
                     @id = current_user.id
-                    render 'v2/users/posts', status: :ok
+                    render :posts, status: :ok
                 else
                     render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
                 end  
@@ -51,14 +51,14 @@ class V2::UsersController < ApplicationController
     def liked_posts
         @user = User.find(params[:user_id])
         offset = params[:offset]
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
                 @posts = Array.new
                 if offset
-                    @posts = @user.liked_posts #in later versions, there will be an optimization for speed using offset
+                    @posts = @user.liked_posts(limit: limit, offset: offset) #in later versions, there will be an optimization for speed using offset
                 else
-                    @posts = @user.liked_posts
+                    @posts = @user.liked_posts(limit: limit)
                 end
                 if @posts.any? 
                     @id = current_user.id

@@ -3,10 +3,8 @@ class V2::RollsController < ApplicationController
     def create
         begin            
             @roll = Roll.new(caption: params[:caption], user_id: current_user.id) 
-            @roll.media.attach params[:media]
-            #@roll.media.attach params[:thumbnail] 
-            @roll.media_url = url_for(@roll.media)
-            #@roll.thumbnail_url = url_for(@roll.thumbnail)         
+            @roll.media_item.attach params[:media_item]
+            @roll.media_url = url_for(@roll.media)       
             if @roll.save
                 render json: nil, status: :created
             else

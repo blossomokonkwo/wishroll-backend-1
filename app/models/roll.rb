@@ -7,8 +7,8 @@ class Roll < ApplicationRecord
   has_many :reactions, class_name: "Roll", foreign_key: :original_roll_id
   has_many :shares, as: :shareable, dependent: :destroy
   belongs_to :original_roll, class_name: "Roll", optional: true
-  has_one :location, as: :locatable, dependent: :destroy
-  has_one_attached(:media)
+  has_one :location, as: :locateable, dependent: :destroy
+  has_one_attached(:media_item)
   has_one_attached(:thumbnail)
 
 

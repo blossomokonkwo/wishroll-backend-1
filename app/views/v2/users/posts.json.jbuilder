@@ -1,4 +1,4 @@
-json.array! @posts.each do |post|
+json.array! @posts.includes([:user]).each do |post|
     user = post.user
     cache post, expires_in: 5.minutes do
         json.id post.id

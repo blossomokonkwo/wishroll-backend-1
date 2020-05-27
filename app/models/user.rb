@@ -39,9 +39,23 @@ class User < ApplicationRecord
         end 
     end
 
-    def liked_posts
-        Post.joins(:likes).where(likes: {user_id: self.id})
+    def liked_posts(limit: 25, offset: nil)
+        if offset
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+        else
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).limit(limit)
+        end
+        
     end
+
+    def created_posts(limit: 25, offset: nil)
+        if offset
+            Post.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Post.where(user: self).order(created_at: :desc).limit(limit)
+        end
+    end
+    
     
 
     #Determines if a user has viewed a specified content
