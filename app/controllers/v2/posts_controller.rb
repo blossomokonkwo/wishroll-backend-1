@@ -2,14 +2,13 @@ class V2::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     #create a post object along with all the tags. Save the post and tags to the DB.
     def create
-      @post = Post.create(caption: params[:caption], user_id: current_user.id, original_post_id: params[:original_post_id])
-      @post.post_image.attach params[:post_image]
+      @post = Post.new(caption: params[:caption], user_id: current_user.id)
+      @post.media_item.attach params[:post_image]
       @post.media_url = url_for(@post.post_image)
-      if params[:thumbnail_image]
-        @post.thumbnail_image.attach params[:thumbnail_image]
-        @post.thumbnail_url = url_for(@post.thumbnail_image)
-      end
       if @post.save
+        host = request.protocol + request.domain
+        host += ":#{request.port}" if request.protocol == "http://"
+        CreatePostThumbnailJob.perform_now(@post.id, host)
         render json: {post_id: @post.id}, status: :ok
       else 
         render json: nil, status: :bad

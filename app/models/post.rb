@@ -10,7 +10,7 @@ class Post < ApplicationRecord
     has_one :location, as: :locatable, dependent: :destroy
     #old attachment_name 'post_image'
     has_one_attached(:media_item)
-    has_one_attached(:thumbnail_image)
+    has_one_attached(:thumbnail_item)
 
     #returns a post's top comments - comments that have a null value for their original_comment_id field - which are basically non replies
     def top_comments(limit: 25, offset: nil)

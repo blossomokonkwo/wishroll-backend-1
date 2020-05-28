@@ -9,8 +9,8 @@ class Roll < ApplicationRecord
   belongs_to :original_roll, class_name: "Roll", optional: true
   has_one :location, as: :locateable, dependent: :destroy
   has_one_attached(:media_item)
-  has_one_attached(:thumbnail)
-
+  has_one_attached(:thumbnail_image)
+  has_one_attached(:thumbnail_gif)
 after_create :create_reaction_activity
 
   def create_reaction_activity
