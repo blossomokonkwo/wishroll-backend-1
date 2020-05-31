@@ -71,8 +71,6 @@ Rails.application.routes.draw do
       get 'posts', to: 'posts#search'
       get 'users', to: 'users#search'
       get 'rolls', to: 'rolls#search'
-      get 'chatrooms', to: 'chat_rooms#search'
-      get 'topics', to: 'topics#search'
     end
     namespace :trending do
       get 'posts', to: 'posts#trending'
@@ -82,6 +80,10 @@ Rails.application.routes.draw do
     namespace :feed do
       get 'posts', to: 'posts#feed'
       get 'rolls', to: 'rolls#feed'
+    end
+    namespace :recommendation do
+      get 'posts/:post_id', to: 'posts#recommend'
+      get 'rolls/:roll_id', to: 'rolls#recommend'
     end
     resources :rolls do
       resources :comments, shallow: true do
@@ -114,8 +116,6 @@ Rails.application.routes.draw do
     get 'activities', to: 'activities#index'
     get 'search-chats', to: "search_chat_rooms#search"
     resource :device, only: [:create] 
-    post 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
-    post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
     get 'followers/:user_id', to: 'relationships#followers'
     get 'following/:user_id', to: 'relationships#following'
     delete 'unlike', to: 'likes#destroy'

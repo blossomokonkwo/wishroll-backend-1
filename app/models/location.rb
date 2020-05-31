@@ -4,8 +4,6 @@ class Location < ApplicationRecord
   belongs_to :locateable, polymorphic: true
 
 
-
-  
   def country_name
     Continent.by_alpha_2_code(country)[:name]
   end

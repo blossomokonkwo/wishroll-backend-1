@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_29_152616) do
+ActiveRecord::Schema.define(version: 2020_05_31_152307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -179,7 +179,6 @@ ActiveRecord::Schema.define(version: 2020_05_29_152616) do
     t.bigint "share_count", default: 0, null: false
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.float "aspect_ratio"
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -287,14 +286,13 @@ ActiveRecord::Schema.define(version: 2020_05_29_152616) do
     t.index ["delivered", "failed", "processing", "deliver_after", "created_at"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))"
   end
 
-  create_table "searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "query"
-    t.bigint "occurences"
+  create_table "searches", force: :cascade do |t|
+    t.string "query", null: false
+    t.bigint "occurences", default: 1, null: false
+    t.integer "result_type", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "result_type", default: 0
-    t.index ["created_at"], name: "index_searches_on_created_at"
-    t.index ["query"], name: "index_searches_on_query"
+    t.index ["query", "result_type"], name: "index_searches_on_query_and_result_type", unique: true
   end
 
   create_table "shares", force: :cascade do |t|

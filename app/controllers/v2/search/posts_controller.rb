@@ -8,10 +8,11 @@ class V2::Search::PostsController < ApplicationController
         @posts.to_a.delete_if do |post|
             current_user.reported_posts.include?(post) or current_user.blocked_users.include?(post.user) or post.user.blocked_users.include?(current_user)
         end
+        CreateSearchJob.perform_now(:post, params[:q], params[:ip_address], params[:timezone])
         if @posts.any?
-            render :index, status: 200
+            render :index, status: :ok
         else
-            render json: nil, status: 404
+            render json: nil, status: :not_found
         end
     end
     
