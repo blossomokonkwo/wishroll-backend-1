@@ -449,7 +449,7 @@ class User < ApplicationRecord
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
     
-    has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :full_name, :is_verified, :profile_picture_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
+    has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
     #the users that a specific user is currently following 
     has_many :followed_users, through: :active_relationships, source: :followed_user

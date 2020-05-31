@@ -5,9 +5,9 @@ class Post < ApplicationRecord
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :views, as: :viewable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
-    has_many :sharers, through: :shares, source: :user
+    #has_many :sharers, through: :shares, source: :user
     has_many :viewers, through: :views, source: :user
-    has_one :location, as: :locatable, dependent: :destroy
+    has_one :location, as: :locateable, dependent: :destroy
     #old attachment_name 'post_image'
     has_one_attached(:media_item)
     has_one_attached(:thumbnail_item)

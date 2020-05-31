@@ -2,12 +2,16 @@ class V2::UsersController < ApplicationController
     before_action :authorize_by_access_header!
 
     def show
-        @user = User.find(params[:id]) || User.find_by(params[:username])
+        if params[:username]
+            @user = User.find_by(username: params[:username])
+        elsif params[:id]
+            @user =  User.find(params[:id])
+        end
         if @user
             if current_user.blocked_users.include?(@user)
-                render json: {error: "#{current_user.username} has blocked #{@user.username}"}, status: :forbidden
+                render json: {id: @user.id, can_unblock: true}, status: :forbidden
             elsif @user.blocked_users.include?(@user)
-                render json: {error: "#{@user.username} has blocked you}"}, status: :forbidden
+                render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
                 @following = nil
                 if current_user != @user

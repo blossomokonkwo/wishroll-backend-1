@@ -5,7 +5,7 @@ class V2::RelationshipsController < ApplicationController
     def follow
         @user = User.find(params[:user_id])
         begin
-            unless @user.blocked_users.include?(current_user) 
+            unless @user.blocked_users.include?(current_user) or current_user.blocked_users.include?(@user)
                 unless Relationship.find_by(followed_id: @user.id, follower_id: current_user.id)
                     relationship = Relationship.create!(followed_id: @user.id, follower_id: current_user.id)
                     render json: {success: "Successfully following #{@user.username}"}, status: :created
@@ -41,16 +41,17 @@ class V2::RelationshipsController < ApplicationController
         offset = params[:offset]
         limit = 15
         @current_user = current_user
-        @user = User.find_by(username: params[:username])
+        @user = User.find(params[:user_id])
         if @user
             @current_user = current_user
             @followers = Array.new
             if offset
-                @followers = @user.follower_users.where('created_at < ?', offset).order(created_at: :desc).limit(limit).to_a
+                @followers = @user.follower_users.includes([:blocked_users]).offset(offset).order(id: :desc).limit(limit).to_a
             else
-                @followers = @user.follower_users.order(created_at: :desc).limit(limit).to_a
+                @followers = @user.follower_users.order(id: :desc).limit(limit).to_a
             end
             if @followers.any?
+                @followers.delete_if {|f| current_user.blocked_users.include?(f) or f.blocked_users.include?(current_user)}
                 render :followers, status: :ok
             else
                 render json: nil, status: :not_found
@@ -64,16 +65,17 @@ class V2::RelationshipsController < ApplicationController
     def following
         offset = params[:offset]
         limit = 15
-        @user = User.find_by(username: params[:username])
+        @user = User.find(params[:user_id])
         if @user
             @current_user = current_user
             @followed_users = Array.new
             if offset
-                @followed_users = @user.followed_users.where('created_at < ?', offset).order(created_at: :desc).limit(limit).to_a
+                @followed_users = @user.followed_users.includes([:blocked_users]).offset(offset).order(id: :desc).limit(limit).to_a
             else
-                @followed_users = @user.followed_users.order(created_at: :desc).limit(limit).to_a
+                @followed_users = @user.followed_users.order(id: :desc).limit(limit).to_a
             end
             if @followed_users.any?
+                @followed_users.delete_if {|f| current_user.blocked_users.include?(f) or f.blocked_users.include?(current_user)}
                 render :following, status: :ok
             else
                 render json: nil, status: :not_found
@@ -85,7 +87,7 @@ class V2::RelationshipsController < ApplicationController
 
 
     def block
-        @blocked_user = User.find_by(username: params[:username])
+        @blocked_user = User.find(params[:user_id])
         if @blocked_user
             if current_user != @blocked_user
                 if @current_user.following?(@blocked_user)
@@ -109,7 +111,7 @@ class V2::RelationshipsController < ApplicationController
 
 
     def unblock
-        @blocked_user = current_user.blocked_users.find_by(username: params[:username])
+        @blocked_user = current_user.blocked_users.find_by(id: params[:user_id])
         if @blocked_user
             if current_user != @blocked_user
                 BlockRelationship.find_by(blocked_id: @blocked_user.id, blocker_id: current_user.id).destroy

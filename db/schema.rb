@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_222202) do
+ActiveRecord::Schema.define(version: 2020_05_29_152616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -177,9 +177,9 @@ ActiveRecord::Schema.define(version: 2020_05_27_222202) do
     t.string "media_url"
     t.string "thumbnail_url"
     t.bigint "share_count", default: 0, null: false
-    t.json "meta_data"
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.float "aspect_ratio"
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_222202) do
     t.integer "follower_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["followed_id", "follower_id"], name: "index_relationships_on_followed_id_and_follower_id", unique: true
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
@@ -207,7 +208,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_222202) do
     t.bigint "likes_count", default: 0
     t.bigint "original_roll_id"
     t.bigint "share_count", default: 0, null: false
-    t.json "meta_data"
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "thumbnail_gif_url"
@@ -304,7 +304,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_222202) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "shared_service", default: 0
-    t.uuid "uuid", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["user_id", "shareable_id", "shareable_type", "shared_service"], name: "index_unique_share", unique: true
     t.index ["user_id", "shareable_id"], name: "index_shares_on_user_id_and_shareable_id", unique: true
     t.index ["user_id"], name: "index_shares_on_user_id"

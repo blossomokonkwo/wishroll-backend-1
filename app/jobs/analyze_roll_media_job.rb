@@ -1,6 +1,4 @@
 class AnalyzeRollMediaJob < ApplicationJob
-    require 'streamio-ffmpeg'
-    require 'securerandom'
     def perform(roll_id, host)
         roll = Roll.find(roll_id)
         roll.media_item.open do |file|

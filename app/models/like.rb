@@ -25,7 +25,7 @@ class Like < ApplicationRecord
       phrase = "#{active_user.username} liked your reaction" 
       media_url = content.media_url   
     end
-    unless Activity.find_by(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type)
+    unless Activity.find_by(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type) or active_user.id == user.id
       activity = Activity.new(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type, media_url: media_url, activity_phrase: phrase)
       unless activity.save
         logger.debug {"Unable to create activity.\nAn error occured"}

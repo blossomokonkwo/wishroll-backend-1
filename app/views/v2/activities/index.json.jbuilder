@@ -1,17 +1,32 @@
 json.array! @activities.each do |activity|
-    user = activity.active_user
+    active_user = activity.active_user
     cache activity, expires_in: 1.minute do
         json.id activity.id
         json.created_at activity.created_at
         json.phrase activity.activity_phrase
-        json.thumbnail_url activity.media_url
         json.type activity.activity_type
-        if activity.activity_type == "Comment"
-            comment = Comment.find(activity.content_id)
-            json.body comment.body
-        end
-        if activity.activity_type == "Post"
-            post = Post.find(activity.content_id)
+        if activity.activity_type == "Roll" and roll = Roll.where(id: activity.content_id).first
+            json.roll do
+                json.id roll.id
+                json.media_url roll.media_url
+                json.caption roll.caption
+                json.thumbnail_url roll.thumbnail_url
+                json.likes roll.likes_count
+                json.shares roll.shares
+                json.comments_count roll.comments_count
+                json.views roll.views
+                json.viewed roll.viewed?(@id)
+                json.liked roll.liked?(@id)
+                json.created_at roll.created_at
+                json.creator do
+                    user = roll.user
+                    json.id user.id
+                    json.username user.username
+                    json.avatar user.avatar_url
+                    json.verified user.verified 
+                end
+            end
+        elsif activity.activity_type == "Post" and post = Post.where(id: activity.content_id).first
             json.post do
                 json.id post.id
                 json.media_url post.media_url
@@ -33,8 +48,7 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
-        elsif activity.activity_type == "Comment"
-            post = Comment.find(activity.content_id).post
+        elsif activity.activity_type == "Comment" and post = Comment.where(id: activity.content_id).first.post
             json.post do
                 json.id post.id
                 json.media_url post.media_url
@@ -57,11 +71,11 @@ json.array! @activities.each do |activity|
                 end
             end
         end
-        json.user do 
-            json.id user.id
-            json.username user.username
-            json.avatar user.avatar_url
-            json.verified user.verified
+        json.active_user do 
+            json.id active_user.id
+            json.username active_user.username
+            json.avatar active_user.avatar_url
+            json.verified active_user.verified
         end
     end
 end

@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       resources :comments, shallow: true do
         resources :likes, shallow: true
       end
+      resources :shares, only: [:create, :index]
       resources :likes, shallow: true
       resources :tags, shallow: true
     end
@@ -94,6 +95,7 @@ Rails.application.routes.draw do
       resources :comments, shallow: true do
         resources :likes, shallow: true
       end
+      resources :shares, only: [:create, :index]
       resources :likes, shallow: true
       resources :tags, shallow: true
     end
@@ -104,20 +106,18 @@ Rails.application.routes.draw do
     resources :activities, only: [:index]
     post 'follow/:user_id', to: 'relationships#follow'
     delete 'unfollow/:user_id', to: 'relationships#unfollow'
-    post 'block/:username', to: 'relationships#block', constraints: {username: /[0-9a-z_.]{1,60}/}
-    post 'unblock/:username', to: 'relationships#unblock', constraints: {username: /[0-9a-z_.]{1,60}/}
+    delete 'block/:user_id', to: 'relationships#block'
+    post 'unblock/:user_id', to: 'relationships#unblock'
     get  'blocked-users', to: 'relationships#blocked_users'
-    get ':username/followers', to: 'relationships#followers', constraints: {username: /[0-9a-z_.]{1,60}/}
-    get ':username/following', to: 'relationships#following', constraints: {username: /[0-9a-z_.]{1,60}/}
-    get ':username/posts', to: 'users#posts', constraints: {username: /[0-9a-z_.]{1,60}/}
-    get ':username/liked-posts', to: 'users#liked_posts', constraints: {username: /[0-9a-z_.]{1,60}/}
+    get ':user_id/followers', to: 'relationships#followers'
+    get ':user_id/following', to: 'relationships#following'
     get 'activities', to: 'activities#index'
     get 'search-chats', to: "search_chat_rooms#search"
     resource :device, only: [:create] 
     post 'recommend-videos/:post_id', to: 'recommendation#recommend_videos'
     post 'recommend-posts/:post_id', to: 'recommendation#recommend_posts'
-    get 'followers/:username', to: 'relationships#followers'
-    get 'following/:username', to: 'relationships#following'
+    get 'followers/:user_id', to: 'relationships#followers'
+    get 'following/:user_id', to: 'relationships#following'
     delete 'unlike', to: 'likes#destroy'
     post 'signup', to: "signup#new"
     post 'signup/email', to: "signup#validate_email"

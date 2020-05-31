@@ -1,4 +1,5 @@
 json.array! @followed_users.each do |user|
+        json.id user.id
         json.username user.username
         json.name user.name
         json.verified user.verified
