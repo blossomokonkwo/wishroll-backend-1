@@ -14,7 +14,7 @@ class V2::UsersController < ApplicationController
                 render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
                 @following = nil
-                if current_user != @user
+                if current_user.id != @user.id
                     @following = current_user.following?(@user)
                 end
                 render :show, status: :ok
