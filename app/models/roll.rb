@@ -6,7 +6,7 @@ class Roll < ApplicationRecord
   has_many :views, as: :viewable, dependent: :destroy
   has_many :reactions, class_name: "Roll", foreign_key: :original_roll_id
   has_many :shares, as: :shareable, dependent: :destroy
-  belongs_to :original_roll, class_name: "Roll", optional: true
+  belongs_to :original_roll, class_name: "Roll", optional: true, counter_cache: :reactions_count
   has_many :tags, class_name: "Tag", foreign_key: :roll_id
   has_one :location, as: :locateable, dependent: :destroy
   has_one_attached(:media_item)

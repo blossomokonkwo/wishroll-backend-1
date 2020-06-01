@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_31_152307) do
+ActiveRecord::Schema.define(version: 2020_06_01_043649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -210,6 +210,7 @@ ActiveRecord::Schema.define(version: 2020_05_31_152307) do
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.string "thumbnail_gif_url"
+    t.bigint "reactions_count", default: 0
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["original_roll_id"], name: "index_rolls_on_original_roll_id"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"

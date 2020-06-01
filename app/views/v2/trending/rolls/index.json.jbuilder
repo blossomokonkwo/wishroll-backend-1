@@ -12,6 +12,7 @@ json.array! @rolls.each do |roll|
     json.caption roll.caption           
     json.media_url roll.media_url
     json.thumbnail_url roll.thumbnail_url
+    json.reactions_count roll.reactions_count
     json.creator do 
         json.id user.id
         json.username user.username
