@@ -30,7 +30,6 @@ gem 'mini_magick', '~> 4.8'
 gem  'geocoder'
 gem 'ruby-continent', '~> 0.1.0'
 gem 'streamio-ffmpeg'
-gem 'hiredis'
 gem 'predictor'
 
 # Use Capistrano for deployment
