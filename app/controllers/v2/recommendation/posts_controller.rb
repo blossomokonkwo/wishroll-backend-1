@@ -11,7 +11,7 @@ class V2::Recommendation::PostsController < ApplicationController
         caption_terms = @post.caption.split(' ').delete_if {|word| english_articles.include?(word)}.map {|word| keywords << "%#{word}%"}
         @posts = Array.new
         if @post.media_url.end_with?("mov") || @post.media_url.end_with?("mp4") || @post.media_url.end_with?("m4v") || @post.media_url.end_with?("flv")
-            video_formats = ["%mov%", "%mp4%", "%m4v%", "%flv%"]
+            video_formats = ["mov%", "mp4%", "m4v%", "flv%"]
             @posts = Post.joins(:tags).where("posts.media_url LIKE ANY (array[?]) AND tags.text ILIKE ANY (array[?]) or posts.caption ILIKE ANY (array[?])",video_formats, keywords, keywords).distinct.includes([user: :blocked_users]).order(likes_count: :desc, view_count: :desc, id: :asc).offset(offset).limit(limit).to_a
         else
             @posts = Post.joins(:tags).where("tags.text ILIKE ANY (array[?]) or posts.caption ILIKE ANY (array[?])",keywords, keywords).distinct.includes([user: :blocked_users]).order(likes_count: :desc, view_count: :desc, id: :asc).offset(offset).limit(limit).to_a
