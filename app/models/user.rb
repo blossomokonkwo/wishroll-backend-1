@@ -18,6 +18,7 @@ class User < ApplicationRecord
     has_many :comments, class_name: "Comment"
     has_many :views, class_name: "View", foreign_key: :user_id
     has_many :shares, class_name: "Share", foreign_key: :user_id
+    has_many :likes, class_name: "Like", foreign_key: :user_id
 
     # User Content APIs
 

@@ -41,17 +41,20 @@ class V2::LikesController < ApplicationController
     
     # Returns the users that have liked a resource
     def index
-        if post = Post.find(params[:post_id]) 
+        if params[:post_id] and post = Post.find(params[:post_id])
             @current_user = current_user
             limit = 15
             offset = params[:offset]
             @users = Array.new
             if offset
-                @users = post.likes.where('created_at < ?', offset).pluck(:id).limit(limit).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').offset(offset).limit(limit)
               else
-                @users = post.likes.limit(limit).pluck(:id).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
+                @users.to_a.delete_if do |user|
+                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
@@ -62,26 +65,32 @@ class V2::LikesController < ApplicationController
             offset = params[:offset]
             @users = Array.new
             if offset
-                @users = comment.likes.where('created_at < ?', offset).pluck(:id).limit(limit).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: comment}).order('likes.created_at DESC').offset(offset).limit(limit)
             else
-                @users = comment.likes.limit(limit).pluck(:id).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: comment}).order('likes.created_at DESC').limit(limit)
             end
             if @users.any?
+                @users.to_a.delete_if do |user|
+                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                end
                 render :index, status: :ok
             else
                 render json: nil, status: :not_found
             end
-        elsif roll = Roll.find(params[:roll_id])
+        elsif params[:roll_id] and roll = Roll.find(params[:roll_id])
             @current_user = current_user
             limit = 15
             offset = params[:offset]
             @users = Array.new
             if offset
-                @users = roll.likes.where('created_at < ?', offset).pluck(:id).limit(limit).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').offset(offset).limit(limit)
               else
-                @users = roll.likes.limit(limit).pluck(:id).to_a.map {|id| User.find(id)}
+                @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
+                @users.to_a.delete_if do |user|
+                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
@@ -90,7 +99,4 @@ class V2::LikesController < ApplicationController
             render json: {error: "Could not locate a resource to complete the operation"}, status: :not_found
         end
     end
-
-
-    
 end

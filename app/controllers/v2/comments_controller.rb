@@ -3,8 +3,9 @@ class V2::CommentsController < ApplicationController
     def create
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
-                roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
-                render json: nil, status: :created
+                @comment = roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
+                @user = current_user
+                render :create, status: :created
             rescue => exception
                 render json: {error: "Couldn't create comment for roll #{roll}"}, status: 500
             end

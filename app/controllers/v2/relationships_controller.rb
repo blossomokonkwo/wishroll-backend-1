@@ -46,9 +46,9 @@ class V2::RelationshipsController < ApplicationController
             @current_user = current_user
             @followers = Array.new
             if offset
-                @followers = @user.follower_users.includes([:blocked_users]).offset(offset).order(id: :desc).limit(limit).to_a
+                @followers = @user.follower_users.includes([:blocked_users]).order('relationships.created_at DESC').offset(offset).order(id: :desc).limit(limit).to_a
             else
-                @followers = @user.follower_users.order(id: :desc).limit(limit).to_a
+                @followers = @user.follower_users.order('relationships.created_at DESC').limit(limit).to_a
             end
             if @followers.any?
                 @followers.delete_if {|f| current_user.blocked_users.include?(f) or f.blocked_users.include?(current_user)}
