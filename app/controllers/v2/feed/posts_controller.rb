@@ -2,7 +2,7 @@ class V2::Feed::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def feed
         offset = params[:offset]
-        limit = 25
+        limit = 24
         @posts = Post.where(user: current_user.followed_users).order(created_at: :desc).offset(offset).limit(limit)
         if @posts.any?
             render :index, status: :ok

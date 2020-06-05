@@ -37,7 +37,7 @@ class V2::CommentsController < ApplicationController
         limit = 25
         offset = params[:offset]
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @comments = roll.comments.order(likes_count: :desc, created_at: :desc)
+            @comments = roll.comments.order(created_at: :asc)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok
@@ -45,7 +45,7 @@ class V2::CommentsController < ApplicationController
                 render json: nil, status: :not_found
             end
         elsif params[:post_id] and post = Post.find(params[:post_id])
-            @comments = post.comments.order(likes_count: :desc, created_at: :desc)
+            @comments = post.comments.order(created_at: :asc)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok
