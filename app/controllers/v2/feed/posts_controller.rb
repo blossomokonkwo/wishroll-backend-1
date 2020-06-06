@@ -3,6 +3,7 @@ class V2::Feed::PostsController < ApplicationController
     def feed
         offset = params[:offset]
         limit = 24
+        @id = current_user.id
         @posts = Array.new
         @posts << recommend_posts(limit: limit/2, offset: offset)
         @posts = Post.where(user: current_user.followed_users).order(created_at: :desc).offset(offset).limit(limit)
@@ -15,7 +16,7 @@ class V2::Feed::PostsController < ApplicationController
 
     def recommend_posts(limit: 12, offset: 0)
         begin
-            post = current_user.viewed_posts(limit: 1).last
+            post = current_user.viewed_posts.joins(:tags).where('tags.text != ?', nil).limit(1).first
             english_articles = ["the", "a", "when" "some", "they", "back", "because", "if", "in", "i", "can't", "but", "where", "why", "we"]
             keywords = Array.new
             post.tags.pluck(:text).map {|word| word.split(' ').delete_if {|word| english_articles.include?(word)}.map {|t| keywords << "%#{t}%"}}
