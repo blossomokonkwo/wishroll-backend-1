@@ -5,9 +5,11 @@ class V2::Feed::PostsController < ApplicationController
         limit = 24
         @id = current_user.id
         @posts = Array.new
-        @posts << recommend_posts(limit: limit/2, offset: offset)
-        @posts = Post.where(user: current_user.followed_users).order(created_at: :desc).offset(offset).limit(limit)
+        recommended_posts = recommend_posts(limit: limit/2, offset: offset)
+        recommend_posts.map {|p| @posts << p} if recommend_posts.present?
+        Post.includes(:user).where(user: current_user.followed_users).order(created_at: :desc).offset(offset).limit(limit).to_a.map {|p| @posts << p}
         if @posts.any?
+            @posts.sort! {|a,b| b.created_at <=> a.created_at}
             render :index, status: :ok
         else
             render json: nil, status: :not_found
