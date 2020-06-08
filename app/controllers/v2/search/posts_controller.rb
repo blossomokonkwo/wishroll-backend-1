@@ -2,7 +2,7 @@ class V2::Search::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def search
         @id = current_user.id
-        limit = 15
+        limit = 12
         offset = params[:offset]
         @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
         @posts.to_a.delete_if do |post|
