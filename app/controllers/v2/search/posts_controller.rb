@@ -6,9 +6,9 @@ class V2::Search::PostsController < ApplicationController
         offset = params[:offset]
         @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
         @posts.to_a.delete_if do |post|
-            current_user.reported_posts.include?(post) or current_user.blocked_users.include?(post.user) or post.user.blocked_users.include?(current_user)
+            current_user.reported_posts.include?(post)
         end
-        CreateSearchJob.perform_now(:post, params[:q], params[:ip_address], params[:timezone])
+        CreateSearchJob.perform_later(:post, params[:q], params[:ip_address], params[:timezone])
         if @posts.any?
             render :index, status: :ok
         else

@@ -9,7 +9,7 @@ class V2::Search::UsersController < ApplicationController
             user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
         end
         if @users.any? 
-            CreateSearchJob.perform_now(:user, params[:q], params[:ip_address], params[:timezone])
+            CreateSearchJob.perform_later(:user, params[:q], params[:ip_address], params[:timezone])
             render :index, status: 200
         else
             render json: nil, status: 404
