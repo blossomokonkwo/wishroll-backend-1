@@ -4,7 +4,7 @@ class V2::Search::PostsController < ApplicationController
         @id = current_user.id
         limit = 18
         offset = params[:offset]
-        @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
+        @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
         @posts.to_a.delete_if do |post|
             current_user.reported_posts.include?(post)
         end
