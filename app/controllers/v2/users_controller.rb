@@ -78,6 +78,25 @@ class V2::UsersController < ApplicationController
             render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
         end
     end
+
+    def update
+        begin
+            current_user.update!(update_params)
+            if params[:avatar] and current_user.avatar.attached?
+                current_user.update!(avatar_url: url_for(current_user.avatar))
+            end
+            if params[:profile_background_media] and current_user.profile_background_media.attached?
+                current_user.update!(profile_background_url: url_for(current_user.profile_background_media))
+            end
+            render json: {current_user: {username: current_user.username, email: current_user.email, name: current_user.name, bio: current_user.bio, avatar_url: current_user.avatar_url, profile_background_url: current_user.profile_background_url}}, status: :ok
+        rescue 
+            render json: {error: "An error occured when updating the current user's account"}, status: 500
+        end
+    end
+    
+    private def update_params
+        params.permit :username, :email, :name, :avatar, :profile_background_media, :bio
+    end
     
     
     

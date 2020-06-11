@@ -107,6 +107,7 @@ Rails.application.routes.draw do
     get 'comments/:comment_id/likes/users', to: 'likes#index'
     get 'users/:user_id/posts', to: 'users#posts'
     get 'users/:user_id/liked-posts', to: 'users#liked_posts'
+    put 'user/update', to: 'users#update'
     resources :views, only: [:create, :index]
     resources :activities, only: [:index]
     post 'follow/:user_id', to: 'relationships#follow'
