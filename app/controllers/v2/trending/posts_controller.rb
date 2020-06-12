@@ -5,7 +5,7 @@ class V2::Trending::PostsController < ApplicationController
         limit = 18
         @id = current_user.id
         offset = params[:offset] #as the user scrolls the offset is incremented by 100
-        @posts = Post.includes([:user]).order(created_at: :asc).offset(offset).limit(limit)
+        @posts = Post.includes([:user]).order(popularity_rank: :desc).offset(offset).limit(limit)
         if @posts.any?
             render :index, status: :ok  
         else

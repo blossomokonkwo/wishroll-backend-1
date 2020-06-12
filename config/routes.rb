@@ -92,6 +92,7 @@ Rails.application.routes.draw do
       resources :shares, only: [:create, :index]
       resources :likes, shallow: true
       resources :tags, shallow: true
+      resources :bookmarks, shallow: true
     end
     resources :posts, only: [:show, :update, :create, :destroy] do
       resources :comments, shallow: true do
@@ -100,7 +101,9 @@ Rails.application.routes.draw do
       resources :shares, only: [:create, :index]
       resources :likes, shallow: true
       resources :tags, shallow: true
+      resources :bookmarks, shallow: true
     end
+    
     resources :users, only: [:update, :show] 
     get 'posts/:post_id/likes/users', to: 'likes#index'
     get 'rolls/:roll_id/likes/users', to: 'likes#index'
@@ -108,8 +111,16 @@ Rails.application.routes.draw do
     get 'users/:user_id/posts', to: 'users#posts'
     get 'users/:user_id/liked-posts', to: 'users#liked_posts'
     put 'user/update', to: 'users#update'
+    get 'posts/:post_id/bookmarks', to: "bookmarks#bookmarked_posts"
+    get 'rolls/:roll_id/bookmarks', to: "bookmarks#bookmarked_rolls"
+    get 'posts/:post_id/bookmarks/users', to: "bookmarks#bookmarked_users"
+    get 'rolls/:roll_id/bookmarks/users', to: "bookmarks#bookmarked_users"
+    delete 'posts/:post_id/bookmarks', to: "bookmarks#destroy"
+    delete 'rolls/:roll_id/bookmarks', to: "bookmarks#destroy"    
     resources :views, only: [:create, :index]
     resources :activities, only: [:index]
+    get 'posts/:post_id/shares/users', to: "shares#users"
+    get 'rolls/:roll_id/shares/users', to: "shares#users"
     post 'follow/:user_id', to: 'relationships#follow'
     delete 'unfollow/:user_id', to: 'relationships#unfollow'
     delete 'block/:user_id', to: 'relationships#block'

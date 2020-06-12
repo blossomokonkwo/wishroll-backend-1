@@ -19,6 +19,7 @@ class User < ApplicationRecord
     has_many :views, class_name: "View", foreign_key: :user_id
     has_many :shares, class_name: "Share", foreign_key: :user_id
     has_many :likes, class_name: "Like", foreign_key: :user_id
+    has_many :bookmarks 
 
     # User Content APIs
 
@@ -54,6 +55,22 @@ class User < ApplicationRecord
             Post.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
         else
             Post.where(user: self).order(created_at: :desc).limit(limit)
+        end
+    end
+    
+    def bookmarked_posts(limit: 25, offset: nil)
+        if offset
+            Post.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Post.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).limit(limit)
+        end
+    end
+
+    def bookmarked_rolls(limit: 25, offset: nil)
+        if offset
+            Roll.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Roll.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).limit(limit)
         end
     end
     

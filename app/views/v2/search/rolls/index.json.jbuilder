@@ -6,6 +6,8 @@ json.array! @rolls.each do |roll|
     json.views roll.view_count
     json.shares roll.share_count
     json.viewed roll.viewed?(@id)
+    json.bookmarked roll.bookmarked?(@id)
+    json.bookmark_count roll.bookmark_count
     json.comments_count roll.comments_count
     json.likes roll.likes_count
     json.liked roll.liked?(@id)

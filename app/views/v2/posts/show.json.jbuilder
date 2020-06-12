@@ -5,6 +5,8 @@ json.viewed @post.viewed?(@id)
 json.comments_count @post.comments_count
 json.likes @post.likes_count
 json.liked @post.liked?(@id)
+json.bookmarked @post.bookmarked?(@id)
+json.bookmark_count @post.bookmark_count
 json.caption @post.caption
 json.created_at @post.created_at
 json.updated_at @post.updated_at

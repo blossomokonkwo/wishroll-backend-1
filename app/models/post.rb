@@ -5,10 +5,9 @@ class Post < ApplicationRecord
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :views, as: :viewable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
-    #has_many :sharers, through: :shares, source: :user
     has_many :viewers, through: :views, source: :user
     has_one :location, as: :locateable, dependent: :destroy
-    #old attachment_name 'post_image'
+    has_many :bookmarks, as: :bookmarkable, dependent: :destroy
     has_one_attached(:media_item)
     has_one_attached(:thumbnail_item)
 
@@ -29,14 +28,19 @@ class Post < ApplicationRecord
         self.likes.find_by(user_id: id).present?
     end
 
+    def bookmarked?(id)
+        bookmarks.find_by(user_id: id).present?
+    end
+    
+
     after_destroy do
         destroy_post_activities
     end
 
     private 
     def destroy_post_activities
-        activities = Activity.where(content_id: self.id, activity_type: "Post")
-        activities.each do |activity|
+        activities = Activity.where(content_id: self.id, activity_type: self.class.name)
+        activities.find_each do |activity|
         activity.destroy
         end if activities.present?
     end

@@ -9,6 +9,8 @@ json.array! @rolls.each do |roll|
     json.comments_count roll.comments_count
     json.likes roll.likes_count
     json.liked roll.liked?(@id)
+    json.bookmarked roll.bookmarked?(@id)
+    json.bookmark_count roll.bookmark_count
     json.caption roll.caption           
     json.media_url roll.media_url
     json.thumbnail_url roll.thumbnail_url

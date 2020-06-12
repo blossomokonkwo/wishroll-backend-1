@@ -34,10 +34,10 @@ class V2::CommentsController < ApplicationController
     end
     
     def index
-        limit = 25
+        limit = 15
         offset = params[:offset]
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @comments = roll.comments.order(created_at: :asc)
+            @comments = roll.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok
@@ -45,7 +45,7 @@ class V2::CommentsController < ApplicationController
                 render json: nil, status: :not_found
             end
         elsif params[:post_id] and post = Post.find(params[:post_id])
-            @comments = post.comments.order(created_at: :asc)
+            @comments = post.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok

@@ -9,6 +9,7 @@ class Roll < ApplicationRecord
   belongs_to :original_roll, class_name: "Roll", optional: true, counter_cache: :reactions_count
   has_many :tags, class_name: "Tag", foreign_key: :roll_id
   has_one :location, as: :locateable, dependent: :destroy
+  has_many :bookmarks, as: :bookmarkable
   has_one_attached(:media_item)
   has_one_attached(:thumbnail_image)
   has_one_attached(:thumbnail_gif)
@@ -32,6 +33,11 @@ class Roll < ApplicationRecord
   def liked?(id)
     likes.find_by(user_id: id).present?
   end
+
+  def bookmarked?(id)
+    bookmarks.find_by(user_id: id).present?
+  end
+  
 
   #Comments API
   def top_comments(limit: 25, offset: nil)

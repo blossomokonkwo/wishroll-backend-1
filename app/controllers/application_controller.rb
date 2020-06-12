@@ -8,7 +8,11 @@ class ApplicationController < ActionController::API
 
     #this method is called whenever an unauthorization occurs
     private def not_authorized
-        render json: {"error" => "not authorized"}, status: :unauthorized
+        if request.url == "https://www.wishroll.co/" or request.url == "https://www.wishroll-testing.herokuapp.com/" or request.url == "http://127.0.0.1:3000/" or request.url == "http://localhost:3000/"
+            redirect_to "/home"
+        else
+            render json: {"error" => "not authorized"}, status: :unauthorized
+        end
     end
     
 end

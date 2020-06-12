@@ -4,7 +4,7 @@ class V2::Trending::RollsController < ApplicationController
         limit = 15
         @id = current_user.id
         offset = params[:offset] #as the user scrolls the offset is incremented by 100
-        @rolls = Roll.includes([:user]).order(created_at: :desc).offset(offset).limit(limit)
+        @rolls = Roll.includes([:user]).order(popularity_rank: :desc).offset(offset).limit(limit)
         if @rolls.any?
             render :index, status: :ok  
         else

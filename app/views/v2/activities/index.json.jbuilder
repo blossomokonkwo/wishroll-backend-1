@@ -17,6 +17,8 @@ json.array! @activities.each do |activity|
                 json.views roll.views
                 json.viewed roll.viewed?(@id)
                 json.liked roll.liked?(@id)
+                json.bookmarked roll.bookmarked?(@id)
+                json.bookmark_count roll.bookmark_count
                 json.created_at roll.created_at
                 json.creator do
                     user = roll.user
@@ -38,6 +40,8 @@ json.array! @activities.each do |activity|
                 json.views post.view_count
                 json.viewed post.viewed?(@id)
                 json.liked post.liked?(@id)
+                json.bookmarked post.bookmarked?(@id)
+                json.bookmark_count post.bookmark_count
                 json.created_at post.created_at
                 json.updated_at post.updated_at
                 json.creator do
@@ -60,6 +64,8 @@ json.array! @activities.each do |activity|
                 json.views post.view_count
                 json.viewed post.viewed?(@id)
                 json.liked post.liked?(@id)
+                json.bookmarked post.bookmarked?(@id)
+                json.bookmark_count post.bookmark_count
                 json.created_at post.created_at
                 json.updated_at post.updated_at
                 json.creator do
