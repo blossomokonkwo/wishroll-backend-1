@@ -100,7 +100,6 @@ GEM
     crass (1.0.5)
     dalli (2.7.10)
     erubi (1.9.0)
-    fastimage (2.1.7)
     ffi (1.11.1)
     geocoder (1.6.3)
     globalid (0.4.2)
@@ -241,7 +240,6 @@ DEPENDENCIES
   connection_pool
   dalli
   faker!
-  fastimage
   geocoder
   jbuilder (~> 2.5)
   jwt_sessions
