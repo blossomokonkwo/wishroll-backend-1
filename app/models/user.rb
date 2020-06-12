@@ -18,6 +18,8 @@ class User < ApplicationRecord
     has_many :comments, class_name: "Comment"
     has_many :views, class_name: "View", foreign_key: :user_id
     has_many :shares, class_name: "Share", foreign_key: :user_id
+    has_many :likes, class_name: "Like", foreign_key: :user_id
+    has_many :bookmarks 
 
     # User Content APIs
 
@@ -39,9 +41,39 @@ class User < ApplicationRecord
         end 
     end
 
-    def liked_posts
-        Post.joins(:likes).where(likes: {user_id: self.id})
+    def liked_posts(limit: 25, offset: nil)
+        if offset
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+        else
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).limit(limit)
+        end
+        
     end
+
+    def created_posts(limit: 25, offset: nil)
+        if offset
+            Post.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Post.where(user: self).order(created_at: :desc).limit(limit)
+        end
+    end
+    
+    def bookmarked_posts(limit: 25, offset: nil)
+        if offset
+            Post.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Post.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).limit(limit)
+        end
+    end
+
+    def bookmarked_rolls(limit: 25, offset: nil)
+        if offset
+            Roll.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Roll.joins(:bookmarks).where(bookmarks: {user: self}).order(created_at: :desc).limit(limit)
+        end
+    end
+    
     
 
     #Determines if a user has viewed a specified content
@@ -435,7 +467,7 @@ class User < ApplicationRecord
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
     
-    has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :full_name, :is_verified, :profile_picture_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
+    has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
     #the users that a specific user is currently following 
     has_many :followed_users, through: :active_relationships, source: :followed_user

@@ -10,6 +10,8 @@ json.array! @posts.each do |post|
         json.shares post.share_count
         json.liked post.liked?(@id)
         json.viewed post.viewed?(@id)
+        json.bookmarked post.bookmarked?(@id)
+        json.bookmark_count post.bookmark_count
         json.caption post.caption           
         json.media_url post.media_url
         json.creator do 

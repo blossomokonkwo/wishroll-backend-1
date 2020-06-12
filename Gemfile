@@ -24,11 +24,12 @@ gem 'connection_pool'
 gem 'sidekiq'
 gem 'rpush'
 gem "anycable-rails"
-gem 'fastimage'
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
 gem  'geocoder'
 gem 'ruby-continent', '~> 0.1.0'
+gem 'streamio-ffmpeg'
+gem 'predictor'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

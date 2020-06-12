@@ -5,11 +5,12 @@ class V2::ActivitiesController < ApplicationController
         limit = 15
         @activities = Array.new
         if offset
-            @activities = current_user.activities.where('created_at < ?', offset).limit(limit).to_a
+            @activities = current_user.activities.order(created_at: :desc).offset(offset).limit(limit)
         else
-            @activities = current_user.activities.limit(limit).to_a
+            @activities = current_user.activities.order(created_at: :desc).limit(limit)
         end
         if @activities.any?
+            @id = current_user.id
             render :index, status: :ok
         else
             render json: nil, status: :not_found

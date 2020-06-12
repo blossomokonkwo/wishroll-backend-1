@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_112739) do
+ActiveRecord::Schema.define(version: 2020_06_12_195712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,6 +66,18 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["blocked_id"], name: "index_block_relationships_on_blocked_id"
     t.index ["blocker_id"], name: "index_block_relationships_on_blocker_id"
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.string "bookmarkable_type"
+    t.bigint "bookmarkable_id"
+    t.bigint "user_id", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_type_and_bookmarkable_id"
+    t.index ["user_id", "bookmarkable_id", "bookmarkable_type"], name: "index_on_user_id_and_bookmarkable", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "chat_room_users", force: :cascade do |t|
@@ -177,9 +189,10 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.string "media_url"
     t.string "thumbnail_url"
     t.bigint "share_count", default: 0, null: false
-    t.json "meta_data"
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.integer "bookmark_count", default: 0, null: false
+    t.float "popularity_rank", default: 0.0, null: false
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -191,6 +204,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.integer "follower_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["followed_id", "follower_id"], name: "index_relationships_on_followed_id_and_follower_id", unique: true
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
@@ -207,9 +221,12 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.bigint "likes_count", default: 0
     t.bigint "original_roll_id"
     t.bigint "share_count", default: 0, null: false
-    t.json "meta_data"
     t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.string "thumbnail_gif_url"
+    t.bigint "reactions_count", default: 0
+    t.integer "bookmark_count", default: 0, null: false
+    t.float "popularity_rank", default: 0.0
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["original_roll_id"], name: "index_rolls_on_original_roll_id"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
@@ -286,14 +303,13 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.index ["delivered", "failed", "processing", "deliver_after", "created_at"], name: "index_rpush_notifications_multi", where: "((NOT delivered) AND (NOT failed))"
   end
 
-  create_table "searches", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "query"
-    t.bigint "occurences"
+  create_table "searches", force: :cascade do |t|
+    t.string "query", null: false
+    t.bigint "occurences", default: 1, null: false
+    t.integer "result_type", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "result_type", default: 0
-    t.index ["created_at"], name: "index_searches_on_created_at"
-    t.index ["query"], name: "index_searches_on_query"
+    t.index ["query", "result_type"], name: "index_searches_on_query_and_result_type", unique: true
   end
 
   create_table "shares", force: :cascade do |t|
@@ -303,7 +319,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_112739) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "shared_service", default: 0
-    t.uuid "uuid", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["user_id", "shareable_id", "shareable_type", "shared_service"], name: "index_unique_share", unique: true
     t.index ["user_id", "shareable_id"], name: "index_shares_on_user_id_and_shareable_id", unique: true
     t.index ["user_id"], name: "index_shares_on_user_id"

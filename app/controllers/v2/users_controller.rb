@@ -2,15 +2,19 @@ class V2::UsersController < ApplicationController
     before_action :authorize_by_access_header!
 
     def show
-        @user = User.find(params[:id])
+        if params[:username]
+            @user = User.find_by(username: params[:username])
+        elsif params[:id]
+            @user =  User.find(params[:id])
+        end
         if @user
             if current_user.blocked_users.include?(@user)
-                render json: {error: "#{current_user.username} has blocked #{@user.username}"}, status: :forbidden
+                render json: {id: @user.id, can_unblock: true}, status: :forbidden
             elsif @user.blocked_users.include?(@user)
-                render json: {error: "#{@user.username} has blocked you}"}, status: :forbidden
+                render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
                 @following = nil
-                if current_user != @user
+                if current_user.id != @user.id
                     @following = current_user.following?(@user)
                 end
                 render :show, status: :ok
@@ -24,18 +28,18 @@ class V2::UsersController < ApplicationController
     def posts
         @user = User.find(params[:user_id])
         offset = params[:offset] #use the created at field to offset the data
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
                 @posts = Array.new
                 if offset 
-                    @posts = @user.posts.where('created_at < ?', offset).order(created_at: :desc).limit(limit)
+                    @posts = @user.created_posts(limit: limit, offset: offset)
                 else 
-                    @posts = @user.posts.order(created_at: :desc)
+                    @posts = @user.created_posts(limit: limit)
                 end
                 if @posts.any?
                     @id = current_user.id
-                    render 'v2/users/posts', status: :ok
+                    render :posts, status: :ok
                 else
                     render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
                 end  
@@ -51,14 +55,14 @@ class V2::UsersController < ApplicationController
     def liked_posts
         @user = User.find(params[:user_id])
         offset = params[:offset]
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
                 @posts = Array.new
                 if offset
-                    @posts = @user.liked_posts #in later versions, there will be an optimization for speed using offset
+                    @posts = @user.liked_posts(limit: limit, offset: offset) #in later versions, there will be an optimization for speed using offset
                 else
-                    @posts = @user.liked_posts
+                    @posts = @user.liked_posts(limit: limit)
                 end
                 if @posts.any? 
                     @id = current_user.id
@@ -73,6 +77,25 @@ class V2::UsersController < ApplicationController
         else
             render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
         end
+    end
+
+    def update
+        begin
+            current_user.update!(update_params)
+            if params[:avatar] and current_user.avatar.attached?
+                current_user.update!(avatar_url: url_for(current_user.avatar))
+            end
+            if params[:profile_background_media] and current_user.profile_background_media.attached?
+                current_user.update!(profile_background_url: url_for(current_user.profile_background_media))
+            end
+            render json: {current_user: {username: current_user.username, email: current_user.email, name: current_user.name, bio: current_user.bio, avatar_url: current_user.avatar_url, profile_background_url: current_user.profile_background_url}}, status: :ok
+        rescue 
+            render json: {error: "An error occured when updating the current user's account"}, status: 500
+        end
+    end
+    
+    private def update_params
+        params.permit :username, :email, :name, :avatar, :profile_background_media, :bio
     end
     
     

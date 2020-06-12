@@ -3,8 +3,9 @@ class V2::CommentsController < ApplicationController
     def create
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
-                roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
-                render json: nil, status: :created
+                @comment = roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
+                @user = current_user
+                render :create, status: :created
             rescue => exception
                 render json: {error: "Couldn't create comment for roll #{roll}"}, status: 500
             end
@@ -33,10 +34,10 @@ class V2::CommentsController < ApplicationController
     end
     
     def index
-        limit = 25
+        limit = 15
         offset = params[:offset]
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @comments = roll.comments.order(likes_count: :desc, created_at: :desc)
+            @comments = roll.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok
@@ -44,7 +45,7 @@ class V2::CommentsController < ApplicationController
                 render json: nil, status: :not_found
             end
         elsif params[:post_id] and post = Post.find(params[:post_id])
-            @comments = post.comments.order(likes_count: :desc, created_at: :desc)
+            @comments = post.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
                 @id = current_user.id
                 render :index, status: :ok
