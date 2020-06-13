@@ -38,10 +38,6 @@ class Post < ApplicationRecord
         destroy_post_activities
     end
 
-    after_commit do
-        update!(popularity_rank: (view_count + likes_count + share_count + bookmark_count) / ((Time.zone.now - created_at.to_time) / 1.hour.seconds))
-    end
-
 
 
     private 
