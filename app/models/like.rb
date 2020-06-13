@@ -33,10 +33,4 @@ class Like < ApplicationRecord
     end
   end
 
-  after_commit do
-    if likeable_type == "Post" or likeable_type == "Roll"
-      likeable.update!(popularity_rank: (likeable.view_count + likeable.likes_count + likeable.share_count + likeable.bookmark_count) / ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds))
-    end
-  end
-
 end
