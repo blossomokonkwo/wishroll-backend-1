@@ -10,6 +10,6 @@ class View < ApplicationRecord
   validates :duration, presence: {message: "A view object must contain the duration that a user has spent viewing the content in seconds"}
   after_commit do
     #update the viewable object's popularity rank by taking its view count and dividing it by the difference in hours from the current time to when the object was created
-    viewable.update!(popularity_rank: (viewable.view_count + viewable.likes_count + viewable.shares_count + viewable.bookmark_count) / ((Time.zone.now - viewable.created_at.to_time) / 1.hour.seconds))
+    viewable.update!(popularity_rank: (viewable.view_count + viewable.likes_count + viewable.share_count + viewable.bookmark_count) / ((Time.zone.now - viewable.created_at.to_time) / 1.hour.seconds))
   end
 end

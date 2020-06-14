@@ -2,7 +2,7 @@ class V2::Feed::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def feed
         offset = params[:offset]
-        limit = 24
+        limit = 12
         @id = current_user.id
         @posts = Array.new
         recommended_posts = recommend_posts(limit: limit/2, offset: offset)
