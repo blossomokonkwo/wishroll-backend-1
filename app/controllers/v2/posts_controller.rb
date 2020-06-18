@@ -8,11 +8,6 @@ class V2::PostsController < ApplicationController
       @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
       @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
       if @post.save
-        # if @post.media_item.blob.content_type.include?("video")
-        #   host = request.protocol + request.domain
-        #   host += ":#{request.port}" if request.protocol == "http://"
-        #   CreatePostThumbnailJob.perform_now(@post.id, host)
-        # end
         render json: {post_id: @post.id}, status: :ok
       else 
         render json: nil, status: :bad
