@@ -2,14 +2,14 @@ class V2::TagsController < ApplicationController
     def create
       if params[:roll_id] and @roll = Roll.find(params[:roll_id])
             begin
-                @roll.tags.create!(create_params)
+                @roll.tags.create!(params[:tags])
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "The tag could not be created for the specified roll: #{@roll}"}, status: :bad_request
             end
         elsif params[:post_id] and @post = Post.find(params[:post_id])
             begin
-                @post.tags.create!(create_params)
+                @post.tags.create!(params[:tags])
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "The tag could not be created for the specified post: #{@post}"}, status: :bad_request
@@ -59,11 +59,6 @@ class V2::TagsController < ApplicationController
         else
             render json: {error: "Could not load the tags for the unspecified resource"}, status: :bad_request                    
         end
-    end
-    
-    private 
-    def create_params
-        params.permit :text 
     end
     
     
