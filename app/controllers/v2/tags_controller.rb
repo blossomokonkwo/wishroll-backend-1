@@ -1,13 +1,13 @@
 class V2::TagsController < ApplicationController
     def create
-      if @roll = Roll.find(params[:roll_id])
+      if params[:roll_id] and @roll = Roll.find(params[:roll_id])
             begin
                 @roll.tags.create!(create_params)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "The tag could not be created for the specified roll: #{@roll}"}, status: :bad_request
             end
-        elsif @post = Post.find(params[:post_id])
+        elsif params[:post_id] and @post = Post.find(params[:post_id])
             begin
                 @post.tags.create!(create_params)
                 render json: nil, status: :created
