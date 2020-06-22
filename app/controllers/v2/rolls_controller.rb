@@ -8,7 +8,7 @@ class V2::RollsController < ApplicationController
             @roll.thumbnail_image.attach params[:thumbnail_image]
             @roll.thumbnail_url = url_for(@roll.thumbnail_image) if @roll.thumbnail_image.attached?     
             if @roll.save
-                render json: nil, status: :created
+                render json: {roll_id: @roll.id}, status: :created
             else
                 render json: {error: "Could not create media and thumbnail urls for the specified post"}, status: 500
             end
