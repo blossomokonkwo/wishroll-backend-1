@@ -11,7 +11,9 @@ class V2::TagsController < ApplicationController
             end
         elsif params[:post_id] and @post = Post.find(params[:post_id])
             begin
-                @post.tags.create!(params[:tags])
+                params[:tags].each do |text|
+                    @post.tags.create!(text: text)
+                end
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "The tag could not be created for the specified post: #{@post}"}, status: :bad_request
