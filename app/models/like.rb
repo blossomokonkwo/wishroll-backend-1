@@ -6,9 +6,9 @@ class Like < ApplicationRecord
   after_destroy do
   end
 
-  after_create :create_activity
+  after_create :update_likeable
   
-  def create_activity
+  def update_likeable
     active_user = user
     content = likeable
     user = likeable.user
@@ -31,9 +31,6 @@ class Like < ApplicationRecord
         logger.debug {"Unable to create activity.\nAn error occured"}
       end 
     end
-  end
-
-  after_commit do
     if likeable_type == "Post" or likeable_type == "Roll"
       likeable.update!(popularity_rank: (likeable.view_count + likeable.likes_count + likeable.share_count + likeable.bookmark_count) / ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds))
     end

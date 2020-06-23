@@ -5,8 +5,10 @@ class V2::RollsController < ApplicationController
             @roll = Roll.create!(caption: params[:caption], user_id: current_user.id, original_roll_id: params[:original_roll_id]) 
             @roll.media_item.attach params[:media_item]
             @roll.media_url = url_for(@roll.media_item) if @roll.media_item.attached?
-            @roll.thumbnail_image.attach params[:thumbnail_image]
-            @roll.thumbnail_url = url_for(@roll.thumbnail_image) if @roll.thumbnail_image.attached?     
+            if @roll.save
+                @roll.thumbnail_image.attach params[:thumbnail_image]
+                @roll.thumbnail_url = url_for(@roll.thumbnail_image) if @roll.thumbnail_image.attached?  
+            end
             if @roll.save
                 CreateLocationJob.perform_later(params[:ip_address], params[:timezone], @roll.id, @roll.class.name)
                 render json: {roll_id: @roll.id}, status: :created
