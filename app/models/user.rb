@@ -50,6 +50,15 @@ class User < ApplicationRecord
         
     end
 
+    def liked_rolls(limit: 25, offset: nil)
+        if offset
+            Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+        else
+            Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).limit(limit)
+        end
+    end
+    
+
     def created_posts(limit: 25, offset: nil)
         if offset
             Post.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
@@ -57,6 +66,15 @@ class User < ApplicationRecord
             Post.where(user: self).order(created_at: :desc).limit(limit)
         end
     end
+
+    def created_rolls(limit: 25, offset: nil)
+        if offset
+            Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+        else
+            Roll.where(user: :self).order(created_at: :desc).limit(limit)
+        end
+    end
+    
     
     def bookmarked_posts(limit: 25, offset: nil)
         if offset

@@ -52,6 +52,50 @@ class V2::UsersController < ApplicationController
         end
     end
 
+    def rolls
+        @user = User.find(params[:user_id])
+        offset = params[:offset]
+        limit = 15
+        if @user
+            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+                @rolls = @user.created_rolls(limit: limit, offset: offset)
+                if @rolls.any?
+                    @id = current_user.id
+                    render :rolls, status: :ok
+                else
+                    render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
+                end
+            else
+                render json: nil, status: :forbidden
+            end
+        else
+            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
+        end
+    end
+
+    def liked_rolls
+        @user = User.find(params[:user_id])
+        offset = params[:offset]
+        limit = 15
+        if @user
+            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+                @rolls = @user.liked_rolls(limit: limit, offset: offset)
+                if @rolls.any?
+                    @id = current_user.id
+                    render :liked_rolls, status: :ok
+                else
+                    render json: {error: "#{params[:username]} doesn't have any liked rolls"}, status: :not_found
+                end
+            else
+                render json: nil, status: :forbidden
+            end
+        else
+            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
+        end
+    end
+    
+    
+
     def liked_posts
         @user = User.find(params[:user_id])
         offset = params[:offset]
