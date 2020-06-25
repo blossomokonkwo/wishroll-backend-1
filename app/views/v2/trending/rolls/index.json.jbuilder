@@ -20,5 +20,6 @@ json.array! @rolls.each do |roll|
         json.username user.username
         json.verified user.verified
         json.avatar user.avatar_url
+        json.following @current_user.following?(user) if user != @current_user
     end
 end

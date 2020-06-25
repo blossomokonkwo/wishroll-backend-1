@@ -5,12 +5,12 @@ json.array! @rolls.each do |roll|
     json.updated_at roll.updated_at
     json.views roll.view_count
     json.shares roll.share_count
-    json.viewed roll.viewed?(@id)
-    json.bookmarked roll.bookmarked?(@id)
+    json.viewed roll.viewed?(@current_user.id)
+    json.bookmarked roll.bookmarked?(@current_user.id)
     json.bookmark_count roll.bookmark_count
     json.comments_count roll.comments_count
     json.likes roll.likes_count
-    json.liked roll.liked?(@id)
+    json.liked roll.liked?(@current_user.id)
     json.caption roll.caption           
     json.media_url roll.media_url
     json.thumbnail_url roll.thumbnail_url
@@ -20,5 +20,6 @@ json.array! @rolls.each do |roll|
         json.username user.username
         json.verified user.verified
         json.avatar user.avatar_url
+        json.following @current_user.following?(user) if user != @current_user
     end
 end
