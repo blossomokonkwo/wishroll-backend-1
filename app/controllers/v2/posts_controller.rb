@@ -31,7 +31,7 @@ class V2::PostsController < ApplicationController
     def show
         @post = Post.find(params[:id]) 
         @user = @post.user
-        @id = current_user.id
+        @current_user = current_user
         render :show, status: :ok
     end
   

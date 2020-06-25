@@ -1,11 +1,11 @@
 json.id @post.id
 json.views @post.view_count
 json.shares @post.share_count
-json.viewed @post.viewed?(@id)
+json.viewed @post.viewed?(@current_user.id)
 json.comments_count @post.comments_count
 json.likes @post.likes_count
-json.liked @post.liked?(@id)
-json.bookmarked @post.bookmarked?(@id)
+json.liked @post.liked?(@current_user.id)
+json.bookmarked @post.bookmarked?(@current_user.id)
 json.bookmark_count @post.bookmark_count
 json.caption @post.caption
 json.created_at @post.created_at
@@ -17,4 +17,5 @@ json.creator do
     json.username @user.username
     json.verified @user.verified
     json.avatar @user.avatar_url
+    json.following @current_user.following?(user)
 end

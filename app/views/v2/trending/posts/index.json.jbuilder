@@ -19,6 +19,5 @@ json.array! @posts.each do |post|
         json.username user.username
         json.verified user.verified
         json.avatar user.avatar_url
-        json.following @current_user.following?(user)
     end
 end
