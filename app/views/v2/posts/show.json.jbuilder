@@ -1,9 +1,9 @@
 json.id @post.id
-json.views @post.view_count
-json.shares @post.share_count
+json.view_count @post.view_count
+json.share_count @post.share_count
 json.viewed @post.viewed?(@current_user.id)
-json.comments_count @post.comments_count
-json.likes @post.likes_count
+json.comment_count @post.comments_count
+json.like_count @post.likes_count
 json.liked @post.liked?(@current_user.id)
 json.bookmarked @post.bookmarked?(@current_user.id)
 json.bookmark_count @post.bookmark_count

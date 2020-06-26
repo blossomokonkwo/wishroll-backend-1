@@ -4,8 +4,8 @@ json.array! @replies.each do |reply|
     json.body reply.body
     json.created_at reply.created_at
     json.updated_at reply.updated_at
-    json.likes reply.likes
-    json.replies_count reply.replies_count
+    json.like_count reply.likes
+    json.reply_count reply.replies_count
     json.original_comment_id reply.original_comment_id
     json.user do 
         json.id user.id

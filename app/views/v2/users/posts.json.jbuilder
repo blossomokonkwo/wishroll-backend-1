@@ -4,10 +4,10 @@ json.array! @posts.includes([:user]).each do |post|
         json.id post.id
         json.created_at post.created_at
         json.updated_at post.updated_at
-        json.views post.view_count
-        json.comments_count post.comments_count
-        json.likes post.likes_count
-        json.shares post.share_count
+        json.view_count post.view_count
+        json.comment_count post.comments_count
+        json.like_count post.likes_count
+        json.share_count post.share_count
         json.liked post.liked?(@id)
         json.viewed post.viewed?(@id)
         json.bookmarked post.bookmarked?(@id)
