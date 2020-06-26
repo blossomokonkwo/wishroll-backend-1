@@ -12,7 +12,7 @@ json.array! @activities.each do |activity|
                 json.caption roll.caption
                 json.thumbnail_url roll.thumbnail_url
                 json.like_count roll.likes_count
-                json.share_count roll.shares
+                json.share_count roll.share_count
                 json.comment_count roll.comments_count
                 json.view_count roll.view_count
                 json.viewed roll.viewed?(@id)
