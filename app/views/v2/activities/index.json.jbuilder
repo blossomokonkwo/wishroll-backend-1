@@ -38,7 +38,7 @@ json.array! @activities.each do |activity|
                 json.like_count post.likes_count
                 json.share_count post.share_count
                 json.comment_count post.comments_count
-                json.views post.view_count
+                json.view_count post.view_count
                 json.viewed post.viewed?(@id)
                 json.liked post.liked?(@id)
                 json.bookmarked post.bookmarked?(@id)
