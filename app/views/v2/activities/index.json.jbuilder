@@ -20,6 +20,7 @@ json.array! @activities.each do |activity|
                 json.bookmarked roll.bookmarked?(@id)
                 json.bookmark_count roll.bookmark_count
                 json.created_at roll.created_at
+                json.updated_at roll.updated_at
                 json.creator do
                     user = roll.user
                     json.id user.id
