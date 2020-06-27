@@ -11,15 +11,16 @@ json.array! @activities.each do |activity|
                 json.media_url roll.media_url
                 json.caption roll.caption
                 json.thumbnail_url roll.thumbnail_url
-                json.likes roll.likes_count
-                json.shares roll.shares
-                json.comments_count roll.comments_count
-                json.views roll.views
+                json.like_count roll.likes_count
+                json.share_count roll.share_count
+                json.comment_count roll.comments_count
+                json.view_count roll.view_count
                 json.viewed roll.viewed?(@id)
                 json.liked roll.liked?(@id)
                 json.bookmarked roll.bookmarked?(@id)
                 json.bookmark_count roll.bookmark_count
                 json.created_at roll.created_at
+                json.updated_at roll.updated_at
                 json.creator do
                     user = roll.user
                     json.id user.id
@@ -34,10 +35,10 @@ json.array! @activities.each do |activity|
                 json.media_url post.media_url
                 json.caption post.caption
                 json.thumbnail_url post.thumbnail_url
-                json.likes post.likes_count
-                json.shares post.share_count
-                json.comments_count post.comments_count
-                json.views post.view_count
+                json.like_count post.likes_count
+                json.share_count post.share_count
+                json.comment_count post.comments_count
+                json.view_count post.view_count
                 json.viewed post.viewed?(@id)
                 json.liked post.liked?(@id)
                 json.bookmarked post.bookmarked?(@id)
@@ -58,10 +59,10 @@ json.array! @activities.each do |activity|
                 json.media_url post.media_url
                 json.caption post.caption
                 json.thumbnail_url post.thumbnail_url
-                json.likes post.likes_count
-                json.shares post.share_count
-                json.comments_count post.comments_count
-                json.views post.view_count
+                json.like_count post.likes_count
+                json.share_count post.share_count
+                json.comment_count post.comments_count
+                json.view_count post.view_count
                 json.viewed post.viewed?(@id)
                 json.liked post.liked?(@id)
                 json.bookmarked post.bookmarked?(@id)

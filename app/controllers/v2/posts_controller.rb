@@ -4,14 +4,11 @@ class V2::PostsController < ApplicationController
     def create
       @post = Post.create(caption: params[:caption], user_id: current_user.id)
       @post.media_item.attach params[:media_item]
-      @post.media_url = url_for(@post.media_item)
+      @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
+      @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
+      @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
       if @post.save
-        if @post.media_item.blob.content_type.include?("video")
-          host = request.protocol + request.domain
-          host += ":#{request.port}" if request.protocol == "http://"
-          CreatePostThumbnailJob.perform_now(@post.id, host)
-        end
-        render json: {post_id: @post.id}, status: :ok
+        render json: {post_id: @post.id}, status: :created
       else 
         render json: nil, status: :bad
       end
@@ -34,7 +31,7 @@ class V2::PostsController < ApplicationController
     def show
         @post = Post.find(params[:id]) 
         @user = @post.user
-        @id = current_user.id
+        @current_user = current_user
         render :show, status: :ok
     end
   

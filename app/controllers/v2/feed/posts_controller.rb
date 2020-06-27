@@ -2,12 +2,14 @@ class V2::Feed::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def feed
         offset = params[:offset]
-        limit = 24
+        limit = 12
         @id = current_user.id
         @posts = Array.new
         recommended_posts = recommend_posts(limit: limit/2, offset: offset)
         recommend_posts.map {|p| @posts << p} if recommend_posts.present?
-        Post.includes(:user).where(user: current_user.followed_users).order(created_at: :desc).offset(offset).limit(limit).to_a.map {|p| @posts << p}
+        feed_users = current_user.followed_users.to_a
+        feed_users << current_user
+        Post.includes(:user).where(user: feed_users).order(created_at: :desc).offset(offset).limit(limit).to_a.map {|p| @posts << p}
         if @posts.any?
             @posts.sort! {|a,b| b.created_at <=> a.created_at}
             render :index, status: :ok

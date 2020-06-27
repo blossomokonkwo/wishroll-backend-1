@@ -6,7 +6,7 @@ class Share < ApplicationRecord
   enum shared_service: [:library, :instagram, :snapchat, :tik_tok, :imessage, :twitter, :facebook, :tinder, :reddit, :messenger, :whatsapp, :email, :drop_box]
 
 
-  after_commit do
+  after_create do
     shareable.update!(popularity_rank:  (shareable.view_count + shareable.likes_count + shareable.share_count + shareable.bookmark_count) / ((Time.zone.now - shareable.created_at.to_time) / 1.hour.seconds))
   end
 end

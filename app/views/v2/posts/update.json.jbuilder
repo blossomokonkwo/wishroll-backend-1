@@ -2,8 +2,8 @@ json.id @post.id
 json.caption @post.caption
 json.created_at @post.created_at
 json.updated_at @post.updated_at
-json.views @post.view_count
-json.comments_count @post.comments_count
-json.likes @post.likes_count
+json.view_count @post.view_count
+json.comment_count @post.comments_count
+json.like_count @post.likes_count
 json.media_url @post.media_url
 json.thumbnail_url @post.thumbnail_url
