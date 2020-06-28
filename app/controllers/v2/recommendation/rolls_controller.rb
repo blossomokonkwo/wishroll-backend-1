@@ -3,7 +3,6 @@ class V2::Recommendation::RollsController < ApplicationController
     def recommend
         limit = 15
         offset = params[:offset]
-        @id = current_user.id
         @roll = Roll.find(params[:roll_id])
         keywords = Array.new
         english_articles = ["the", "a", "when" "some", "they", "back", "because", "if", "in"]
@@ -14,6 +13,7 @@ class V2::Recommendation::RollsController < ApplicationController
             p.id == @roll.id or p.user.blocked_users.include?(current_user) or current_user.blocked_users.include?(p.user)
         end
         if @rolls.any?
+            @current_user = current_user
             render :index, status: :ok
         else
             render json: nil, status: :not_found
