@@ -26,7 +26,7 @@ class V2::CommentsController < ApplicationController
             begin
                 @comment = post.comments.create!(body: params[:body], user_id: current_user.id, original_comment_id: params[:original_comment_id])
                 @user = current_user
-                if !current_user.posts.include?(roll)
+                if !current_user.posts.include?(post)
                     activity_phrase = nil
                     user_id = nil
                     if @comment.original_comment_id
