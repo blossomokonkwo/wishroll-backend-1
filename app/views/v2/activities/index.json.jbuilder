@@ -15,6 +15,7 @@ json.array! @activities.each do |activity|
                 json.share_count roll.share_count
                 json.comment_count roll.comments_count
                 json.view_count roll.view_count
+                json.reaction_count roll.reactions_count
                 json.viewed roll.viewed?(@id)
                 json.liked roll.liked?(@id)
                 json.bookmarked roll.bookmarked?(@id)
