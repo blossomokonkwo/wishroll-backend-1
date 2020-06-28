@@ -7,7 +7,7 @@ class Roll < ApplicationRecord
   has_many :reactions, class_name: "Roll", foreign_key: :original_roll_id
   has_many :shares, as: :shareable, dependent: :destroy
   belongs_to :original_roll, class_name: "Roll", optional: true, counter_cache: :reactions_count
-  has_many :tags, class_name: "Tag", foreign_key: :roll_id
+  has_many :tags, class_name: "Tag", foreign_key: :roll_id, dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
   has_many :bookmarks, as: :bookmarkable
   has_one_attached(:media_item)
@@ -16,11 +16,11 @@ class Roll < ApplicationRecord
   after_create :create_reaction_activity
 
   def create_reaction_activity
-    if self.original_roll_id
-      phrase = "#{self.user.username} reacted to your roll!"
-      user_id = Roll.find(self.original_roll_id).user.id
-      unless user_id == self.user.id
-        Activity.create(user_id: user_id, active_user_id: self.user.id, activity_phrase: phrase, activity_type: self.class.name, content_id: self.id, media_url: self.media_url)
+    if original_roll_id
+      phrase = "#{user.username} reacted to your roll!"
+      reacted_user_id = Roll.find(original_roll_id).user_id
+      unless reacted_user_id == user_id
+        Activity.create(user_id: reacted_user_id, active_user_id: user_id, activity_phrase: phrase, activity_type: self.class.name, content_id: id, media_url: thumbnail_url)
       end
     end
   end

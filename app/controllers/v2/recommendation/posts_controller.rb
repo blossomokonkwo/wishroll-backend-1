@@ -3,7 +3,6 @@ class V2::Recommendation::PostsController < ApplicationController
     def recommend
         limit = 15
         offset = params[:offset]
-        @id = current_user.id
         @post = Post.find(params[:post_id])
         keywords = Array.new
         english_articles = ["the", "a", "when" "some", "they", "back", "because", "if", "in"]
@@ -20,6 +19,7 @@ class V2::Recommendation::PostsController < ApplicationController
             p.id == @post.id or current_user.reported_posts.include?(p) or p.user.blocked_users.include?(current_user) or current_user.blocked_users.include?(p.user)
         end
         if @posts.any?
+            @current_user = current_user
             render :index, status: :ok
         else
             render json: nil, status: :not_found
