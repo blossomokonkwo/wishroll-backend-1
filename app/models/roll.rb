@@ -20,7 +20,7 @@ class Roll < ApplicationRecord
       phrase = "#{user.username} reacted to your roll!"
       reacted_user_id = Roll.find(original_roll_id).user_id
       unless reacted_user_id == user_id
-        Activity.create(user_id: reacted_user_id, active_user_id: user_id, activity_phrase: phrase, activity_type: class.name, content_id: id, media_url: thumbnail_url)
+        Activity.create(user_id: reacted_user_id, active_user_id: user_id, activity_phrase: phrase, activity_type: self.class.name, content_id: id, media_url: thumbnail_url)
       end
     end
   end
