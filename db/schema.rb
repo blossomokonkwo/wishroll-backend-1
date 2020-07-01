@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_195712) do
+ActiveRecord::Schema.define(version: 2020_06_30_191627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_195712) do
     t.bigint "likeable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "likeable_id", "likeable_type"], name: "index_likes_on_user_id_and_likeable_id_and_likeable_type", unique: true
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -196,7 +196,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_195712) do
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
-    t.index ["uuid"], name: "index_posts_on_uuid"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -227,11 +226,11 @@ ActiveRecord::Schema.define(version: 2020_06_12_195712) do
     t.bigint "reactions_count", default: 0
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0
+    t.boolean "private", default: false, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["original_roll_id"], name: "index_rolls_on_original_roll_id"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
     t.index ["user_id"], name: "index_rolls_on_user_id"
-    t.index ["uuid"], name: "index_rolls_on_uuid"
   end
 
   create_table "rpush_apps", force: :cascade do |t|
@@ -336,7 +335,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_195712) do
     t.index ["post_id"], name: "index_tags_on_post_id"
     t.index ["roll_id"], name: "index_tags_on_roll_id"
     t.index ["text"], name: "index_tags_on_text"
-    t.index ["uuid"], name: "index_tags_on_uuid"
   end
 
   create_table "topics", force: :cascade do |t|
