@@ -3,6 +3,9 @@ class V2::ViewsController < ApplicationController
     def create
         view = View.new(duration: params[:duration], viewable_id: params[:viewable_id], viewable_type: params[:viewable_type], user_id: current_user.id)
         if view.save
+            user = view.viewable.user
+            user.view_count += 1
+            user.save
             CreateLocationJob.perform_later(params[:ip_address], params[:timezone], view.id, view.class.name)
             render json: nil, status: :created
         else
