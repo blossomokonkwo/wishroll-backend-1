@@ -16,7 +16,7 @@ class V2::SharesController < ApplicationController
             begin
                 share = post.shares.create!(user: current_user, shared_service: params[:shared_service])
                 CreateLocationJob.perform_now(params[:ip_address], params[:timezone], share.id, share.class.name)
-                unless Activity.find_by(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: share.class.name)
+                unless Activity.find_by(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: share.class.name) or post.user == current_user
                     Activity.create(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: post.class.name, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url , activity_phrase: "#{current_user.username} shared your post!")
                 end
                 render json: nil, status: :created
