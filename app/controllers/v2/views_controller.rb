@@ -6,7 +6,6 @@ class V2::ViewsController < ApplicationController
             user = view.viewable.user
             user.view_count += 1
             user.save
-            CreateLocationJob.perform_later(params[:ip_address], params[:timezone], view.id, view.class.name)
             render json: nil, status: :created
         else
             render json: nil, status: :bad_request
