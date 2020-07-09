@@ -58,7 +58,8 @@ class V2::UsersController < ApplicationController
         limit = 15
         if @user
             unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
-                @rolls = @user.created_rolls(limit: limit, offset: offset)
+                can_show_private_rolls = @user == current_user
+                @rolls = @user.created_rolls(limit: limit, offset: offset, show_private_rolls: can_show_private_rolls)
                 if @rolls.any?
                     @id = current_user.id
                     render :rolls, status: :ok

@@ -20,6 +20,7 @@ class User < ApplicationRecord
     has_many :shares, class_name: "Share", foreign_key: :user_id
     has_many :likes, class_name: "Like", foreign_key: :user_id
     has_many :bookmarks 
+    has_many :albums
 
     # User Content APIs
 
@@ -50,11 +51,19 @@ class User < ApplicationRecord
         
     end
 
-    def liked_rolls(limit: 25, offset: nil)
+    def liked_rolls(limit: 25, offset: nil, show_private_rolls: true)
         if offset
-            Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+            if show_private_rolls
+                Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+            else
+                Roll.joins(:likes).order("likes.created_at DESC").where.not(private: false).where(likes: {user: self}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+            end
         else
-            Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).limit(limit)
+            if show_private_rolls
+                Roll.joins(:likes).order("likes.created_at DESC").where(likes: {user: self}).includes([:user, :views, :likes]).limit(limit)
+            else
+                Roll.joins(:likes).order("likes.created_at DESC").where.not(private: false).where(likes: {user: self}).includes([:user, :views, :likes]).limit(limit)
+            end 
         end
     end
     
@@ -67,11 +76,19 @@ class User < ApplicationRecord
         end
     end
 
-    def created_rolls(limit: 25, offset: nil)
+    def created_rolls(limit: 25, offset: nil, show_private_rolls: true)
         if offset
-            Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+            if show_private_rolls
+                Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+            else
+                Roll.where(user: self).where.not(private: false).order(created_at: :desc).offset(offset).limit(limit)
+            end
         else
-            Roll.where(user: :self).order(created_at: :desc).limit(limit)
+            if show_private_rolls
+                Roll.where(user: :self).order(created_at: :desc).limit(limit)
+            else
+                Roll.where(user: :self).where.not(private: false).order(created_at: :desc).limit(limit)
+            end  
         end
     end
     
