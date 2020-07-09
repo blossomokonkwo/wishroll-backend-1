@@ -2,7 +2,7 @@ class V2::RollsController < ApplicationController
     before_action :authorize_by_access_header!
     def create
         begin            
-            @roll = Roll.create!(caption: params[:caption], user_id: current_user.id, original_roll_id: params[:original_roll_id]) 
+            @roll = Roll.create!(caption: params[:caption], user_id: current_user.id, original_roll_id: params[:original_roll_id], private: params[:privacy]) 
             @roll.media_item.attach params[:media_item] if params[:media_item]
             @roll.thumbnail_image.attach params[:thumbnail_image] if params[:thumbnail_image]
             @roll.media_url = url_for(@roll.media_item) if @roll.media_item.attached?
