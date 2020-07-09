@@ -51,7 +51,6 @@ class V2::RelationshipsController < ApplicationController
                 @followers = @user.follower_users.order('relationships.created_at DESC').limit(limit).to_a
             end
             if @followers.any?
-                @followers.delete_if {|f| current_user.blocked_users.include?(f) or f.blocked_users.include?(current_user)}
                 render :followers, status: :ok
             else
                 render json: nil, status: :not_found
@@ -75,7 +74,6 @@ class V2::RelationshipsController < ApplicationController
                 @followed_users = @user.followed_users.order(id: :desc).limit(limit).to_a
             end
             if @followed_users.any?
-                @followed_users.delete_if {|f| current_user.blocked_users.include?(f) or f.blocked_users.include?(current_user)}
                 render :following, status: :ok
             else
                 render json: nil, status: :not_found
