@@ -7,7 +7,6 @@ class V2::Search::PostsController < ApplicationController
         @posts.to_a.delete_if do |post|
             current_user.reported_posts.include?(post)
         end
-        CreateSearchJob.perform_later(:post, params[:q], params[:ip_address], params[:timezone])
         if @posts.any?
             @current_user = current_user
             render :index, status: :ok

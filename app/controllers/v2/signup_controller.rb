@@ -19,7 +19,6 @@ class V2::SignupController < ApplicationController
     def new
         @user = User.new(email: params[:email], password: params[:password], username: params[:username], name: params[:name], birth_date: params[:birth_date], gender: params[:gender])
         if @user.save 
-            CreateLocationJob.perform_now(params[:ip_address], params[:timezone], @user.id, @user.class.name)
             payload = {id: @user.id, username: @user.username}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
             tokens = session.login

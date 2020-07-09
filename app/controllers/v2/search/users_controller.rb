@@ -9,7 +9,6 @@ class V2::Search::UsersController < ApplicationController
         end
         if @users.any? 
             @id = current_user.id
-            CreateSearchJob.perform_later(:user, params[:q], params[:ip_address], params[:timezone])
             render :index, status: :ok
         else
             render json: nil, status: :not_found
