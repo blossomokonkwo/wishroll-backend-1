@@ -3,10 +3,7 @@ class V2::Search::PostsController < ApplicationController
     def search
         limit = 15
         offset = params[:offset]
-        @posts = Post.joins(:tags).where("text ILIKE ?", "%#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
-        @posts.to_a.delete_if do |post|
-            current_user.reported_posts.include?(post)
-        end
+        @posts = Post.joins(:tags).where("text ILIKE ?", "%#{params[:q]}%").includes([user: [:blocked_users]], :views, :likes).distinct.order(view_count: :desc).offset(offset).limit(limit)
         if @posts.any?
             @current_user = current_user
             render :index, status: :ok
