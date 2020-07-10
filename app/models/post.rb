@@ -8,6 +8,7 @@ class Post < ApplicationRecord
     has_many :viewers, through: :views, source: :user
     has_one :location, as: :locateable, dependent: :destroy
     has_many :bookmarks, as: :bookmarkable, dependent: :destroy
+    belongs_to :album, optional: true, counter_cache: :post_count
     has_one_attached(:media_item)
     has_one_attached(:thumbnail_item)
 

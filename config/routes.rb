@@ -102,12 +102,16 @@ Rails.application.routes.draw do
       resources :bookmarks, shallow: true
     end
     
-    resources :users, only: [:update, :show] 
+    resources :users, only: [:update, :show] do
+      resources :albums, shallow: true
+    end
     get 'posts/:post_id/likes/users', to: 'likes#index'
     get 'rolls/:roll_id/likes/users', to: 'likes#index'
     get 'comments/:comment_id/likes/users', to: 'likes#index'
     get 'users/:user_id/posts', to: 'users#posts'
     get 'users/:user_id/liked-posts', to: 'users#liked_posts'
+    get 'users/:user_id/rolls', to: 'users#rolls'
+    get 'users/:user_id/liked-rolls', to: 'users#liked_rolls'
     put 'user/update', to: 'users#update'
     get 'posts/:post_id/bookmarks', to: "bookmarks#bookmarked_posts"
     get 'rolls/:roll_id/bookmarks', to: "bookmarks#bookmarked_rolls"

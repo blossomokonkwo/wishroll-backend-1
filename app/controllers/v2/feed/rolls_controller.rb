@@ -4,7 +4,9 @@ class V2::Feed::RollsController < ApplicationController
         offset = params[:offset]
         @id = current_user.id
         limit = 12
-        @rolls = Roll.where(user: current_user.followed_users).order(created_at: :desc).limit(limit)
+        feed_users = current_user.followed_users.to_a
+        feed_users << current_user
+        @rolls = Roll.where(user: feed_users).where.not(private: true).order(created_at: :desc).offset(offset).limit(limit)
         if @rolls.any?
             render :index, status: :ok
         else

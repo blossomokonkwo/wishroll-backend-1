@@ -8,7 +8,7 @@ class V2::PostsController < ApplicationController
       @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
       @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
       if @post.save
-        render json: {post_id: @post.id}, status: :ok
+        render json: {post_id: @post.id}, status: :created
       else 
         render json: nil, status: :bad
       end
@@ -31,7 +31,7 @@ class V2::PostsController < ApplicationController
     def show
         @post = Post.find(params[:id]) 
         @user = @post.user
-        @id = current_user.id
+        @current_user = current_user
         render :show, status: :ok
     end
   
