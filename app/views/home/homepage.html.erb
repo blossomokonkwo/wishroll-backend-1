@@ -11,12 +11,18 @@
 
             <meta name="viewport" content="width=device-width">
 
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
             <meta name="keywords" content="wishroll, memes, memes 2020, twitter memes, funny coronavirus memes, stonks memes, ight imma head out memes, epstein memes, corona virus memes, coronavirus twitter, funny memes 2020">
 
             <meta name="author" content="WishRoll Team">
             
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            
             <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
             <%= stylesheet_link_tag "mainstylesheet.css" %>
+
             <%= favicon_link_tag "wishrollfavicon.png"%>
             
 
@@ -24,42 +30,73 @@
 
         <body>
 
-            <header>
+            
+            <nav>
+                <input type="checkbox" id="check">
 
-                <div class="container">
-                    <div id="branding">
-                        <h1><span class="highlight">WishRoll</span></h1>
-                    </div>
-                <nav>
+                <label for="check" class="checkbtn">
+                    <i class="fas fa-bars"></i> 
+                     </label>
+                        <label class="logo">WishRoll <a><%= image_tag("wishrollfavicon.png")%></a></label>
                     <ul>
-                        <li class="current" ><a >Download</a></li>
+                        <li><a class="current" >Download</a></li>
                         <li><a><%= link_to "What is WishRoll?", "/what-is-wishroll" %> </a></li>
                         <li><a><%= link_to "Contact", "/contact" %> </a></li>
                     </ul>
                 </nav>
-                </div>
-                </header>
+               
+               
         
                     
                 <section id="showcase">
-                    <div class="container">
-                        <h1>Express Yourself</h1>
-                        <p>The Biggest Collection of Reaction Media Ever.</p>
-                        
 
-                    </div>
-            
-                </section>          
-                
-                <section id="newsletter">
-                    <div class="container">
-                        <h1>Try WishRoll. Available on the Appstore.</h1>
+                <section id="boxes">
 
-                        <div class="download">
-                        <%= link_to image_tag("AppIconShadow.png")%>
-                        <%=link_to image_tag("downloadappstoreweb.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
+                    <div class="container">
+
+                        <div class="box">
+                            <%= image_tag("ScreenOne.png")%>
+                    
+                        </div>
+
+                        <div class="box">
+                        <%= image_tag("ScreenTwo.png")%>
+                            
+                            </div>
+
+                        <div class="box">
+                        <%= image_tag("ScreenThree.png")%>
+                            
 
                         </div>
+
+                         
+                    
+                    </div>
+
+                    <h1>Download WishRoll</h1>
+                    
+
+                   
+
+                </section>
+
+                
+                </section>
+                
+                        
+                
+                
+                    <div class="containerImage">
+                        
+
+                        <%= link_to image_tag("GooglePlay.png")%>
+                        <%=link_to  image_tag("ApplePlay.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
+                        
+                        
+
+                        
+
                         <!-- What The tutorial guy was saying I should type -->
                         <!--
                         <form>
@@ -74,45 +111,21 @@
 
                     </div>
                 
-                </section>
+               
 
-                <section id="boxes">
-                    <div class="container">
-
-                        <div class="box">
-                            <%= image_tag("ProfileBox.png")%>
-                            <h3>Upload</h3>
-                            <p>Have a camera roll filled with reaction media? Move it to WishRoll and save your storage.</p>
-                        </div>
-
-                        <div class="box">
-                        <%= image_tag("ChatBox.png")%>
-                            <h3>Chat</h3>
-
-                            <p>Your groupchat is boring. We know. Join one of ours. Or all of them. Talk about ANYTHING and start conversations.</p>
-                            </div>
-
-                        <div class="box">
-                        <%= image_tag("SearchBox.png")%>
-                            <h3>Search</h3>
-                            <p>Thinking of that perfect reaction? We have it for you. Right here</p>
-
-                        </div>
-                    
-                    </div>
                 
-                </section>
 
             
 
            
 
 
-            <footer>
-            <p>WishRoll &copy; 2020</p>
+           <footer>
+                <p>WishRoll &copy; 2020 </p>
+                <p><a href="www.google.com">Privacy Policy</a> <a href="www.google.com"> Terms and Conditions</a> <a href="www.google.com"> Policy Terms</a></p>
             </footer>
-            
-        </body>
+    </body>        
+        
 </html>
 
 
@@ -120,4 +133,3 @@
 
 
 
-</html>

@@ -5,18 +5,24 @@
            
             <meta charset="utf-8"> 
 
-            <title>What is WishRoll?</title>
+            <title>WishRoll</title>
 
             <meta name="description" content="An app with an unlimited collection of reaction media, and a place for fun groupchats about interesting topics.">
 
             <meta name="viewport" content="width=device-width">
 
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
             <meta name="keywords" content="wishroll, memes, memes 2020, twitter memes, funny coronavirus memes, stonks memes, ight imma head out memes, epstein memes, corona virus memes, coronavirus twitter, funny memes 2020">
 
             <meta name="author" content="WishRoll Team">
             
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            
             <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
             <%= stylesheet_link_tag "mainstylesheet.css" %>
+
             <%= favicon_link_tag "wishrollfavicon.png"%>
            
             
@@ -25,126 +31,130 @@
 
         <body>
 
-            <header>
+            <nav>
+                <input type="checkbox" id="check">
 
-                <div class="container">
-                    <div id="branding">
-                        <h1><span class="highlight">WishRoll</span></h1>
-                    </div>
-                <nav>
-                    <ul>
-                        <li><a><%= link_to "Download", "/home" %> </a></li>
-                        <li class="current" ><a>What is WishRoll?</a></li>
-                        <li><a><%= link_to "Contact", "/contact" %> </a></li>
-                    </ul>
-                </nav>
-                </div>
-                </header>
+                <label for="check" class="checkbtn">
+                    <i class="fas fa-bars"></i> 
+                </label>
+
+                <label class="logo">WishRoll
+                <a><%= image_tag("wishrollfavicon.png")%></a></label>
+
+                <ul>
+                    <li><a><%= link_to "Download", "/home" %></a></li>
+                    <li><a class="current">What is WishRoll?</a></li>
+                    <li><a><%= link_to "Contact", "/contact" %> </a></li>
+                </ul>
+
+            </nav>
+
+
+                
         
                     
-                <section id="showcase">
-                    <div class="container">
-                        <h1>A Global Reaction Media Album <br> and Groupchat</h1>
-                        <p></p>
+            <div class="mainTitle">
+                
+                   <h1>WishRoll is the #1 app for All Things Reactions</h1>
+                
+            </div> 
 
-                    </div>
+
+
+          <div class="responsive">
+            <div class="gallery">
+
+                <a><%= image_tag("ImageQuadOne.png")%></a>
+                <div class="des">
+                    <h1>Search for any Reaction Meme</h1>
+                    <p>Take a look at the trending page or use the search bar to find the exact picture, video, or gif you're looking for.</p>
+                </div>
+            </div>
+          
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+
+                <a><%= image_tag("ImageQuadTwo.png")%></a>
+                <div class="des">
+                    <h1>Upload to Your Profile</h1>
+                    <p>Upload your reaction pictures, videos, and gifs to your Profile to have easy access to them all the time.</p>
+                
+                </div>
+            </div>
+          
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+
+                <a><%= image_tag("ImageQuadThree.png")%></a>
+                 <div class="des">
+                    <h1>Tag Your Reactions for Searchability</h1>
+                    <p>When uploading, use our Tagging feature to be able to find it through search. When you tag them, they can be found through those same tags.</p>
+                </div>
+            </div>
+          
+          </div>
+
+          <div class="responsive">
+            <div class="gallery">
+
+                <a><%= image_tag("Reacting.png")%></a>
+                 <div class="des">
+                    <h1>React to Anything</h1>
+                    <p>Use the Rolls feature, post your reactions, and share with friends.</p>
+                </div>
+            </div>
+          
+          </div>
+
+
+
+    <section class="container">
+    </section>
             
-                </section>          
-                
-                <section id="newsletter">
-                    <div class="container">
-                        <h1></h1>
 
-                        <div class="download">
-                        <%= link_to image_tag("AppIconShadow.png")%>
-                        <%=link_to image_tag("downloadappstoreweb.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
 
-                        </div>
-                        <!-- What The tutorial guy was saying I should type -->
-                        <!--
-                        <form>
-                            <input type= "email" placeholders="Enter Email...">  
-                    
+
+
+          <div class="containerImage">
+                        <%= link_to image_tag("GooglePlay.png")%>
+                        <%=link_to  image_tag("ApplePlay.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
                         
-                        <button type="submit" class="button_1">Subscribe</button>
-                        </form>  
-                        I will be adding the download button instead, not sure how I will yet but its gonna happen folks
-                        -->
-                    
+                        
 
-                    </div>
-                
-                </section>
-
-                <section id="walkthrough">
-                    <div class="container">
-
-                        <div class="stage">
-
-                            <%= image_tag("Upload1.png")%> 
-                            
-                        </div>
-
-                        <div class="stage">
-                         <%= image_tag("Upload3.png")%> 
-                        </div>    
-
-                        <div class="stage">
-                        <%= image_tag("Upload2.png")%> 
-                            
-
-                        </div>
-
-                       
-                    
-                    </div>
-                
-                </section>
-
-                
-                    
-                    
-                
-             
-
-              
-                
-                </section>
-
-                 <section id="walkthrough">
-                    <div class="container">
-
-                        <div class="stage">
-                            <%= image_tag("Search1.png")%> 
-                          
-                        </div>
-
-                        <div class="stage">
-                        <%= image_tag("Chat2.png")%> 
-                          
-                            </div>
-
-                        <div class="stage">
-                        <%= image_tag("Chat3.png")%> 
-                            <h3>Search</h3>
-                           
-
-                        </div>
+                        
 
                       
-                    
-                    </div>
-                
-                </section>
+
+            </div>
+            
 
             
 
-           
 
+                
+                
+        
+              
 
+                
+                    
+               
+
+                
+                    
+                    
+                
+  
+            
             <footer>
-            <p>WishRoll &copy; 2020</p>
+                <p>WishRoll &copy; 2020 </p>
+                <p><a href="www.google.com">Privacy Policy</a> <a href="www.google.com"> Terms and Conditions</a> <a href="www.google.com"> Policy Terms</a></p>
             </footer>
+            
             
         </body>
 </html>

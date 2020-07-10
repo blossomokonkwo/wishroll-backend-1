@@ -9,72 +9,72 @@
 
             <meta name="description" content="An app with an unlimited collection of reaction media, and a place for fun groupchats about interesting topics.">
 
-            <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+            <meta name="viewport" content="width=device-width">
+
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
             <meta name="keywords" content="wishroll, memes, memes 2020, twitter memes, funny coronavirus memes, stonks memes, ight imma head out memes, epstein memes, corona virus memes, coronavirus twitter, funny memes 2020">
 
             <meta name="author" content="WishRoll Team">
             
-            
-            <%= stylesheet_link_tag "contact.css"%>
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
             
             <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-            <%= stylesheet_link_tag "mainstylesheet.css" %>
+
+            
+
+            <%= stylesheet_link_tag "contact.css"%> 
+
             <%= favicon_link_tag "wishrollfavicon.png"%>
+           
             
 
         </head>
 
+
         <body>
 
-            <header>
+            <nav>
+                <input type="checkbox" id="check">
 
-                <div class="container">
-                    <div id="branding">
-                        <h1><span class="highlight">WishRoll</span></h1>
-                    </div>
-                <nav>
-                    <ul>
-                        <li><a><%= link_to "Download", "/home" %> </a></li>           
-                        <li><a><%= link_to "What is WishRoll?", "/what-is-wishroll" %> </a></li>
-                        <li class="current" ><a >Contact</a></li>
-                    </ul>
-                </nav>
-                </div>
-                </header>
-        
+                <label for="check" class="checkbtn">
+                    <i class="fas fa-bars"></i> 
+                </label>
+
+                <label class="logo">WishRoll <a><%= image_tag("wishrollfavicon.png")%></a></label>
+
+                <ul>
+                    <li><a><%= link_to "Download", "/home" %></a></li>           
+                    <li><a><%= link_to "What is WishRoll?", "/what-is-wishroll" %></a></li>
+                    <li><a class="current" >Contact</a></li>
+                </ul>
+
+            </nav>
+
+
+            
+
+
+            <div class="contact-form" >
+                <h1>Contact Us</h1>
+                <h2>great@wishroll.co</h2>
+
+
+            
+            
+            </div>
+            
+
+           
+
                 
-                <div class="contactContainer">
-                    <div class="contact-box">
-                        <div class="left"></div>
-                        <div class="right">
-                        <h2>Contact Us</h2>
-                        
-                        <input type = "text" class="field" placeholder="Name">
-                        <input type="email" class="field" placeholder="Your Email Adrdess">
-                        <input type="text" class="field" placeholder="Subject" >
-                        <textarea class="field area" placeholder="Message"></textarea>
-                        <button class="btn" >Send</button>
-
-
-                       
-                        </div>
-
-                        
-                    </div>
-                </div>
 
 
             <footer>
-            <p>WishRoll &copy; 2020</p>
+                <p>WishRoll &copy; 2020 </p>
+                <p><a href="www.google.com">Privacy Policy</a> <a href="www.google.com"> Terms and Conditions</a> <a href="www.google.com"> Policy Terms</a></p>
             </footer>
             
+           
         </body>
-</html>
-
-
-
-
-
-
-</html>
+    </html>

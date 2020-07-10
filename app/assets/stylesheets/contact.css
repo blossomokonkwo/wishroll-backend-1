@@ -1,158 +1,247 @@
-
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 *{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
 }
 
 body{
-    width: 100%;
-    height: 100vh;
-}
-
-
-
-.contactContainer{
-    position: relative;
-    display: flex;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 20px  100px;
-
-}
-
-.contactContainer:after{
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: url("WideFadeBackground.png") no-repeat center;
-    background-size: cover;
-    z-index: -1;
-    filter: blur(2.5px);
-}
-
-.contact-box{
-    max-width: 1000px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: center;
-    border-radius: 30px;
-    align-items: center;
-    box-shadow: 0px 0px 19px 5px rgb(0, 0, 0, 0.19);
-    text-align: center;
-    background-color: #14202b;
-}
-
-.left{
-    height: 100%;
-    background: url("ContactBlock.png") no-repeat center;
-    background-size: cover;
-
-}
-
-.right{
-    
-    padding: 30px 40px;
-}
-
-h2{
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    position: relative;
-}
-
-h2:after{
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    height: 4px;
-    width: 50px;
-    border-radius: 2px;
-    background-color: #2ecc71;
-
-}
-
-.field{
-    width: 100%;
-    padding: 0.5rem 1rem;
-    outline: none;
-    border-radius: 3px;
-    border: 2px solid rgba(0, 0, 0, 0);
-    background-color: white;
-    font-size: 1.1rem;
-    margin-bottom: 22px;
-    transition: .3s;
-}
-
-
-.field:hover{
-    background-color: #f5f5f5;
-
-}
-
-.field:focus{
-    background-color: white;
-    border: 2px solid rgba(30, 85, 250, 0.47);
-}
-
-.area{
-    min-height: 150px;
-}
-
-.btn{
-    width: 100%;
-    padding: 0.5rem 1rem;
-    font-size: 1.1rem;
-    background-color: #2ecc71;
-    cursor: pointer;
-    outline: none;
-    border: none;
-    transition: .3s;
-    color:white;
-
-}
-
-.btn:hover{
-    background-color: #27ae60;
-}
-
-@media screen and (max-width:880px){
-    .contact-box{
-        grid-template-columns: 1fr;
-    }
-
-    .left{
-        height: 200px;
-    }
-
-
-}
-
-
-
-
-
-
-
-/* Global */
-.container{
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
-
-ul{
     margin: 0;
     padding: 0;
+    background-image: url('WideFadeBackground.png'); 
     
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+nav{
+    background: #17202A;
+    height: 120px;
+    width: 100%;
+    
+  }
+  
+  label.logo{
+    color: #f2f2f2;
+    font-size: 33px;
+    line-height: 120px;
+    padding: 0 40px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  nav ul{
+    float: right;
+    margin-right: 40px;
+    
+  }
+  
+  nav ul li{
+    display: inline-block;
+    line-height: 120px;
+    
+  }
+  
+  nav ul li a{
+    color: #f2f2f2;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .current{
+      border-bottom: 5px solid #85C8F3;
+  }
+  
+  a.active, a:hover{
+    transition: .025s;
+    color: #85C8F3;
+  }
+  
+  .checkbtn{
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 120px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  #check{
+    display: none;
+  }
+  
+  @media (max-width: 952px){
+  
+    .responsive{
+      width: 50%;
+      margin: 6px 0;
+    }
+  
+    label.logo{
+      font-size: 27px;
+      padding-left: 40px;
+    }
+  
+    nav ul li a{
+      font-size: 16px;
+    }
+  
+    .containerImage img{
+      padding: 50px;
+      
+    }
+  
+  }
+  @media (max-width: 858px){
+    .checkbtn{
+      display: block;
+      margin-right: 40px;
+    }
+  
+    .responsive{
+      width: 100%;
+      
+    }
+  
+    .containerImage img{
+      padding: 70px;
+    }
+  
+    ul{
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #2c3e50;
+      top: 80px;
+      left: -100%;
+      text-align: center;
+      transition: all .5s;
+    }
+  
+    nav ul li{
+      display: block;
+      margin: 50px 0;
+      line-height: 30px;
+    }
+  
+    nav ul li a{
+      font-size: 20px;
+    }
+  
+    a:hover,a.active{
+      background: none;
+      color: #0082e6;
+    }
+  
+    #check:checked ~ ul{
+      left: 0;
+    }
+  }
+  
+  
+  /* Global */
+  .container{
+      font-family: 'Poppins', sans-serif;
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+  }
+
+  footer{
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+    margin-top: 0px;
+    color: white;
+    background: #16a2ef;
+    text-align: center;
+}
+
+.mainTitle{
+  font-family: 'Poppins', sans-serif;
+  
+  text-align: center;
+  margin: auto;
+  width: 50%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding: 10px;
+ 
+
+}
+
+.contact-form{
+    width: 90%;
+    max-width: 900px;
+    background: white;
+    margin: auto;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    padding: 40px 40px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    text-align: center;
+
+}
+
+.contact-form h1{
+    font-family: 'Poppins', sans-serif;
+    margin-top: 0;
+    font-weight: 800;
+
+}
+
+.contact-form h2{
+  font-family: 'Poppins', sans-serif;
+  margin-top: 0;
+  font-weight: 300;
+
+}
+
+.txtb{
+    border: 1px solid gray;
+    margin: 8px 0px;
+    padding: 12px 18px;
+    border-radius: 8px;
+
+
+
+}
+
+.txtb label {
+    display: block;
+    text-align: left;
+    color: #333;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.txtb input, .txtb textarea{
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 19px;
+    margin-top: 6px;
+
+}
+
+.submitbtn{
+    display: block;
+    background: #17202A;
+    color: white;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px 0;
 }
