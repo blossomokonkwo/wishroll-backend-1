@@ -15,12 +15,12 @@ class User < ApplicationRecord
     has_one :location, as: :locateable, dependent: :destroy
     has_many :posts, -> {order(created_at: :desc)}, class_name: "Post", dependent: :destroy
     has_many :rolls, -> {order(created_at: :desc)}, class_name: "Roll", dependent: :destroy
-    has_many :comments, class_name: "Comment"
-    has_many :views, class_name: "View", foreign_key: :user_id
-    has_many :shares, class_name: "Share", foreign_key: :user_id
-    has_many :likes, class_name: "Like", foreign_key: :user_id
-    has_many :bookmarks 
-    has_many :albums
+    has_many :comments, class_name: "Comment", dependent: :destroy
+    has_many :views, class_name: "View", foreign_key: :user_id, dependent: :destroy
+    has_many :shares, class_name: "Share", foreign_key: :user_id, dependent: :destroy
+    has_many :likes, class_name: "Like", foreign_key: :user_id, dependent: :destroy
+    has_many :bookmarks, dependent: :destroy 
+    has_many :albums, dependent: :destroy
 
     # User Content APIs
 
