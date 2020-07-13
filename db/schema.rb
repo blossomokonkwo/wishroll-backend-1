@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_110814) do
+ActiveRecord::Schema.define(version: 2020_07_13_205436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -391,8 +391,10 @@ ActiveRecord::Schema.define(version: 2020_07_13_110814) do
     t.string "profile_background_url"
     t.integer "gender", default: 2
     t.bigint "wishroll_score", default: 0, null: false
+    t.boolean "restricted", default: false
     t.index ["email"], name: "email"
     t.index ["name"], name: "index_users_on_name"
+    t.index ["restricted"], name: "index_users_on_restricted"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
