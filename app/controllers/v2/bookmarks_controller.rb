@@ -48,13 +48,13 @@ class V2::BookmarksController < ApplicationController
         end
     end
 
-    def bookmarked_posts
+    def index
         offset = params[:offset]
         limit = 15 
         @posts = current_user.bookmarked_posts(limit: limit, offset: offset)
         if @posts.any?
             @current_user = current_user
-            render :bookmarked_posts, status: :ok
+            render :index, status: :ok
         else
             render json: nil, status: :not_found
         end
