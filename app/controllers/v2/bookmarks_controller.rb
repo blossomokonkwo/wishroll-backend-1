@@ -4,7 +4,6 @@ class V2::BookmarksController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
                 bookmark = roll.bookmarks.create!(user: current_user)
-                CreateLocationJob.perform_now(params[:ip_address], params[:timezone],bookmark.id, bookmark.class.name)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Couldn't create bookmark for roll #{roll.inspect}"}, status: 500
@@ -12,7 +11,6 @@ class V2::BookmarksController < ApplicationController
             elsif params[:post_id] and post = Post.find(params[:post_id])
                 begin 
                     bookmark = post.bookmarks.create!(user: current_user)
-                    CreateLocationJob.perform_now(params[:ip_address], params[:timezone],bookmark.id, bookmark.class.name)
                     render json: nil, status: :created
                 rescue
                     render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
@@ -55,6 +53,7 @@ class V2::BookmarksController < ApplicationController
         limit = 15 
         @posts = current_user.bookmarked_posts(limit: limit, offset: offset)
         if @posts.any?
+            @current_user = current_user
             render :bookmarked_posts, status: :ok
         else
             render json: nil, status: :not_found
