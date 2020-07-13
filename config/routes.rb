@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     
     resources :users, only: [:update, :show] do
       resources :albums, shallow: true
+      resources :bookmarks, only: [:index]
     end
     get 'posts/:post_id/likes/users', to: 'likes#index'
     get 'rolls/:roll_id/likes/users', to: 'likes#index'
