@@ -54,7 +54,7 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
-        elsif activity.activity_type == "Comment" and post = Comment.find(id: activity.content_id).first.post
+        elsif activity.activity_type == "Comment" and post = Comment.where(id: activity.content_id).first.post
             json.post do
                 json.id post.id
                 json.media_url post.media_url
