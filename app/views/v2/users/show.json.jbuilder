@@ -1,4 +1,5 @@
 json.id @user.id
+json.created_at @user.created_at
 json.username @user.username
 json.name @user.name
 json.verified @user.verified
