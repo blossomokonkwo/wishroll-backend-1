@@ -7,6 +7,7 @@ class V2::SharesController < ApplicationController
                 unless Activity.find_by(content_id: roll.id, active_user_id: current_user.id, user_id: roll.user_id, activity_type: share.class.name) or roll.user == current_user
                     Activity.create(content_id: roll.id, active_user_id: current_user.id, user_id: roll.user_id, activity_type: roll.class.name, media_url: roll.thumbnail_url, activity_phrase: "#{current_user.username} shared your roll!")
                 end
+                UpdateWishrollScoreJob.perform_now(roll.user.id, 3)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not share the roll: #{roll.errors.inspect}"}, status: :bad_request
@@ -17,6 +18,7 @@ class V2::SharesController < ApplicationController
                 unless Activity.find_by(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: share.class.name) or post.user == current_user
                     Activity.create(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: post.class.name, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url , activity_phrase: "#{current_user.username} shared your post!")
                 end
+                UpdateWishrollScoreJob.perform_now(post.user.id, 3)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not share the post: #{post}"}, status: :bad_request

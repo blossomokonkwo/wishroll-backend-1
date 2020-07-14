@@ -4,6 +4,7 @@ class V2::BookmarksController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
                 bookmark = roll.bookmarks.create!(user: current_user)
+                UpdateWishrollScoreJob.perform_now(roll.user.id, 2)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Couldn't create bookmark for roll #{roll.inspect}"}, status: 500
@@ -11,6 +12,7 @@ class V2::BookmarksController < ApplicationController
             elsif params[:post_id] and post = Post.find(params[:post_id])
                 begin 
                     bookmark = post.bookmarks.create!(user: current_user)
+                    UpdateWishrollScoreJob.perform_now(post.user.id, 2)
                     render json: nil, status: :created
                 rescue
                     render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
