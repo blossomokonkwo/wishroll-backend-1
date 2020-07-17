@@ -65,6 +65,8 @@ Rails.application.configure do
                     }
 
 config.identity_cache_store = :mem_cache_store, ENV["MEMCACHIER_PURPLE_SERVERS"].split(","), {
+  :username => ENV["MEMCACHIER_USERNAME"],
+  :password => ENV["MEMCACHIER_PASSWORD"],
   expires_in: 6.hours.to_i, # in case of network errors when sending a delete
   failover: false, # avoids more cache consistency issues
 }
