@@ -12,4 +12,10 @@ class View < ApplicationRecord
     #update the viewable object's popularity rank by taking its view count and dividing it by the difference in hours from the current time to when the object was created
     viewable.update!(popularity_rank: (viewable.view_count + viewable.likes_count + viewable.share_count + viewable.bookmark_count) / ((Time.zone.now - viewable.created_at.to_time) / 1.hour.seconds))
   end
+
+  #cache API's
+  include IdentityCache
+  cache_belongs_to :user
+  cache_belongs_to :viewable
+  cache_index :viewable, :user
 end

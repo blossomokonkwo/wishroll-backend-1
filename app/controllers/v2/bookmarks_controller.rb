@@ -29,7 +29,7 @@ class V2::BookmarksController < ApplicationController
             @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
             if @users.any?
                 @users.to_a.delete_if do |user|
-                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                    user.blocked?(current_user) or current_user.blocked?(user)
                 end
                 render :index_users, status: :ok
             else
@@ -39,7 +39,7 @@ class V2::BookmarksController < ApplicationController
             @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
             if @users.any?
                 @users.to_a.delete_if do |user|
-                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                    user.blocked?(current_user) or current_user.blocked?(user)
                 end
                 render :index_users, status: :ok
             else

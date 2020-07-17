@@ -4,6 +4,7 @@ class Like < ApplicationRecord
   has_one :location, as: :locateable, dependent: :destroy
 
   after_destroy do
+    #we have to expire the liked? cached method
   end
 
   after_create :update_likeable
@@ -39,5 +40,10 @@ class Like < ApplicationRecord
       likeable.update!(popularity_rank: (likeable.view_count + likeable.likes_count + likeable.share_count + likeable.bookmark_count) / ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds))
     end
   end
+
+  #cache API's 
+  include IdentityCache
+  cache_belongs_to :user
+  cache_index :likeable, :user
 
 end

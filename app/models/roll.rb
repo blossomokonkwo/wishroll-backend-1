@@ -26,16 +26,23 @@ class Roll < ApplicationRecord
   end
 
   #user interaction APIs
-  def viewed?(id)
-    views.find_by(user_id: id).present?
+  def viewed?(user)
+    Rails.cache.fetch([self, user]){
+      views.find_by(user_id: id).present?
+    }
   end
 
-  def liked?(id)
-    likes.find_by(user_id: id).present?
+  def liked?(user)
+    Rails.cache.fetch([self, user]){
+      likes.find_by(user_id: id).present?
+    }
+    
   end
 
-  def bookmarked?(id)
-    bookmarks.find_by(user_id: id).present?
+  def bookmarked?(user)
+    Rails.cache.fetch([self, user]){
+      bookmarks.find_by(user_id: user).present?
+    }
   end
   
 

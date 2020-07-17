@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+    include PgSearch::Model
+    include IdentityCache
     has_secure_password
     #ensure that the password has a minmum length of 8 on the client side 
     validates :email, :uniqueness => {message: "The email you have entered is already taken"}, presence: {message: "Please enter an appropriate email address"}, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "Please enter an appropriate email address"}, on: [:create, :update]
@@ -22,6 +24,13 @@ class User < ApplicationRecord
     has_many :bookmarks 
     has_many :albums
 
+
+    #cache API's 
+    cache_has_many :posts
+    cache_index :username, unique: true
+    cache_index :name
+    cache_has_many :views
+
     # User Content APIs
 
     #Returns all of the rolls that a user has viewed with a default limit of 25 seconds and no offset by default
@@ -44,9 +53,9 @@ class User < ApplicationRecord
 
     def liked_posts(limit: 25, offset: nil)
         if offset
-            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).offset(offset).limit(limit)
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).offset(offset).limit(limit)
         else
-            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).includes([:user, :views, :likes]).limit(limit)
+            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).limit(limit)
         end
         
     end
@@ -113,10 +122,11 @@ class User < ApplicationRecord
 
     #Determines if a user has viewed a specified content
     def has_viewed?(content)        
-        View.where(viewable: content, user: self).exists?
+        View.fetch_by_viewable_and_user(content, self).exists?
     end
 
-
+    #search apis
+    pg_search_scope :search, against: {username: 'A', name: 'B'}, using: {tsearch: {prefix: true, any_word: true}}
 
     #Gender APIs
     def self.males(limit: 25, offset: nil)
@@ -568,15 +578,17 @@ class User < ApplicationRecord
     end
 
     def blocked?(user)
-        Rails.cache.fetch("#{self.id} blocked #{user.id}") {self.blocked_users.include?(user) ? true : false}
+        Rails.cache.fetch("#{self.id} blocked #{user.id}") {self.blocked_users.include?(user)}
     end
 
     def self.current_user(user_id)
-       User.find(user_id)
+       User.fetch(user_id)
     end
 
     def following?(user)
-        followed_users.include?(user)
+        Rails.cache.fetch([user,self]){
+            followed_users.include?(user)
+        }
     end
     
 end

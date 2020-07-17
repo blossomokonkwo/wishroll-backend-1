@@ -3,14 +3,14 @@ class V2::UsersController < ApplicationController
 
     def show
         if params[:username]
-            @user = User.find_by(username: params[:username])
+            @user = User.fetch_by_username(params[:username])
         elsif params[:id]
-            @user =  User.find(params[:id])
+            @user =  User.fetch(params[:id])
         end
         if @user
-            if current_user.blocked_users.include?(@user)
+            if current_user.blocked?(@user)
                 render json: {id: @user.id, can_unblock: true}, status: :forbidden
-            elsif @user.blocked_users.include?(@user)
+            elsif @user.blocked?(current_user)
                 render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
                 @following = nil
@@ -26,11 +26,11 @@ class V2::UsersController < ApplicationController
 
 
     def posts
-        @user = User.find(params[:user_id])
+        @user = User.fetch(params[:user_id])
         offset = params[:offset] #use the created at field to offset the data
         limit = 18
         if @user
-            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset 
                     @posts = @user.created_posts(limit: limit, offset: offset)
@@ -38,7 +38,7 @@ class V2::UsersController < ApplicationController
                     @posts = @user.created_posts(limit: limit)
                 end
                 if @posts.any?
-                    @id = current_user.id
+                    @current_user = current_user
                     render :posts, status: :ok
                 else
                     render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
@@ -53,15 +53,15 @@ class V2::UsersController < ApplicationController
     end
 
     def rolls
-        @user = User.find(params[:user_id])
+        @user = User.fetch(params[:user_id])
         offset = params[:offset]
         limit = 15
         if @user
-            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 can_show_private_rolls = @user == current_user
                 @rolls = @user.created_rolls(limit: limit, offset: offset, show_private_rolls: can_show_private_rolls)
                 if @rolls.any?
-                    @id = current_user.id
+                    @current_user = current_user
                     render :rolls, status: :ok
                 else
                     render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
@@ -75,14 +75,14 @@ class V2::UsersController < ApplicationController
     end
 
     def liked_rolls
-        @user = User.find(params[:user_id])
+        @user = User.fetch(params[:user_id])
         offset = params[:offset]
         limit = 15
         if @user
-            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @rolls = @user.liked_rolls(limit: limit, offset: offset)
                 if @rolls.any?
-                    @id = current_user.id
+                    @current_user = current_user
                     render :liked_rolls, status: :ok
                 else
                     render json: {error: "#{params[:username]} doesn't have any liked rolls"}, status: :not_found
@@ -98,11 +98,11 @@ class V2::UsersController < ApplicationController
     
 
     def liked_posts
-        @user = User.find(params[:user_id])
+        @user = User.fetch(params[:user_id])
         offset = params[:offset]
         limit = 18
         if @user
-            unless current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset
                     @posts = @user.liked_posts(limit: limit, offset: offset) #in later versions, there will be an optimization for speed using offset
@@ -110,7 +110,7 @@ class V2::UsersController < ApplicationController
                     @posts = @user.liked_posts(limit: limit)
                 end
                 if @posts.any? 
-                    @id = current_user.id
+                    @current_user = current_user
                     render :liked_posts, status: :ok
                 else
                     render json: {error: "#{params[:username]} hasn't liked any posts"}, status: :not_found

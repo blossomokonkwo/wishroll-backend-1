@@ -10,7 +10,7 @@ class V2::ActivitiesController < ApplicationController
             @activities = current_user.activities.order(created_at: :desc).limit(limit)
         end
         if @activities.any?
-            @id = current_user.id
+            @current_user = current_user
             render :index, status: :ok
         else
             render json: nil, status: :not_found

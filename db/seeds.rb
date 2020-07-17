@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
-# 100000.times do
-#    Post.create(user_id: Faker::Number.between(from: 1, to: 30000), view_count: Faker::Number.within(range: 0...30000), original_post_id: Random.new.rand(0..10000) == 3 ? Faker::Number.within(range: 1...50000) : nil, caption: Faker::Lorem.sentence)
+# 10000.times do
+#    Post.create(user_id: Faker::Number.between(from: 1, to: 10_000), view_count: Faker::Number.within(range: 0...30000), caption: Faker::Lorem.sentence, media_url: "http://192.168.1.164:3000/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBjZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ee3192ba969ae2471621e8a5f2bf174349409a08/4CD0B302-29A8-43DB-BE02-A231F2527400.jpeg", thumbnail_url: "http://192.168.1.164:3000/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBjZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ee3192ba969ae2471621e8a5f2bf174349409a08/4CD0B302-29A8-43DB-BE02-A231F2527400.jpeg")
 # end
-# 100000.times do 
-#     Comment.create(user_id: Faker::Number.between(from: 1, to: 30000), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 1...99000), original_comment_id: Random.new.rand(0..500) == 3 ? Faker::Number.within(range: 1...1000) : nil)
+# 10000.times do 
+#     Comment.create(user_id: Faker::Number.between(from: 1, to: 10_000), body: Faker::Lorem.sentence, post_id: Faker::Number.within(range: 90...20_000), original_comment_id: Random.new.rand(0..500) == 3 ? Faker::Number.within(range: 1...1000) : nil)
 # end
 # 5_000.times do 
 #     num = Random.new.rand(1..2)
@@ -23,8 +23,8 @@ require 'faker'
 #     end
 #     Like.create likeable_type: "Post", likeable_id: Faker::Number.between(from: 1, to: 25000), user_id: Faker::Number.between(from: 1, to: 30000)
 # end
-# 100_000.times do 
-#     Tag.create(post_id: Faker::Number.between(from: 1, to: 91_018), text: Faker::Lorem.word)
+# 10_000.times do 
+#     Tag.create(post_id: Faker::Number.between(from: 90, to: 20_000), text: Faker::Lorem.sentence)
 # end
 # 1000.times do
 #     Topic.create title: Faker::Book.title, user_id: Faker::Number.between(from: 1, to: 30000), hot_topic: Random.new.rand(0..75) == 3 ? true : false
@@ -38,9 +38,9 @@ require 'faker'
 # 50000.times do
 #     Message.create sender_id: Faker::Number.between(from: 1, to: 30000), chat_room_id: Faker::Number.between(from: 1, to: 10000), kind: "text", body: Faker::Lorem.sentence 
 # end
-# 15000.times do
-#     Relationship.create follower_id: Faker::Number.between(from: 1, to: 30000), followed_id: Faker::Number.between(from: 1, to: 30000)
-# end
+15000.times do
+    Relationship.create follower_id: Faker::Number.between(from: 1, to: 30000), followed_id: Faker::Number.between(from: 1, to: 30000)
+end
 # Post.all.find_each do |post|
 #     post.posts_media_url = Post.last.posts_media_url
 #     post.save

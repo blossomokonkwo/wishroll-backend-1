@@ -42,6 +42,11 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.identity_cache_store = :memory_store, {
+    expires_in: 6.hours.to_i, # in case of network errors when sending a delete
+    failover: false, # avoids more cache consistency issues
+  }
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 

@@ -21,16 +21,23 @@ class Post < ApplicationRecord
         end
     end
 
-    def viewed?(id)
-        views.where(user_id: id).present?
+    def viewed?(user)
+        Rails.cache.fetch([user, self]) {
+            self.views.find_by(user: user).present?
+        }
+        
     end
     
-    def liked?(id)
-        self.likes.find_by(user_id: id).present?
+    def liked?(user)
+        Rails.cache.fetch([user, self]) {
+            self.likes.find_by(user: user).present?
+        }
     end
 
-    def bookmarked?(id)
-        bookmarks.find_by(user_id: id).present?
+    def bookmarked?(user)
+        Rails.cache.fetch([user.id, self]) {
+            self.bookmarks.find_by(user: user).present?
+        }
     end
     
 
@@ -48,6 +55,13 @@ class Post < ApplicationRecord
         activity.destroy
         end if activities.present?
     end
+
+    #cache API's
+    include IdentityCache
+
+    cache_belongs_to :user
+    cache_has_many :comments
+    cache_has_many :views
 
 
 end

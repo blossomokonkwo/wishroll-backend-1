@@ -31,6 +31,8 @@ gem 'ruby-continent', '~> 0.1.0'
 gem 'streamio-ffmpeg'
 gem 'predictor'
 gem 'pg_search'
+gem 'identity_cache'
+gem 'cityhash'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

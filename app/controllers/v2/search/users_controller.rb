@@ -3,7 +3,7 @@ class V2::Search::UsersController < ApplicationController
     def search
         limit = 12
         offset = params[:offset]
-        @users = User.where("username ILIKE ? OR name ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%").order(verified: :desc, followers_count: :desc).offset(offset).limit(limit)
+        @users = User.search(params[:q]).order(verified: :desc, followers_count: :desc).offset(offset).limit(limit)
         if @users.any? 
             @id = current_user.id
             render :index, status: :ok

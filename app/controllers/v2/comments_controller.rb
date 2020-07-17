@@ -22,7 +22,7 @@ class V2::CommentsController < ApplicationController
             rescue => exception
                 render json: {error: "Couldn't create comment for roll #{roll}"}, status: 500
             end
-        elsif params[:post_id] and post = Post.find(params[:post_id])
+        elsif params[:post_id] and post = Post.fetch(params[:post_id])
             begin
                 @comment = post.comments.create!(body: params[:body], user_id: current_user.id, original_comment_id: params[:original_comment_id])
                 @user = current_user
@@ -70,10 +70,10 @@ class V2::CommentsController < ApplicationController
             else
                 render json: nil, status: :not_found
             end
-        elsif params[:post_id] and post = Post.find(params[:post_id])
+        elsif params[:post_id] and post = Post.fetch(params[:post_id])
             @comments = post.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
-                @id = current_user.id
+                @current_user = current_user
                 render :index, status: :ok
             else
                 render json: nil, status: :not_found
@@ -84,7 +84,7 @@ class V2::CommentsController < ApplicationController
     end
     
     def show
-        @comment = Comment.find(params[:id])
+        @comment = Comment.fetch(params[:id])
         @replies = @comment.replies.includes(:user)
         if @replies.any?
             render :show, status: :ok

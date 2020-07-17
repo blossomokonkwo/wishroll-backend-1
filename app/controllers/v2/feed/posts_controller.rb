@@ -2,8 +2,8 @@ class V2::Feed::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def feed
         offset = params[:offset]
-        limit = 12
-        @id = current_user.id
+        limit = 18
+        @current_user = current_user
         @posts = Array.new
         recommended_posts = recommend_posts(limit: limit/2, offset: offset)
         recommend_posts.map {|p| @posts << p} if recommend_posts.present?

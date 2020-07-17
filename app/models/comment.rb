@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  belongs_to :user, -> {select([:username, :verified, :avatar_url, :id])}, foreign_key: :user_id
+  belongs_to :user, foreign_key: :user_id
   belongs_to :post, counter_cache: :comments_count, foreign_key: :post_id, optional: true
   belongs_to :roll, counter_cache: :comments_count, foreign_key: :roll_id, optional: true
   has_many :replies, class_name: "Comment", foreign_key: :original_comment_id, dependent: :destroy
@@ -7,9 +7,16 @@ class Comment < ApplicationRecord
   has_many :likes, as: :likeable
   
   before_destroy :destroy_comments_activities
-  def liked?(user_id)
-    likes.where(user_id: user_id).exists?
+  def liked?(user)
+    Rails.cache.fetch([self,user]){
+      likes.where(user_id: user).exists?
+    }
   end
+
+  #cache API's
+  include IdentityCache
+  cache_belongs_to :post
+  cache_belongs_to :user
 
   private 
   def destroy_comments_activities
