@@ -582,7 +582,7 @@ class User < ApplicationRecord
     end
 
     def self.current_user(user_id)
-       User.fetch(user_id)
+        User.find(user_id)
     end
 
     def following?(user)
