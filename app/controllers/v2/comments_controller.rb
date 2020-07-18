@@ -15,7 +15,7 @@ class V2::CommentsController < ApplicationController
                         user_id = roll.user_id
                         activity_phrase = "#{current_user.username} commented on your post"
                     end
-                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: roll.id, media_url: roll.thumbnail_url)
+                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: @comment.id, media_url: roll.thumbnail_url)
                     activity.save
                 end
                 render :create, status: :created
@@ -36,7 +36,7 @@ class V2::CommentsController < ApplicationController
                         user_id = post.user_id
                         activity_phrase = "#{current_user.username} commented on your post"
                     end
-                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: post.id, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url)
+                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: @comment.id, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url)
                     activity.save
                 end
                 render :create, status: :created
