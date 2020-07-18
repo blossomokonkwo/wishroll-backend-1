@@ -8,7 +8,7 @@ class Relationship < ApplicationRecord
   after_destroy do
     #we want to flush the cache for the boolean value that determines whether a user is following another user 
     logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.delete("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}")
-    followed_user.touch; followed_user.touch
+    follower_user.touch; followed_user.touch
   end
   after_create do
     #after a relationship is created, we want to write a boolean value of true to cache which indicates that the following user is indeed following the followed user
