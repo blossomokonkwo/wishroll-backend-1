@@ -60,7 +60,7 @@ class V2::CommentsController < ApplicationController
     end
     
     def index
-        limit = 15
+        limit = 10
         offset = params[:offset]
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             @comments = roll.comments.order(created_at: :asc).offset(offset).limit(limit)
