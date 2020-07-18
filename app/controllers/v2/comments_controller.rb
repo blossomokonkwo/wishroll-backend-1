@@ -41,8 +41,8 @@ class V2::CommentsController < ApplicationController
                 end
                 render :create, status: :created
             rescue => exception
-                puts comment.errors.inspect
-                render json: {error: "Couldn't create comment for post #{post}", messages: comment.errors}, status: 500
+                puts @comment.errors.inspect
+                render json: {error: "Couldn't create comment for post #{post}", messages: @comment.errors}, status: 500
             end
         else
             render json: {error: "Couldn't find resource "}, status: :not_found
