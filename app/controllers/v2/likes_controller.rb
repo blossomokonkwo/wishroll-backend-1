@@ -43,7 +43,7 @@ class V2::LikesController < ApplicationController
     def index
         if params[:post_id] and post = Post.fetch(params[:post_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
@@ -61,7 +61,7 @@ class V2::LikesController < ApplicationController
               end
         elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
@@ -79,7 +79,7 @@ class V2::LikesController < ApplicationController
             end
         elsif params[:roll_id] and roll = Roll.find(params[:roll_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
