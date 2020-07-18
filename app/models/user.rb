@@ -586,7 +586,7 @@ class User < ApplicationRecord
     end
 
     def following?(user)
-        Rails.cache.fetch([user,self]){
+        Rails.cache.fetch("WishRoll:Cache:Relationship:Follower#{self.id}:Following#{user.id}"){
             followed_users.include?(user)
         }
     end

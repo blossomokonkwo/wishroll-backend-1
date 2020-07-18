@@ -22,20 +22,20 @@ class Post < ApplicationRecord
     end
 
     def viewed?(user)
-        Rails.cache.fetch([user, self]) {
+        Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{self.uuid}") {
             self.views.find_by(user: user).present?
         }
         
     end
     
     def liked?(user)
-        Rails.cache.fetch([user, self]) {
+        Rails.cache.fetch("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{self.uuid}") {
             self.likes.find_by(user: user).present?
         }
     end
 
     def bookmarked?(user)
-        Rails.cache.fetch([user.id, self]) {
+        Rails.cache.fetch("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{self.uuid}") {
             self.bookmarks.find_by(user: user).present?
         }
     end

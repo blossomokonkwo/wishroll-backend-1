@@ -4,12 +4,24 @@ class Like < ApplicationRecord
   has_one :location, as: :locateable, dependent: :destroy
 
   after_destroy do
-    #we have to expire the liked? cached method
+    #we want to update the likeable's updated at date when a like is being destroyed. This invalidates the cache for the likeable and forces a DB read.
+    logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{likeable.uuid}"} if Rails.cache.delete("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{likeable.uuid}")
+    likeable.touch
+    # if likeable_type == "Post"
+    #   Post.find(likeable.id).touch
+    # elsif likeable_type == "Comment"
+    #   Comment.find(likeable.id).touch
+    # else
+    #   Roll.find(likeable.id).touch
+    # end
   end
 
   after_create :update_likeable
-  
+
   def update_likeable
+    Rails.cache.write("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{likeable.uuid}",true)
+    #write the boolean value of true whenever a like is created 
+     #we want change the updated at date of the post model when it has been liked. This is because the after commit callback isn't called when the counter_cache counters are updated (the likes count)
     active_user = user
     content = likeable
     user = likeable.user
@@ -37,13 +49,17 @@ class Like < ApplicationRecord
       end 
     end
     if likeable_type == "Post" or likeable_type == "Roll"
-      likeable.update!(popularity_rank: (likeable.view_count + likeable.likes_count + likeable.share_count + likeable.bookmark_count) / ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds))
+      begin
+        Post.find(likeable.id).update!(popularity_rank: (likeable.view_count + likeable.likes_count + likeable.share_count + likeable.bookmark_count) / ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds))
+      rescue => exception
+        puts exception
+      end
+      
     end
   end
 
   #cache API's 
   include IdentityCache
   cache_belongs_to :user
-  cache_index :likeable, :user
 
 end
