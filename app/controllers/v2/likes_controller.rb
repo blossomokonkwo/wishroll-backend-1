@@ -9,7 +9,7 @@ class V2::LikesController < ApplicationController
             rescue => exception
                 render json: {error: "Could not like the roll: #{roll}"}, status: :bad_request
             end            
-        elsif params[:comment_id] and comment = Comment.find(params[:comment_id])
+        elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             begin
                 like = comment.likes.create!(user: current_user)
                 UpdateWishrollScoreJob.perform_now(comment.user.id, 1)
@@ -17,7 +17,7 @@ class V2::LikesController < ApplicationController
             rescue => exception
                 render json: {created: "Could not like the comment: #{comment}"}, status: :bad_request
             end
-        elsif params[:post_id] and post = Post.find(params[:post_id])
+        elsif params[:post_id] and post = Post.fetch(params[:post_id])
             begin
                 like = post.likes.create!(user: current_user)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 1)
@@ -41,9 +41,9 @@ class V2::LikesController < ApplicationController
     
     # Returns the users that have liked a resource
     def index
-        if params[:post_id] and post = Post.find(params[:post_id])
+        if params[:post_id] and post = Post.fetch(params[:post_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
@@ -53,15 +53,15 @@ class V2::LikesController < ApplicationController
               end
               if @users.any?
                 @users.to_a.delete_if do |user|
-                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                    user.blocked?(current_user) or current_user.blocked?(user)
                 end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
               end
-        elsif params[:comment_id] and comment = Comment.find(params[:comment_id])
+        elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
@@ -71,7 +71,7 @@ class V2::LikesController < ApplicationController
             end
             if @users.any?
                 @users.to_a.delete_if do |user|
-                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                    user.blocked?(current_user) or current_user.blocked?(user)
                 end
                 render :index, status: :ok
             else
@@ -79,7 +79,7 @@ class V2::LikesController < ApplicationController
             end
         elsif params[:roll_id] and roll = Roll.find(params[:roll_id])
             @current_user = current_user
-            limit = 15
+            limit = 10
             offset = params[:offset]
             @users = Array.new
             if offset
@@ -89,7 +89,7 @@ class V2::LikesController < ApplicationController
               end
               if @users.any?
                 @users.to_a.delete_if do |user|
-                    user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+                    user.blocked?(current_user) or current_user.blocked?(user)
                 end
                 render :index, status: :ok
               else

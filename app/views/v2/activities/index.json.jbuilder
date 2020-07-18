@@ -16,9 +16,9 @@ json.array! @activities.each do |activity|
                 json.comment_count roll.comments_count
                 json.view_count roll.view_count
                 json.reaction_count roll.reactions_count
-                json.viewed roll.viewed?(@id)
-                json.liked roll.liked?(@id)
-                json.bookmarked roll.bookmarked?(@id)
+                json.viewed roll.viewed?(@current_user)
+                json.liked roll.liked?(@current_user)
+                json.bookmarked roll.bookmarked?(@current_user)
                 json.bookmark_count roll.bookmark_count
                 json.created_at roll.created_at
                 json.updated_at roll.updated_at
@@ -40,9 +40,9 @@ json.array! @activities.each do |activity|
                 json.share_count post.share_count
                 json.comment_count post.comments_count
                 json.view_count post.view_count
-                json.viewed post.viewed?(@id)
-                json.liked post.liked?(@id)
-                json.bookmarked post.bookmarked?(@id)
+                json.viewed post.viewed?(@current_user)
+                json.liked post.liked?(@current_user)
+                json.bookmarked post.bookmarked?(@current_user)
                 json.bookmark_count post.bookmark_count
                 json.created_at post.created_at
                 json.updated_at post.updated_at
@@ -54,7 +54,7 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
-        elsif activity.activity_type == "Comment" and post = Comment.where(id: activity.content_id).first.post
+        elsif activity.activity_type == "Comment" and post = Comment.where(id: activity.content_id).first.fetch_post
             json.post do
                 json.id post.id
                 json.media_url post.media_url
@@ -64,9 +64,9 @@ json.array! @activities.each do |activity|
                 json.share_count post.share_count
                 json.comment_count post.comments_count
                 json.view_count post.view_count
-                json.viewed post.viewed?(@id)
-                json.liked post.liked?(@id)
-                json.bookmarked post.bookmarked?(@id)
+                json.viewed post.viewed?(@current_user)
+                json.liked post.liked?(@current_user)
+                json.bookmarked post.bookmarked?(@current_user)
                 json.bookmark_count post.bookmark_count
                 json.created_at post.created_at
                 json.updated_at post.updated_at

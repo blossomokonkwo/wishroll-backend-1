@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
     include JWTSessions::RailsAuthorization
+    around_action :identity_cache_memoization
     rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
     def current_user
@@ -13,6 +14,10 @@ class ApplicationController < ActionController::API
         else
             render json: {"error" => "not authorized"}, status: :unauthorized
         end
+    end
+
+    def identity_cache_memoization(&block)
+      IdentityCache.cache.with_memoization(&block)
     end
     
 end

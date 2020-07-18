@@ -9,7 +9,15 @@ class View < ApplicationRecord
   validates :viewable_type, presence: {message: "The type of the viewable content must be present upon creation of a view object"}
   validates :duration, presence: {message: "A view object must contain the duration that a user has spent viewing the content in seconds"}
   after_create do
+    Rails.cache.write("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)#write the boolean value of true to the cache
+    viewable.user.touch #we want to invalidate the cache for the the user whos content was viewed so that their view count can be accurate 
     #update the viewable object's popularity rank by taking its view count and dividing it by the difference in hours from the current time to when the object was created
     viewable.update!(popularity_rank: (viewable.view_count + viewable.likes_count + viewable.share_count + viewable.bookmark_count) / ((Time.zone.now - viewable.created_at.to_time) / 1.hour.seconds))
   end
+
+  #cache API's
+  include IdentityCache
+  cache_belongs_to :user
+  cache_belongs_to :viewable
+  cache_index :viewable, :user
 end
