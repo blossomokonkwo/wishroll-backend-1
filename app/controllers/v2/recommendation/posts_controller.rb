@@ -6,8 +6,8 @@ class V2::Recommendation::PostsController < ApplicationController
         @post = Post.fetch(params[:post_id])
         keywords = Array.new
         english_articles = ["the", "a", "when" "some", "they", "back", "because", "if", "in"]
-        @post.tags.pluck(:text).map {|word| word.split(' ').delete_if {|word| english_articles.include?(word)}.map {|t| keywords << "%#{t}%"}}
-        caption_terms = @roll.caption.split(' ').delete_if {|word| english_articles.include?(word)}.map {|word| keywords << "%#{word}%"}
+        @post.fetch_tags.pluck(:text).map {|word| word.split(' ').delete_if {|word| english_articles.include?(word)}.map {|t| keywords << "%#{t}%"}}
+        caption_terms = @post.caption.split(' ').delete_if {|word| english_articles.include?(word)}.map {|word| keywords << "%#{word}%"}
         @posts = Post.joins(:tags).where("tags.text ILIKE ANY (array[?]) OR posts.caption ILIKE ANY (array[?])", keywords, keywords).distinct.includes([user: :blocked_users]).order(likes_count: :desc, view_count: :desc, id: :asc).offset(offset).limit(limit).to_a
         @posts.delete_if do |p|
             p.id == @post.id or p.user.blocked?(current_user) or current_user.blocked?(p.user)
