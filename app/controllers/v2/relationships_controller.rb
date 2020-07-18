@@ -39,7 +39,7 @@ class V2::RelationshipsController < ApplicationController
 
     def followers
         offset = params[:offset]
-        limit = 15
+        limit = 12
         @current_user = current_user
         @user = User.fetch(params[:user_id])
         if @user
@@ -63,7 +63,7 @@ class V2::RelationshipsController < ApplicationController
 
     def following
         offset = params[:offset]
-        limit = 15
+        limit = 12
         @user = User.fetch(params[:user_id])
         if @user
             @current_user = current_user
