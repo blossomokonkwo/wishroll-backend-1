@@ -1,7 +1,7 @@
 class V2::Recommendation::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def recommend
-        limit = 15
+        limit = 6
         offset = params[:offset]
         @post = Post.fetch(params[:post_id])
         keywords = String.new
