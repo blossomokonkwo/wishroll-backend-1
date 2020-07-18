@@ -1,6 +1,6 @@
-json.array! @posts.each do |post|
+json.array! @posts.includes(:user).each do |post|
     user = post.fetch_user
-    cache post, expires_in: 5.minutes do
+    cache post do
         json.id post.id
         json.created_at post.created_at
         json.updated_at post.updated_at
