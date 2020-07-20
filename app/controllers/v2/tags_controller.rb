@@ -3,7 +3,7 @@ class V2::TagsController < ApplicationController
       if params[:roll_id] and @roll = Roll.find(params[:roll_id])
             begin
                 params[:tags].each do |text|
-                    @roll.tags.create!(text: text)
+                    @roll.tags.create!(text: text.delete!(":").delete!(";"))
                 end
                 render json: nil, status: :created
             rescue => exception
