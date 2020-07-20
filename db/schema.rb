@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_060229) do
+ActiveRecord::Schema.define(version: 2020_07_19_024124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -349,9 +349,10 @@ ActiveRecord::Schema.define(version: 2020_07_16_060229) do
     t.bigint "post_id"
     t.bigint "roll_id"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.tsvector "tsv_text"
     t.index ["post_id"], name: "index_tags_on_post_id"
     t.index ["roll_id"], name: "index_tags_on_roll_id"
-    t.index ["text"], name: "index_tags_on_text"
+    t.index ["tsv_text"], name: "tags_tsvtext", using: :gin
   end
 
   create_table "topics", force: :cascade do |t|

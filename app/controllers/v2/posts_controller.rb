@@ -2,7 +2,7 @@ class V2::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     #create a post object along with all the tags. Save the post and tags to the DB.
     def create
-      @post = Post.create(caption: params[:caption], user_id: current_user.id, restricted: current_user.restricted)
+      @post = Post.create(caption: params[:caption], user_id: current_user.id, restricted: current_user.restricted, popularity_rank: 100.0)
       @post.media_item.attach params[:media_item]
       @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
       @post.media_url = url_for(@post.media_item) if @post.media_item.attached?

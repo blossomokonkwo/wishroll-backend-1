@@ -8,7 +8,7 @@ class Comment < ApplicationRecord
   
   before_destroy :destroy_comments_activities
   def liked?(user)
-    Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{self.uuid}"){
+    Rails.cache.fetch("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{self.uuid}"){
       likes.where(user_id: user).exists?
     }
   end
