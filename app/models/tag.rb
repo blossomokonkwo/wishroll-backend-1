@@ -7,5 +7,10 @@ class Tag < ApplicationRecord
     validates :text, presence: true
 
     #search API's 
-    pg_search_scope :search, against: :text, using: {tsearch: {prefix: true, dictionary: "english", normalization: 8, sort_only: true}}
+    pg_search_scope :search, against: :text, using: {tsearch: {prefix: true, dictionary: "english", normalization: 11, sort_only: true, tsvector_column: "tsv_text"}}
+
+    after_create do
+        self.update(tsv_text: self.text)
+    end
+
 end
