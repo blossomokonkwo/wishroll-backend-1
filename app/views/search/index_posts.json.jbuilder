@@ -4,11 +4,7 @@ json.array! @posts.each do |post|
     json.likes_count post.likes_count
     json.view_count post.view_count
     json.caption post.caption
-    if post.likes.find_by(user_id: @id)
-        json.liked true
-    else
-        json.liked false
-    end
+    json.liked post.liked?(@current_user)
     json.thumbnail_url post.thumbnail_url
     json.comments_count post.comments_count
     json.media_url post.media_url

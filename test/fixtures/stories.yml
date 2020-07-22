@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  media_url: MyString
+  thumbnail_url: MyString
+  view_count: 
+  share_count: 
+  bookmark_count: 
+  caption: MyText
+  like_count: 
+  popularity_rank: 1.5
+  restricted: false
+  priority: 1
+  comment_count: 
+  expiration_date: 2020-07-20 21:37:02
+
+two:
+  user: two
+  media_url: MyString
+  thumbnail_url: MyString
+  view_count: 
+  share_count: 
+  bookmark_count: 
+  caption: MyText
+  like_count: 
+  popularity_rank: 1.5
+  restricted: false
+  priority: 1
+  comment_count: 
+  expiration_date: 2020-07-20 21:37:02

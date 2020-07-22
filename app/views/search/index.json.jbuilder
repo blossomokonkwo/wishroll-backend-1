@@ -9,11 +9,7 @@ json.posts @posts.each do |post|
     json.user_id post.user_id
     json.view_count post.view_count
     json.likes_count post.likes_count
-    if post.likes.find_by(user_id: @id)
-        json.liked true
-    else
-        json.liked false
-    end
+    json.liked post.liked?(@current_user)
     json.comments_count post.comments_count
     json.original_post_id nil
     json.caption post.caption
