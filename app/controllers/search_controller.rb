@@ -5,17 +5,14 @@ class SearchController < ApplicationController
         @posts = Array.new #we want a collection of UNIQUE posts sent to the clients, therfore we are using the Set Abstract Data Type
         @users = Array.new
         if !params[:query].empty?
-            @users = User.where("username ILIKE ?", "#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]) 
-            .or(User.where("name ILIKE ?", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url]))     
+            @users = User.where("username ILIKE ? OR name ILIKE ?", "%#{search_params[:query]}%").order(verified: :desc, followers_count: :desc, following_count: :asc).select([:username, :verified, :name, :avatar_url])  
             if params[:query_type] != "User"
-                Tag.where("text ILIKE ?", "%#{search_params[:query]}%").limit(5000).includes([:post]).find_each do |tag|
-                    @posts << tag.post
-                end
+                @posts = Post.fetch_multi(Tag.search(params[:query]).offset(offset).limit(limit).pluck(:post_id)).uniq {|p| p.id}
             end
             if @posts.empty? and @users.empty?
                 render json: nil, status: 404
             else
-
+                @current_user = current_user
                 render :index, status: :ok
             end
         else
@@ -27,11 +24,12 @@ class SearchController < ApplicationController
         @id = current_user.id
         limit = 15
         offset = params[:offset]
-        @posts = Post.left_outer_joins(:tags).where("text ILIKE ?", "%#{search_params[:query]}%").order(likes_count: :desc, view_count: :desc, created_at: :desc, id: :asc).offset(offset).limit(limit)
+        @posts = Post.fetch_multi(Tag.search(params[:q]).offset(offset).limit(limit).pluck(:post_id)).uniq {|p| p.id}
         @posts.to_a.delete_if do |post|
             current_user.reported_posts.include?(post)
         end
         if @posts.any?
+            @current_user = current_user
             render :index_posts, status: 200
         else
             render json: nil, status: 404
@@ -46,7 +44,7 @@ class SearchController < ApplicationController
         #filter the returned users to ensure that users who are blocked do not interact with each other
         @users.to_a.delete_if do |user|
             #if a user is blcoked by the current user or the current user is blocked by the other user, then we remove them from the array
-            user.blocked_users.include?(current_user) or current_user.blocked_users.include?(user)
+            user.blocked?(current_user) or current_user.blocked?(user)
         end
         if @users.any? 
             render :index_users, status: 200
