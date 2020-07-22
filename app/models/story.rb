@@ -1,7 +1,6 @@
 class Story < ApplicationRecord
   belongs_to :user
   has_many :likes, as: :likeable, dependent: :destroy
-  has_many :comments, class_name: "Comment", foreign_key: :story_id, dependent: :destroy
   has_many :views, as: :viewable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
