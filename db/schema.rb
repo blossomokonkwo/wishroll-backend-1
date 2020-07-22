@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_19_024124) do
+ActiveRecord::Schema.define(version: 2020_07_21_014428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -342,6 +342,31 @@ ActiveRecord::Schema.define(version: 2020_07_19_024124) do
     t.index ["uuid"], name: "index_shares_on_uuid"
   end
 
+  create_table "stories", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "media_url"
+    t.string "thumbnail_url"
+    t.bigint "view_count", default: 0, null: false
+    t.bigint "share_count", default: 0, null: false
+    t.bigint "bookmark_count", default: 0, null: false
+    t.text "caption"
+    t.bigint "like_count", default: 0, null: false
+    t.float "popularity_rank"
+    t.boolean "restricted", default: false, null: false
+    t.integer "priority", default: 0, null: false
+    t.bigint "comment_count", default: 0, null: false
+    t.datetime "expiration_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", null: false
+    t.index ["expiration_date"], name: "index_stories_on_expiration_date"
+    t.index ["popularity_rank"], name: "index_stories_on_popularity_rank"
+    t.index ["priority"], name: "index_stories_on_priority"
+    t.index ["restricted"], name: "index_stories_on_restricted"
+    t.index ["user_id"], name: "index_stories_on_user_id"
+    t.index ["uuid"], name: "index_stories_on_uuid"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.text "text"
     t.datetime "created_at", precision: 6, null: false
@@ -454,6 +479,7 @@ ActiveRecord::Schema.define(version: 2020_07_19_024124) do
   add_foreign_key "posts", "users"
   add_foreign_key "rolls", "users"
   add_foreign_key "shares", "users"
+  add_foreign_key "stories", "users"
   add_foreign_key "tags", "posts"
   add_foreign_key "tags", "rolls"
   add_foreign_key "topics", "users"
