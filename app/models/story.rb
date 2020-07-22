@@ -33,7 +33,6 @@ end
 include IdentityCache
 
 cache_belongs_to :user
-cache_has_many :comments
 cache_has_many :views
 
 
