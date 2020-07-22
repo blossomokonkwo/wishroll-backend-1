@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_21_014428) do
+ActiveRecord::Schema.define(version: 2020_07_22_083023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -209,6 +209,7 @@ ActiveRecord::Schema.define(version: 2020_07_21_014428) do
     t.boolean "restricted", default: false
     t.index ["caption"], name: "index_posts_on_caption"
     t.index ["media_url"], name: "index_posts_on_media_url"
+    t.index ["popularity_rank"], name: "index_posts_on_popularity_rank"
     t.index ["restricted"], name: "index_posts_on_restricted"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
