@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_22_083023) do
+ActiveRecord::Schema.define(version: 2020_07_31_063144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -185,6 +185,7 @@ ActiveRecord::Schema.define(version: 2020_07_22_083023) do
     t.string "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "thumbnail_url"
     t.index ["chat_room_id"], name: "index_messages_on_chat_room_id"
     t.index ["sender_id"], name: "index_messages_on_sender_id"
     t.index ["uuid"], name: "index_messages_on_uuid"

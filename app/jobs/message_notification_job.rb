@@ -24,32 +24,30 @@ class MessageNotificationJob < ApplicationJob
         if chat_room_users.any?
             #loop through all the chat room users
             app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
-            chat_room_users.each do |chat_room_user|
+            chat_room_users.includes([user: :current_device]).each do |chat_room_user|
                 unless chat_room_user.muted
                     user = chat_room_user.user
-                    if user.id != sender.id
-                        device = user.current_device  #find the user of the chat room user
-                        if device 
-                            notification = Rpush::Apns::Notification.new
-                            notification.app = app
-                            notification.device_token = device.device_token
-                            if chat_room.name
-                                if @message.media_url
-                                    notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.media_url}"
-                                else
-                                    notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.body}"
-                                end
+                    device = user.current_device  #find the user of the chat room user
+                    if device 
+                        notification = Rpush::Apns::Notification.new
+                        notification.app = app
+                        notification.device_token = device.device_token
+                        if chat_room.name
+                            if @message.media_url
+                                notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.media_url}"
                             else
-                                if @message.media_url
-                                    notification.alert = "#{sender.username}: #{@message.media_url}"
-                                else
-                                    notification.alert = "#{sender.username}: #{@message.body}"
-                                end
+                                notification.alert = "#{chat_room.name}\n#{sender.username}: #{@message.body}"
                             end
-                            notification.sound = 'sosumi.aiff'
-                            notification.data = {}
-                            notification.save!
+                        else
+                            if @message.media_url
+                                notification.alert = "#{sender.username}: #{@message.media_url}"
+                            else
+                                notification.alert = "#{sender.username}: #{@message.body}"
+                            end
                         end
+                        notification.sound = 'sosumi.aiff'
+                        notification.data = {id: chat_room.id, name: chat_room.name, created_at: chat_room.created_at, updated_at: chat_room.updated_at, num_users: chat_room.num_users}
+                        notification.save!
                     end
                 end
             end            
