@@ -6,9 +6,9 @@ class V2::Search::RelationshipsController < ApplicationController
         @user = User.fetch(params[:user_id])
         if @user
             if params[:followers]
-                @users = @user.follower_users.where('username ILIKE ? OR name ILIKE ?', "%#{params[:q]}%", "%#{params[:q]}%").order(followers_count: :desc, verified: :desc).offset(offset).limit(limit)
+                @users = @user.follower_users.where('username ILIKE ? OR name ILIKE ?', "%#{params[:q]}%", "%#{params[:q]}%").order(followers_count: :desc, verified: :desc).offset(offset).limit(limit).to_a
             else
-                @users = @user.followed_users.where('username ILIKE ? OR name ILIKE ?', "%#{params[:q]}%", "%#{params[:q]}%").order(followers_count: :desc, verified: :desc).offset(offset).limit(limit)
+                @users = @user.followed_users.where('username ILIKE ? OR name ILIKE ?', "%#{params[:q]}%", "%#{params[:q]}%").order(followers_count: :desc, verified: :desc).offset(offset).limit(limit).to_a
             end
             if @users.any?
                 @current_user = current_user
