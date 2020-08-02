@@ -68,6 +68,7 @@ Rails.application.routes.draw do
     namespace :search do
       get 'posts', to: 'posts#search'
       get 'users', to: 'users#search'
+      get 'relationships', to: 'relationships#search'
       get 'rolls', to: 'rolls#search'
     end
     namespace :trending do
