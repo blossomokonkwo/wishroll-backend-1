@@ -6,7 +6,7 @@ class TypingIndicatorNotificationJob < ApplicationJob
         chat_room_users = ChatRoomUser.where(chat_room_id: chat_room_id).includes(:user)
         if chat_room_users.any?
             app = Rpush::Client::ActiveRecord::App.find_by_name("wishroll-ios")
-            chat_room_users.each do |chat_room_user|
+            chat_room_users.includes([user: :current_device]).each do |chat_room_user|
                 unless chat_room_user.muted
                     user = chat_room_user.user
                     unless user.id == typer.id

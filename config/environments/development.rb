@@ -57,7 +57,7 @@ Rails.application.configure do
   
   config.action_cable.disable_request_forgery_protection = true
 
-  config.action_cable.url = "ws://localhost:3334/cable"
+  config.action_cable.url = "ws://192.168.1.164:3334/cable"
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
