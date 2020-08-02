@@ -20,6 +20,16 @@ class V2::ChatRoomUsersController < ApplicationController
             render json: nil, status: :bad_request
         end
     end
+
+    def update
+        @chat_room = ChatRoom.find(params[:chat_room_id])
+        params[:user_ids].each do |id|
+            user = User.fetch(id)
+            @chat_room.users << user if !@chat_room.users.include?(user)
+        end
+        render json: nil, status: :ok
+    end
+    
     
     
 end
