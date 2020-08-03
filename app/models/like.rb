@@ -24,15 +24,15 @@ class Like < ApplicationRecord
     case activity_type
     when "Comment"
       if content.original_comment_id
-        phrase = "#{active_user.username} liked your reply"
+        phrase = "#{active_user.username} liked your reply 💕"
       else
-        phrase = "#{active_user.username} liked your comment"
+        phrase = "#{active_user.username} liked your comment 💕"
       end
     when "Post"
-      phrase = "#{active_user.username} liked your post"
-      media_url = content.media_url
+      phrase = "#{active_user.username} liked your post 💕"
+      media_url = content.thumbnail_url || content.media_url
     when "Roll"
-      phrase = "#{active_user.username} liked your roll" 
+      phrase = "#{active_user.username} liked your roll 💕" 
       media_url = content.thumbnail_url   
     end
     unless Activity.find_by(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type) or active_user.id == user.id
