@@ -113,10 +113,10 @@ Rails.application.routes.draw do
       resources :chat_room_users
     end
 
-    post 'chat_rooms/:id/appear', to: "chat_rooms#appear"
-    delete 'chat_rooms/:id/disappear', to: "chat_rooms#disappear"
-    post 'chat_rooms/:id/typing', to: 'chat_rooms#typing'
-    delete 'chat_rooms/:id/finished-typing', to: 'chat_rooms#not_typing'
+    post 'chat_rooms/:id/appear', to: "chat_room_users#appear"
+    delete 'chat_rooms/:id/disappear', to: "chat_room_users#disappear"
+    post 'chat_rooms/:id/typing', to: 'chat_room_users#typing'
+    delete 'chat_rooms/:id/finished-typing', to: 'chat_room_users#not_typing'
 
     get 'posts/:post_id/likes/users', to: 'likes#index'
     get 'rolls/:roll_id/likes/users', to: 'likes#index'
