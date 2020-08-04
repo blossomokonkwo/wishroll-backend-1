@@ -10,9 +10,9 @@ class V2::MessagesController < ApplicationController
             @message.thumbnail_url = polymorphic_url(@message.thumbnail_item) if @message.thumbnail_item.attached?
             if @message.save  
                 id = @message.id
+                MarkNewMessageAsReadJob.perform_now(id, params[:chat_room_id])
                 MessageRelayJob.perform_now(id)
                 MessageNotificationJob.perform_now(id)
-                MarkNewMessageAsReadJob.perform_now(id, params[:chat_room_id])
                 render json: nil, status: :created
             else
                 render json: {error: "The message couldn't be created"}, status: 400
