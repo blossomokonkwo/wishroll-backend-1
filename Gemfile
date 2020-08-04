@@ -33,6 +33,7 @@ gem 'predictor'
 gem 'pg_search'
 gem 'identity_cache'
 gem 'cityhash'
+gem 'unread'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

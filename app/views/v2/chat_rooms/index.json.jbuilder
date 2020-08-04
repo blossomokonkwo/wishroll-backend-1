@@ -5,6 +5,7 @@ json.array! @chat_rooms.includes([:chat_room_users, :users]).each do |chat_room|
         json.created_at chat_room.created_at
         json.updated_at chat_room.updated_at
         json.num_users chat_room.num_users
+        json.num_unread_messages chat_room.num_unread_messages(@current_user)
         json.recent_message do
             message = chat_room.recent_message
             json.id message.id
@@ -17,6 +18,7 @@ json.array! @chat_rooms.includes([:chat_room_users, :users]).each do |chat_room|
             json.thumbnail_url message.thumbnail_url
             json.created_at message.created_at
             json.updated_at message.updated_at
+            json.read message.read?(@current_user)
             messenger = message.user
             json.messenger do
                 json.id messenger.id

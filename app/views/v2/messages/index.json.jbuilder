@@ -10,6 +10,7 @@ json.array! @messages.includes([:user]).each do |message|
             json.thumbnail_url message.thumbnail_url
             json.created_at message.created_at
             json.updated_at message.updated_at
+            json.has_been_read message.has_been_read?
         end
     messenger = message.user
     cache messenger, expires_in: 1.hour do

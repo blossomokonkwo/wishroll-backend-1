@@ -36,6 +36,7 @@ class V2::ChatRoomUsersController < ApplicationController
         @chat_room_user = ChatRoomUser.find_by(user_id: current_user.id, chat_room_id: params[:id])
         if @chat_room_user
             begin
+                MarkMessagesAsReadJob.perform_now(params[:id], current_user.id)
                 @chat_room_user.update!(appearance: true, last_seen: DateTime.current)
                 @chat_room = ChatRoom.find(params[:id])
                 AppearancesChannel.broadcast_to(@chat_room, {username: current_user.username, appearance: true}.to_json)
@@ -60,7 +61,7 @@ class V2::ChatRoomUsersController < ApplicationController
                 AppearancesChannel.broadcast_to(@chat_room, {username: current_user.username, appearance: false}.to_json)
                 render json: nil, status: :ok
             rescue => exception
-            render josn: nil, status: 500 
+            render json: nil, status: 500 
             end 
         else
             render json: nil, status: :not_found

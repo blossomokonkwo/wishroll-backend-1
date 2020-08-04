@@ -12,6 +12,7 @@ class V2::MessagesController < ApplicationController
                 id = @message.id
                 MessageRelayJob.perform_now(id)
                 MessageNotificationJob.perform_now(id)
+                MarkNewMessageAsReadJob.perform_now(id, params[:chat_room_id])
                 render json: nil, status: :created
             else
                 render json: {error: "The message couldn't be created"}, status: 400
