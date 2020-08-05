@@ -14,7 +14,7 @@ class Relationship < ApplicationRecord
     #after a relationship is created, we want to write a boolean value of true to cache which indicates that the following user is indeed following the followed user
     logger.debug {"[WishRoll Cache] write succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.write("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}", true)
     follower_user.touch; followed_user.touch
-    unless Activity.find_by(content_id: id, active_user_id: follower_id, user_id: followed_id, activity_type: self.class.name)
+    unless Activity.find_by(active_user_id: follower_id, user_id: followed_id, activity_type: self.class.name)
       Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you")
     end
   end

@@ -31,4 +31,14 @@ class V2::ChatRoomsController < ApplicationController
             render json: nil, status: 500
         end
     end
+
+    def update
+        chat_room = ChatRoom.find(params[:id])
+        if name = params[:name] and chat_room.update(name: name)
+            render json: name, status: :ok
+        else
+            render json: nil, status: 500
+        end
+    end
+    
 end

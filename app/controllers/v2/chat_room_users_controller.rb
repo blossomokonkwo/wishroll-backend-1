@@ -40,6 +40,7 @@ class V2::ChatRoomUsersController < ApplicationController
                 @chat_room_user.update!(appearance: true, last_seen: DateTime.current)
                 @chat_room = ChatRoom.find(params[:id])
                 AppearancesChannel.broadcast_to(@chat_room, {username: current_user.username, appearance: true}.to_json)
+                AppearanceSilentNotificationJob.perform_now(current_user.id)
                 render json: nil, status: :ok
             rescue => exception
                 render json: nil, status: 500
