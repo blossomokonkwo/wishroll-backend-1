@@ -24,22 +24,114 @@ class Like < ApplicationRecord
     case activity_type
     when "Comment"
       if content.original_comment_id
-        phrase = "#{active_user.username} liked your reply 💕"
+        if likeable.likes_count < 100
+          phrase = "#{active_user.username} liked your reply 💕"
+        elsif likeable.likes_count == 101
+          phrase = "over one hundred people liked your reply 💕"
+        elsif likeable.likes_count == 201
+          phrase = "over two hundred people liked your reply 💕"
+        elsif likeable.likes_count == 301
+          phrase = "over three hundred people liked your reply 💕"
+        elsif likeable.likes_count == 401
+          phrase = "over four hundred people liked your reply 💕"
+        elsif likeable.likes_count == 501
+          phrase = "over five hundred people liked your reply 💕"
+        elsif likeable.likes_count == 601
+          phrase = "over six hundred people liked your reply 💕"
+        elsif likeable.likes_count == 701
+          phrase = "over seven hundred people liked your reply 💕"
+        elsif likeable.likes_count == 801
+          phrase = "over eight hundred people liked your reply 💕"
+        elsif likeable.likes_count == 901
+          phrase = "over nine hundred people liked your reply 💕"
+        elsif likeable.likes_count == 1001
+          phrase = "over one thousand people liked your reply 💕"
+        elsif likeable.likes_count == 2001
+          phrase = "over two thousand people liked your reply 💕"
+        elsif likeable.likes_count == 3001
+          phrase = "over three thousand people liked your reply 💕"
+        elsif likeable.likes_count == 4001
+          phrase = "over four thousand people liked your reply 💕"
+        elsif likeable.likes_count == 5001
+          phrase = "over five thousand people liked your reply 💕"
+        end
       else
-        phrase = "#{active_user.username} liked your comment 💕"
+        if likeable.likes_count < 100
+          phrase = "#{active_user.username} liked your comment 💕"
+        elsif likeable.likes_count == 101
+          phrase = "over one hundred people liked your comment 💕"
+        elsif likeable.likes_count == 201
+          phrase = "over two hundred people liked your comment 💕"
+        elsif likeable.likes_count == 301
+          phrase = "over three hundred people liked your comment 💕"
+        elsif likeable.likes_count == 401
+          phrase = "over four hundred people liked your comment 💕"
+        elsif likeable.likes_count == 501
+          phrase = "over five hundred people liked your comment 💕"
+        elsif likeable.likes_count == 601
+          phrase = "over six hundred people liked your comment 💕"
+        elsif likeable.likes_count == 701
+          phrase = "over seven hundred people liked your comment 💕"
+        elsif likeable.likes_count == 801
+          phrase = "over eight hundred people liked your comment 💕"
+        elsif likeable.likes_count == 901
+          phrase = "over nine hundred people liked your comment 💕"
+        elsif likeable.likes_count == 1001
+          phrase = "over one thousand people liked your comment 💕"
+        elsif likeable.likes_count == 2001
+          phrase = "over two thousand people liked your comment 💕"
+        elsif likeable.likes_count == 3001
+          phrase = "over three thousand people liked your comment 💕"
+        elsif likeable.likes_count == 4001
+          phrase = "over four thousand people liked your comment 💕"
+        elsif likeable.likes_count == 5001
+          phrase = "over five thousand people liked your comment 💕"
+        end
       end
     when "Post"
-      phrase = "#{active_user.username} liked your post 💕"
+      if likeable.likes_count < 100
+        phrase = "#{active_user.username} liked your post 💕"
+      elsif likeable.likes_count == 101
+        phrase = "over one hundred people liked your post 💕"
+      elsif likeable.likes_count == 201
+        phrase = "over two hundred people liked your post 💕"
+      elsif likeable.likes_count == 301
+        phrase = "over three hundred people liked your post 💕"
+      elsif likeable.likes_count == 401
+        phrase = "over four hundred people liked your post 💕"
+      elsif likeable.likes_count == 501
+        phrase = "over five hundred people liked your post 💕"
+      elsif likeable.likes_count == 601
+        phrase = "over six hundred people liked your post 💕"
+      elsif likeable.likes_count == 701
+        phrase = "over seven hundred people liked your post 💕"
+      elsif likeable.likes_count == 801
+        phrase = "over eight hundred people liked your post 💕"
+      elsif likeable.likes_count == 901
+        phrase = "over nine hundred people liked your post 💕"
+      elsif likeable.likes_count == 1001
+        phrase = "over one thousand people liked your post 💕"
+      elsif likeable.likes_count == 2001
+        phrase = "over two thousand people liked your post 💕"
+      elsif likeable.likes_count == 3001
+        phrase = "over three thousand people liked your post 💕"
+      elsif likeable.likes_count == 4001
+        phrase = "over four thousand people liked your post 💕"
+      elsif likeable.likes_count == 5001
+        phrase = "over five thousand people liked your post 💕"
+      end
       media_url = content.thumbnail_url || content.media_url
     when "Roll"
       phrase = "#{active_user.username} liked your roll 💕" 
       media_url = content.thumbnail_url   
     end
     unless Activity.find_by(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type) or active_user.id == user.id
-      activity = Activity.new(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type, media_url: media_url, activity_phrase: phrase)
-      unless activity.save
-        logger.debug {"Unable to create activity.\nAn error occured"}
-      end 
+      if likeable.likes_count < 100 or likeable.likes_count == 101 or likeable.likes_count == 201 or likeable.likes_count == 301 or likeable.likes_count == 401 or likeable.likes_count == 501 or likeable.likes_count == 601 or likeable.likes_count == 701 or likeable.likes_count == 801 or likeable.likes_count == 901 or likeable.likes_count == 1001 or likeable.likes_count == 2001 or likeable.likes_count == 3001 or likeable.likes_count == 4001 or likeable.likes_count == 5001
+        activity = Activity.new(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type, media_url: media_url, activity_phrase: phrase)
+        unless activity.save
+          logger.debug {"Unable to create activity.\nAn error occured"}
+        end 
+      end
     end
     if likeable_type == "Post" or likeable_type == "Roll"
       begin
