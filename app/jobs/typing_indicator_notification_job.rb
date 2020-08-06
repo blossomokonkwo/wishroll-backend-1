@@ -14,15 +14,15 @@ class TypingIndicatorNotificationJob < ApplicationJob
                         if device
                             notification = Rpush::Apns::Notification.new
                             notification.app = app
+                            notification.mutable_content = true
+                            notification.badge = Message.num_unread_messages(user)
                             notification.device_token = device.device_token
                             if chat_room.name
-                                notification.alert = "#{chat_room.name}\n#{typer.username} is typing..."
+                                notification.alert = {title: chat_room.name, body: "#{typer.name || typer.username} is typing..."}
                             else
-                                notification.alert = "#{typer.username} is typing..."
+                                notification.alert = {body: "#{typer.name || typer.username} is typing..."}
                             end
-                            notification.sound = ''
-                            notification.category = "Chat Room"
-                            notification.data = {}
+                            notification.data = {typing: {username: typer.username, verified: typer.verified, avatar: typer.avatar_url, name: typer.name, typing: true}, chat_room: {id: chat_room.id, name: chat_room.name, num_users: chat_room.num_users, created_at: chat_room.created_at, updated_at: chat_room.updated_at, num_unread_messages: chat_room.num_unread_messages(user), chat_room_users: []}}
                             notification.save!
                         end
                     end

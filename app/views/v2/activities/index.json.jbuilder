@@ -54,7 +54,7 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
-        elsif activity.activity_type == "Comment" and post = Comment.where(id: activity.content_id).first.fetch_post
+        elsif activity.activity_type == "Comment" and comment = Comment.where(id: activity.content_id).first and post = comment.fetch_post
             json.post do
                 json.id post.id
                 json.media_url post.media_url
@@ -76,6 +76,21 @@ json.array! @activities.each do |activity|
                     json.username user.username
                     json.avatar user.avatar_url
                     json.verified user.verified
+                end
+            end
+            json.comment do
+                json.id comment.id
+                json.body comment.body
+                json.created_at comment.created_at
+                json.updated_at comment.updated_at
+                json.original_comment_id comment.original_comment_id
+                json.like_count comment.likes_count
+                json.reply_count comment.replies_count
+                json.liked comment.liked?(@current_user)
+                json.user do
+                    json.id comment.user.id
+                    json.username comment.user.username
+                    json.verified comment.user.verified
                 end
             end
         end

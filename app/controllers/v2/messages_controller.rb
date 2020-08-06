@@ -8,10 +8,11 @@ class V2::MessagesController < ApplicationController
             @message.thumbnail_item.attach(params[:thumbnail_item]) if params[:thumbnail_item]
             @message.media_url = polymorphic_url(@message.media_item) if @message.media_item.attached?
             @message.thumbnail_url = polymorphic_url(@message.thumbnail_item) if @message.thumbnail_item.attached?
-            if @message.save  
-                id = @message.id
-                MessageRelayJob.perform_now(id)
-                MessageNotificationJob.perform_now(id)
+            if @message.save
+                MarkNewMessageAsReadJob.perform_now(@message.id, params[:chat_room_id])
+                MessageRelayJob.perform_now(@message.id)
+                MessageNotificationJob.perform_now(@message.id)
+                UpdateWishrollScoreJob.perform_now(current_user.id, 4) if @message.kind == "photo" or @message.kind == "video"
                 render json: nil, status: :created
             else
                 render json: {error: "The message couldn't be created"}, status: 400

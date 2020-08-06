@@ -5,6 +5,7 @@ class V2::ChatRoomsController < ApplicationController
       offset = params[:offset]
       @chat_rooms = current_user.chat_rooms.order(updated_at: :desc).offset(offset).limit(limit)
       if @chat_rooms.any?
+        @current_user = current_user
         render :index, status: :ok
       else
         render json: nil, status: :not_found
@@ -21,6 +22,7 @@ class V2::ChatRoomsController < ApplicationController
                 params[:user_ids].each do |user_id|
                     @chat_room.users << User.fetch(user_id)
                 end
+                @current_user = current_user
                 render :create, status: :created
             else
                 render json: nil, status: 500
@@ -29,4 +31,14 @@ class V2::ChatRoomsController < ApplicationController
             render json: nil, status: 500
         end
     end
+
+    def update
+        chat_room = ChatRoom.find(params[:id])
+        if name = params[:name] and chat_room.update(name: name)
+            render json: name, status: :ok
+        else
+            render json: nil, status: 500
+        end
+    end
+    
 end

@@ -108,7 +108,7 @@ Rails.application.routes.draw do
       resources :bookmarks, only: [:index]
     end
 
-    resources :chat_rooms, only: [:index, :create] do
+    resources :chat_rooms, only: [:index, :create, :update] do
       resources :messages, shallow: true
       resources :chat_room_users
     end

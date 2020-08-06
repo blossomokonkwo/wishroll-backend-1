@@ -13,7 +13,7 @@ class V2::CommentsController < ApplicationController
                         activity_phrase = "#{current_user.username} replied to to your comment"
                     else
                         user_id = roll.user_id
-                        activity_phrase = "#{current_user.username} commented on your post"
+                        activity_phrase = "#{current_user.username} commented on your roll"
                     end
                     activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: @comment.id, media_url: roll.thumbnail_url)
                     activity.save

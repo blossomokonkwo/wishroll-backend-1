@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_31_063144) do
+ActiveRecord::Schema.define(version: 2020_08_04_102404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 2020_07_31_063144) do
     t.bigint "likeable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["likeable_type", "likeable_id", "user_id"], name: "index_likes_on_likeable_type_and_likeable_id_and_user_id", unique: true
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
@@ -187,6 +188,7 @@ ActiveRecord::Schema.define(version: 2020_07_31_063144) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "thumbnail_url"
     t.index ["chat_room_id"], name: "index_messages_on_chat_room_id"
+    t.index ["created_at"], name: "index_messages_on_created_at"
     t.index ["sender_id"], name: "index_messages_on_sender_id"
     t.index ["uuid"], name: "index_messages_on_uuid"
   end
@@ -214,6 +216,17 @@ ActiveRecord::Schema.define(version: 2020_07_31_063144) do
     t.index ["restricted"], name: "index_posts_on_restricted"
     t.index ["thumbnail_url"], name: "index_posts_on_thumbnail_url"
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "read_marks", id: :serial, force: :cascade do |t|
+    t.string "readable_type", null: false
+    t.integer "readable_id"
+    t.string "reader_type", null: false
+    t.integer "reader_id"
+    t.datetime "timestamp"
+    t.index ["readable_type", "readable_id"], name: "index_read_marks_on_readable_type_and_readable_id"
+    t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index", unique: true
+    t.index ["reader_type", "reader_id"], name: "index_read_marks_on_reader_type_and_reader_id"
   end
 
   create_table "relationships", force: :cascade do |t|
