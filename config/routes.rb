@@ -124,7 +124,7 @@ Rails.application.routes.draw do
     get 'users/:user_id/posts', to: 'users#posts'
     get 'users/:user_id/liked-posts', to: 'users#liked_posts'
     get 'users/current_user/created-posts', to: 'users#current_user_created_posts'
-    get 'users/current_user/liked-posts', to: 'users#current_user_liked_posts'
+    get 'users/current_user/current-user-liked-posts', to: 'users#current_user_liked_posts'
     get 'users/current_user/bookmarked-posts', to: 'users#current_user_bookmarked_posts'
     get 'users/:user_id/rolls', to: 'users#rolls'
     get 'users/:user_id/liked-rolls', to: 'users#liked_rolls'

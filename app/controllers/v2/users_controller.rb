@@ -130,7 +130,7 @@ class V2::UsersController < ApplicationController
         @posts = current_user.created_posts(limit: limit, offset: offset)
         if @posts.any?
             @current_user = current_user
-            render :posts, status: :ok
+            render :current_user_posts, status: :ok
         else
             render json: nil, status: :not_found
         end
@@ -142,7 +142,7 @@ class V2::UsersController < ApplicationController
         @posts = current_user.liked_posts(limit: limit, offset: offset)
         if @posts.any?
             @current_user = current_user
-            render :posts, status: :ok
+            render :current_user_posts, status: :ok
         else
             render json: nil, status: :not_found
         end
@@ -154,7 +154,7 @@ class V2::UsersController < ApplicationController
         @posts = current_user.bookmarked_posts(limit: limit, offset: offset)
         if @posts.any?
             @current_user = current_user
-            render :posts, status: :ok
+            render :current_user_posts, status: :ok
         else
             render json: nil, status: :not_found
         end
