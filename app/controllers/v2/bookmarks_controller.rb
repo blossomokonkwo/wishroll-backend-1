@@ -52,7 +52,7 @@ class V2::BookmarksController < ApplicationController
 
     def index
         offset = params[:offset]
-        limit = 15 
+        limit = 18 
         user = User.fetch(params[:user_id])
         unless user.blocked?(current_user) || current_user.blocked?(user)
             @posts = user.bookmarked_posts(limit: limit, offset: offset)

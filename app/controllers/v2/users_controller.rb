@@ -28,7 +28,7 @@ class V2::UsersController < ApplicationController
     def posts
         @user = User.fetch(params[:user_id])
         offset = params[:offset] #use the created at field to offset the data
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
@@ -100,7 +100,7 @@ class V2::UsersController < ApplicationController
     def liked_posts
         @user = User.fetch(params[:user_id])
         offset = params[:offset]
-        limit = 15
+        limit = 18
         if @user
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
