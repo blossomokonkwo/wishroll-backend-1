@@ -124,6 +124,44 @@ class V2::UsersController < ApplicationController
         end
     end
 
+    def current_user_created_posts
+        offset = params[:offset]
+        limit = 15
+        @posts = current_user.created_posts(limit: limit, offset: offset)
+        if @posts.any?
+            @current_user = current_user
+            render :posts, status: :ok
+        else
+            render json: nil, status: :not_found
+        end
+    end
+
+    def current_user_liked_posts
+        offset = params[:offset]
+        limit = 15
+        @posts = current_user.liked_posts(limit: limit, offset: offset)
+        if @posts.any?
+            @current_user = current_user
+            render :posts, status: :ok
+        else
+            render json: nil, status: :not_found
+        end
+    end
+
+    def current_user_bookmarked_posts
+        offset = params[:offset]
+        limit = 15
+        @posts = current_user.bookmarked_posts(limit: limit, offset: offset)
+        if @posts.any?
+            @current_user = current_user
+            render :posts, status: :ok
+        else
+            render json: nil, status: :not_found
+        end
+    end
+    
+    
+
     def update
         begin
             current_user.update!(update_params)

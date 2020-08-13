@@ -58,6 +58,7 @@ class MessageNotificationJob < ApplicationJob
                             notification.category = "MESSAGE"
                             notification.badge = Message.num_unread_messages(user)
                             notification.mutable_content = true
+                            notification.content_available = true
                             notification.data = {message: { id: @message.id, uuid: @message.uuid, kind: @message.kind, body: @message.body, media_url: @message.media_url, thumbnail_url: @message.thumbnail_url, created_at: @message.created_at, updated_at: @message.updated_at, chat_room_id: @message.chat_room_id, messenger: {id: messenger.id, username: messenger.username, verified: messenger.verified, avatar: messenger.avatar_url}}, chat_room: {id: chat_room.id, name: chat_room.name, created_at: chat_room.created_at, updated_at: chat_room.updated_at, num_users: chat_room.num_users, num_unread_messages: chat_room.num_unread_messages(user), chat_room_users: []}}
                             notification.save!
                         end
