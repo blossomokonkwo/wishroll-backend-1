@@ -64,7 +64,7 @@ class Share < ApplicationRecord
      else 
        delta_time *= 1
      end
-    shareable.update!(popularity_rank:  (shareable.view_count + shareable.likes_count + shareable.share_count + shareable.bookmark_count) / delta_time)
+    shareable.update!(popularity_rank: (shareable.view_count + shareable.likes_count + shareable.share_count + shareable.bookmark_count) / delta_time)
   end
 
 end

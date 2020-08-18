@@ -12,7 +12,7 @@ class ActivityNotificationJob < ApplicationJob
                 if activity.activity_phrase.include?("liked your post")
                     n.alert = {title: "#{activity.activity_phrase}", body: "Your post is getting the love that it deserves 😌"}
                 elsif activity.activity_phrase.include?("shared your")
-                    witty_remarks = ["Your post just quenched a dry group chat 😆", "Your post is being used in a Twitter beef... probably 🤷‍♀️"]
+                    witty_remarks = ["Your meme just quenched a dry group chat 😆", "Your meme is what we need but don't deserve", "Thanks for posting this gem 💎!", "This meme is probably ending up on Twitter", "This meme was much needed...Thanks!"]
                     n.alert = {title: "#{activity.activity_phrase}", body: witty_remarks[Random.new.rand(witty_remarks.count)]}
                 end
                 n.mutable_content = true
