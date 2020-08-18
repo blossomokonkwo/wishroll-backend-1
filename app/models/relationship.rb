@@ -18,45 +18,45 @@ class Relationship < ApplicationRecord
       if followed_user.followers_count < 100
         Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you")
       elsif followed_user.followers_count == 101
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over one hundred followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over One hundred followers")
       elsif followed_user.followers_count == 501
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over five hundred followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Five hundred followers")
       elsif followed_user.followers_count == 1001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over one thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over One thousand followers")
       elsif followed_user.followers_count == 2001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over two thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Two thousand followers")
       elsif followed_user.followers_count == 3001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over three thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Three thousand followers")
       elsif followed_user.followers_count == 4001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over four thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Four thousand followers")
       elsif followed_user.followers_count == 5001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over five thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Five thousand followers")
       elsif followed_user.followers_count == 6001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over six thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Six thousand followers")
       elsif followed_user.followers_count == 7001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over seven thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Seven thousand followers")
       elsif followed_user.followers_count == 8001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over eight thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Eight thousand followers")
       elsif followed_user.followers_count == 9001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over nine thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Nine thousand followers")
       elsif followed_user.followers_count == 10001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over ten thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Ten thousand followers")
       elsif followed_user.followers_count == 15001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over fifteen thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Fifteen thousand followers")
       elsif followed_user.followers_count == 20001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over twenty thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Twenty thousand followers")
       elsif followed_user.followers_count == 25001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over twenty-five thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Twenty-Five thousand followers")
       elsif followed_user.followers_count == 30001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over thirty thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Thirty thousand followers")
       elsif followed_user.followers_count == 35001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have thirty-five thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have Thirty-five thousand followers")
       elsif followed_user.followers_count == 40001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over fourty thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Fourty thousand followers")
       elsif followed_user.followers_count == 45001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over fourty-five thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Fourty-five thousand followers")
       elsif followed_user.followers_count == 50001
-        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "you now have over fifty thousand followers")
+        Activity.create(content_id: id, active_user: follower_user, user: followed_user, activity_type: self.class.name, activity_phrase: "#{follower_user.username} began following you.\nYou now have over Fifty thousand followers")
       end
     end
   end

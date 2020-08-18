@@ -1,6 +1,6 @@
 class V2::SignupController < ApplicationController
     def validate_email        
-        if  User.find_by(email: params[:email])
+        if User.find_by(email: params[:email])
             render json: {error: "That email is already in use with another account"}, status: :bad_request
         else
             render json: nil, status: :ok
