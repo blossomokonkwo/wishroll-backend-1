@@ -579,7 +579,8 @@ class User < ApplicationRecord
     end
 
     def blocked?(user)
-        Rails.cache.fetch("WishRoll:Cache:BlockRelationship:Blocker#{self.id}:Blocked#{user.id}") {self.blocked_users.include?(user)}
+        # Rails.cache.fetch("WishRoll:Cache:BlockRelationship:Blocker#{self.id}:Blocked#{user.id}") {self.blocked_users.include?(user)}
+        blocked_users.include?(user)
     end
 
     def self.current_user(user_id)
