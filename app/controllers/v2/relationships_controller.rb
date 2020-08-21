@@ -8,6 +8,7 @@ class V2::RelationshipsController < ApplicationController
             unless @user.blocked?(current_user) or current_user.blocked?(@user)
                 unless Relationship.find_by(followed_id: @user.id, follower_id: current_user.id)
                     relationship = Relationship.create!(followed_id: @user.id, follower_id: current_user.id)
+                    RelationshipActivityJob.perform_now(follower_user_id: current_user.id, followed_user_id: @user.id, relationship_id: relationship.id)
                     render json: {success: "Successfully following #{@user.username}"}, status: :created
                 else
                     render json: {error: "#{current_user.username} is already following #{@user.username}"}, status: :bad_request

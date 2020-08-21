@@ -5,19 +5,7 @@ class V2::CommentsController < ApplicationController
             begin
                 @comment = roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
                 @user = current_user
-                if !current_user.rolls.include?(roll)
-                    activity_phrase = nil
-                    user_id = nil
-                    if @comment.original_comment_id
-                        user_id = Comment.find(params[:original_comment_id]).user_id
-                        activity_phrase = "#{current_user.username} replied to to your comment"
-                    else
-                        user_id = roll.user_id
-                        activity_phrase = "#{current_user.username} commented on your roll"
-                    end
-                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: @comment.id, media_url: roll.thumbnail_url)
-                    activity.save
-                end
+                CommentActivityJob.perform_now(@comment.id, current_user.id)
                 render :create, status: :created
             rescue => exception
                 render json: {error: "Couldn't create comment for roll #{roll}"}, status: 500
@@ -26,19 +14,7 @@ class V2::CommentsController < ApplicationController
             begin
                 @comment = post.comments.create!(body: params[:body], user_id: current_user.id, original_comment_id: params[:original_comment_id])
                 @user = current_user
-                if !current_user.posts.include?(post)
-                    activity_phrase = nil
-                    user_id = nil
-                    if @comment.original_comment_id
-                        user_id = Comment.find(params[:original_comment_id]).user_id
-                        activity_phrase = "#{current_user.username} replied to to your comment"
-                    else
-                        user_id = post.user_id
-                        activity_phrase = "#{current_user.username} commented on your post"
-                    end
-                    activity = Activity.new(user_id: user_id, active_user_id: current_user.id, activity_phrase: activity_phrase, activity_type: @comment.class.name, content_id: @comment.id, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url)
-                    activity.save
-                end
+                CommentActivityJob.perform_now(@comment.id, current_user.id)
                 render :create, status: :created
             rescue => exception
                 puts @comment.errors.inspect
