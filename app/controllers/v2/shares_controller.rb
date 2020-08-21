@@ -4,9 +4,7 @@ class V2::SharesController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
                 share = roll.shares.create!(user: current_user, shared_service: params[:shared_service])
-                unless Activity.find_by(content_id: roll.id, active_user_id: current_user.id, user_id: roll.user_id, activity_type: share.class.name) or roll.user == current_user
-                    Activity.create(content_id: roll.id, active_user_id: current_user.id, user_id: roll.user_id, activity_type: roll.class.name, media_url: roll.thumbnail_url, activity_phrase: "#{current_user.username} shared your roll")
-                end
+                ShareActivityJob.perform_now(current_user_id: current_user.id, share_id: share.id)
                 UpdateWishrollScoreJob.perform_now(roll.user.id, 3)
                 render json: nil, status: :created
             rescue => exception
@@ -15,9 +13,7 @@ class V2::SharesController < ApplicationController
         elsif params[:post_id] and post = Post.find(params[:post_id])
             begin
                 share = post.shares.create!(user: current_user, shared_service: params[:shared_service])
-                unless Activity.find_by(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: share.class.name) or post.user == current_user
-                    Activity.create(content_id: post.id, active_user_id: current_user.id, user_id: post.user_id, activity_type: post.class.name, media_url: post.thumbnail_url != nil ? post.thumbnail_url : post.media_url , activity_phrase: "#{current_user.username} shared your post")
-                end
+                ShareActivityJob.perform_now(current_user_id: current_user.id, share_id: share.id)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 3)
                 render json: nil, status: :created
             rescue => exception
@@ -30,7 +26,7 @@ class V2::SharesController < ApplicationController
 
     def users
         offset = params[:offset]
-        limit = 15
+        limit = 10
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             @users = User.joins(:shares).where(shares: {shareable: roll}).order("shares.created_at DESC").offset(offset).limit(limit)
             if @users.any?

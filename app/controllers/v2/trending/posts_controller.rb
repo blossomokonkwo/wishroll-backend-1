@@ -3,7 +3,7 @@ class V2::Trending::PostsController < ApplicationController
     def trending 
         #the number of posts that are sent to the users feed page. The feed sends the most popular posts
         limit = 15
-        offset = params[:offset] #as the user scrolls the offset is incremented by 100
+        offset = params[:offset]
         @posts = Post.includes(:user).where(restricted: false).order(popularity_rank: :desc).offset(offset).limit(limit)
         if @posts.any?
             @current_user = current_user

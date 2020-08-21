@@ -15,124 +15,6 @@ class Like < ApplicationRecord
     logger.debug {"[WishRoll Cache] write succeeded for WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{likeable.uuid}"} if Rails.cache.write("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{likeable.uuid}", true)
     #write the boolean value of true whenever a like is created 
      #we want change the updated at date of the post model when it has been liked. This is because the after commit callback isn't called when the counter_cache counters are updated (the likes count)
-    active_user = user
-    content = likeable
-    user = likeable.user
-    activity_type = content.class.name
-    phrase = ""
-    media_url = ""
-    case activity_type
-    when "Comment"
-      if content.original_comment_id
-        if likeable.likes_count < 100
-          phrase = "#{active_user.username} liked your reply 💕"
-        elsif likeable.likes_count == 101
-          phrase = "over one hundred people liked your reply 💕"
-        elsif likeable.likes_count == 201
-          phrase = "over two hundred people liked your reply 💕"
-        elsif likeable.likes_count == 301
-          phrase = "over three hundred people liked your reply 💕"
-        elsif likeable.likes_count == 401
-          phrase = "over four hundred people liked your reply 💕"
-        elsif likeable.likes_count == 501
-          phrase = "over five hundred people liked your reply 💕"
-        elsif likeable.likes_count == 601
-          phrase = "over six hundred people liked your reply 💕"
-        elsif likeable.likes_count == 701
-          phrase = "over seven hundred people liked your reply 💕"
-        elsif likeable.likes_count == 801
-          phrase = "over eight hundred people liked your reply 💕"
-        elsif likeable.likes_count == 901
-          phrase = "over nine hundred people liked your reply 💕"
-        elsif likeable.likes_count == 1001
-          phrase = "over one thousand people liked your reply 💕"
-        elsif likeable.likes_count == 2001
-          phrase = "over two thousand people liked your reply 💕"
-        elsif likeable.likes_count == 3001
-          phrase = "over three thousand people liked your reply 💕"
-        elsif likeable.likes_count == 4001
-          phrase = "over four thousand people liked your reply 💕"
-        elsif likeable.likes_count == 5001
-          phrase = "over five thousand people liked your reply 💕"
-        end
-      else
-        if likeable.likes_count < 100
-          phrase = "#{active_user.username} liked your comment 💕"
-        elsif likeable.likes_count == 101
-          phrase = "over one hundred people liked your comment 💕"
-        elsif likeable.likes_count == 201
-          phrase = "over two hundred people liked your comment 💕"
-        elsif likeable.likes_count == 301
-          phrase = "over three hundred people liked your comment 💕"
-        elsif likeable.likes_count == 401
-          phrase = "over four hundred people liked your comment 💕"
-        elsif likeable.likes_count == 501
-          phrase = "over five hundred people liked your comment 💕"
-        elsif likeable.likes_count == 601
-          phrase = "over six hundred people liked your comment 💕"
-        elsif likeable.likes_count == 701
-          phrase = "over seven hundred people liked your comment 💕"
-        elsif likeable.likes_count == 801
-          phrase = "over eight hundred people liked your comment 💕"
-        elsif likeable.likes_count == 901
-          phrase = "over nine hundred people liked your comment 💕"
-        elsif likeable.likes_count == 1001
-          phrase = "over one thousand people liked your comment 💕"
-        elsif likeable.likes_count == 2001
-          phrase = "over two thousand people liked your comment 💕"
-        elsif likeable.likes_count == 3001
-          phrase = "over three thousand people liked your comment 💕"
-        elsif likeable.likes_count == 4001
-          phrase = "over four thousand people liked your comment 💕"
-        elsif likeable.likes_count == 5001
-          phrase = "over five thousand people liked your comment 💕"
-        end
-      end
-    when "Post"
-      if likeable.likes_count < 100
-        phrase = "#{active_user.username} liked your post 💕"
-      elsif likeable.likes_count == 101
-        phrase = "over one hundred people liked your post 💕"
-      elsif likeable.likes_count == 201
-        phrase = "over two hundred people liked your post 💕"
-      elsif likeable.likes_count == 301
-        phrase = "over three hundred people liked your post 💕"
-      elsif likeable.likes_count == 401
-        phrase = "over four hundred people liked your post 💕"
-      elsif likeable.likes_count == 501
-        phrase = "over five hundred people liked your post 💕"
-      elsif likeable.likes_count == 601
-        phrase = "over six hundred people liked your post 💕"
-      elsif likeable.likes_count == 701
-        phrase = "over seven hundred people liked your post 💕"
-      elsif likeable.likes_count == 801
-        phrase = "over eight hundred people liked your post 💕"
-      elsif likeable.likes_count == 901
-        phrase = "over nine hundred people liked your post 💕"
-      elsif likeable.likes_count == 1001
-        phrase = "over one thousand people liked your post 💕"
-      elsif likeable.likes_count == 2001
-        phrase = "over two thousand people liked your post 💕"
-      elsif likeable.likes_count == 3001
-        phrase = "over three thousand people liked your post 💕"
-      elsif likeable.likes_count == 4001
-        phrase = "over four thousand people liked your post 💕"
-      elsif likeable.likes_count == 5001
-        phrase = "over five thousand people liked your post 💕"
-      end
-      media_url = content.thumbnail_url || content.media_url
-    when "Roll"
-      phrase = "#{active_user.username} liked your roll 💕" 
-      media_url = content.thumbnail_url   
-    end
-    unless Activity.find_by(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type) or active_user.id == user.id
-      if likeable.likes_count < 100 or likeable.likes_count == 101 or likeable.likes_count == 201 or likeable.likes_count == 301 or likeable.likes_count == 401 or likeable.likes_count == 501 or likeable.likes_count == 601 or likeable.likes_count == 701 or likeable.likes_count == 801 or likeable.likes_count == 901 or likeable.likes_count == 1001 or likeable.likes_count == 2001 or likeable.likes_count == 3001 or likeable.likes_count == 4001 or likeable.likes_count == 5001
-        activity = Activity.new(content_id: content.id, user_id: user.id, active_user_id: active_user.id, activity_type: activity_type, media_url: media_url, activity_phrase: phrase)
-        unless activity.save
-          logger.debug {"Unable to create activity.\nAn error occured"}
-        end 
-      end
-    end
     if likeable_type == "Post" or likeable_type == "Roll"
       begin
         delta_time = ((Time.zone.now - likeable.created_at.to_time) / 1.hour.seconds)
@@ -195,7 +77,6 @@ class Like < ApplicationRecord
       rescue => exception
         puts exception
       end
-      
     end
   end
 

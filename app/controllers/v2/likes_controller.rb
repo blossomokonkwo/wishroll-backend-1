@@ -4,7 +4,8 @@ class V2::LikesController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             begin
                 like = roll.likes.create!(user: current_user)
-                UpdateWishrollScoreJob.perform_now(roll.user.id, 1)
+                LikeActivityJob.perform_now(like_id: like.id)
+                UpdateWishrollScoreJob.perform_now(roll.user.id, 1)                
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not like the roll: #{roll}"}, status: :bad_request
@@ -12,7 +13,8 @@ class V2::LikesController < ApplicationController
         elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             begin
                 like = comment.likes.create!(user: current_user)
-                UpdateWishrollScoreJob.perform_now(comment.user.id, 1)
+                LikeActivityJob.perform_now(like_id: like.id)
+                UpdateWishrollScoreJob.perform_now(comment.user.id, 1)                
                 render json: nil, status: :created                
             rescue => exception
                 render json: {created: "Could not like the comment: #{comment}"}, status: :bad_request
@@ -20,6 +22,7 @@ class V2::LikesController < ApplicationController
         elsif params[:post_id] and post = Post.fetch(params[:post_id])
             begin
                 like = post.likes.create!(user: current_user)
+                LikeActivityJob.perform_now(like_id: like.id)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 1)
                 render json: nil, status: :created
             rescue => exception
