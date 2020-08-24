@@ -5,7 +5,7 @@ class V2::BookmarksController < ApplicationController
             begin
                 bookmark = roll.bookmarks.create!(user: current_user)
                 UpdateWishrollScoreJob.perform_now(roll.user.id, 2)
-                UpdatePopularityRankJob.perform_now(content_id: bookmark.id, content_type: roll.class.name)
+                UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: roll.class.name)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Couldn't create bookmark for roll #{roll.inspect}"}, status: 500
@@ -14,7 +14,7 @@ class V2::BookmarksController < ApplicationController
                 begin 
                     bookmark = post.bookmarks.create!(user: current_user)
                     UpdateWishrollScoreJob.perform_now(post.user.id, 2)
-                    UpdatePopularityRankJob.perform_now(content_id: bookmark.id, content_type: post.class.name)
+                    UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: post.class.name)
                     render json: nil, status: :created
                 rescue
                     render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
