@@ -27,10 +27,8 @@ class User < ApplicationRecord
 
 
     #cache API's 
-    cache_has_many :posts
     cache_index :username, unique: true
     cache_index :name
-    cache_has_many :views
 
     # User Content APIs
 
