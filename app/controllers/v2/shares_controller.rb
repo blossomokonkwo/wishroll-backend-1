@@ -6,6 +6,7 @@ class V2::SharesController < ApplicationController
                 share = roll.shares.create!(user: current_user, shared_service: params[:shared_service])
                 ShareActivityJob.perform_now(current_user_id: current_user.id, share_id: share.id)
                 UpdateWishrollScoreJob.perform_now(roll.user.id, 3)
+                UpdatePopularityRankJob.perform_now(content_id: share.id, content_type: roll.class.name)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not share the roll: #{roll.errors.inspect}"}, status: :bad_request
@@ -15,6 +16,7 @@ class V2::SharesController < ApplicationController
                 share = post.shares.create!(user: current_user, shared_service: params[:shared_service])
                 ShareActivityJob.perform_now(current_user_id: current_user.id, share_id: share.id)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 3)
+                UpdatePopularityRankJob.perform_now(content_id: share.id, content_type: post.class.name)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not share the post: #{post}"}, status: :bad_request
