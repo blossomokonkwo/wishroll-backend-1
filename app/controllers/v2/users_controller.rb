@@ -33,9 +33,9 @@ class V2::UsersController < ApplicationController
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset 
-                    @posts = @user.created_posts(limit: limit, offset: offset)
+                    @posts = @user.created_posts(limit: limit, offset: offset).to_a
                 else 
-                    @posts = @user.created_posts(limit: limit)
+                    @posts = @user.created_posts(limit: limit).to_a
                 end
                 if @posts.any?
                     @current_user = current_user
@@ -105,9 +105,9 @@ class V2::UsersController < ApplicationController
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset
-                    @posts = @user.liked_posts(limit: limit, offset: offset) #in later versions, there will be an optimization for speed using offset
+                    @posts = @user.liked_posts(limit: limit, offset: offset).to_a #in later versions, there will be an optimization for speed using offset
                 else
-                    @posts = @user.liked_posts(limit: limit)
+                    @posts = @user.liked_posts(limit: limit).to_a
                 end
                 if @posts.any? 
                     @current_user = current_user

@@ -30,7 +30,7 @@ class V2::SharesController < ApplicationController
         offset = params[:offset]
         limit = 10
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @users = User.joins(:shares).where(shares: {shareable: roll}).order("shares.created_at DESC").offset(offset).limit(limit)
+            @users = User.joins(:shares).where(shares: {shareable: roll}).order("shares.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
                 @current_user = current_user
                 render :users, status: :ok
@@ -38,7 +38,7 @@ class V2::SharesController < ApplicationController
                 render json: nil, status: :not_found
             end
         elsif params[:post_id] and post = Post.find(params[:post_id])
-            @users = User.joins(:shares).where(shares: {shareable: post}).order("shares.created_at DESC").offset(offset).limit(limit)
+            @users = User.joins(:shares).where(shares: {shareable: post}).order("shares.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
                 @current_user = current_user
                 render :users, status: :ok

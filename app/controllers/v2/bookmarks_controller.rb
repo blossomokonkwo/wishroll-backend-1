@@ -28,15 +28,17 @@ class V2::BookmarksController < ApplicationController
         offset = params[:offset]
         limit = 15
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
+            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
+                @current_user = current_user
                 render :index_users, status: :ok
             else
                 render json: nil, status: :not_found
             end
         elsif params[:post_id] and post = Post.find(params[:post_id])
-            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
+            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
+                @current_user = current_user
                 render :index_users, status: :ok
             else
                 render json: nil, status: :not_found
@@ -51,7 +53,7 @@ class V2::BookmarksController < ApplicationController
         limit = 18 
         user = User.fetch(params[:user_id])
         unless user.blocked?(current_user) || current_user.blocked?(user)
-            @posts = user.bookmarked_posts(limit: limit, offset: offset)
+            @posts = user.bookmarked_posts(limit: limit, offset: offset).to_a
             if @posts.any?
                 @current_user = current_user
                 render :index, status: :ok
