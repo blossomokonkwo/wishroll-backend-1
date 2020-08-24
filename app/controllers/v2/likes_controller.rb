@@ -58,9 +58,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
@@ -76,9 +73,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: comment}).order('likes.created_at DESC').limit(limit)
             end
             if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
             else
                 render json: nil, status: :not_found
@@ -94,9 +88,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
