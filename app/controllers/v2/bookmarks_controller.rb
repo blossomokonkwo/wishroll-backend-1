@@ -30,9 +30,6 @@ class V2::BookmarksController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
             if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index_users, status: :ok
             else
                 render json: nil, status: :not_found
@@ -40,9 +37,6 @@ class V2::BookmarksController < ApplicationController
         elsif params[:post_id] and post = Post.find(params[:post_id])
             @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
             if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index_users, status: :ok
             else
                 render json: nil, status: :not_found

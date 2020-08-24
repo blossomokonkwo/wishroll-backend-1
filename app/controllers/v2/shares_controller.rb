@@ -32,6 +32,7 @@ class V2::SharesController < ApplicationController
         if params[:roll_id] and roll = Roll.find(params[:roll_id])
             @users = User.joins(:shares).where(shares: {shareable: roll}).order("shares.created_at DESC").offset(offset).limit(limit)
             if @users.any?
+                @current_user = current_user
                 render :users, status: :ok
             else
                 render json: nil, status: :not_found
@@ -39,6 +40,7 @@ class V2::SharesController < ApplicationController
         elsif params[:post_id] and post = Post.find(params[:post_id])
             @users = User.joins(:shares).where(shares: {shareable: post}).order("shares.created_at DESC").offset(offset).limit(limit)
             if @users.any?
+                @current_user = user
                 render :users, status: :ok
             else
                 render json: nil, status: :not_found
