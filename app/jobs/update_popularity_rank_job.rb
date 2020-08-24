@@ -63,7 +63,7 @@ class UpdatePopularityRankJob < ApplicationJob
             delta_time *= 1
             end
             content.update!(popularity_rank: (content.view_count + content.likes_count + content.share_count + content.bookmark_count) / delta_time)
-        endw
+        end
     end
     
 end
