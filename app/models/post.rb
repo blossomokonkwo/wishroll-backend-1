@@ -59,7 +59,7 @@ class Post < ApplicationRecord
     #cache API's
     include IdentityCache
 
-    cache_belongs_to :user
+    cache_belongs_to :user, embed: true
     cache_has_many :comments
     cache_has_many :views
     cache_has_many :tags

@@ -6,6 +6,7 @@ class V2::ViewsController < ApplicationController
             user = view.viewable.user
             user.view_count += 1
             user.save
+            UpdatePopularityRankJob.perform_now(content_id: view.id, content_type: )
             render json: nil, status: :created
         else
             render json: nil, status: :bad_request

@@ -25,6 +25,10 @@ class Roll < ApplicationRecord
     end
   end
 
+  include IdentityCache
+  cache_has_many :views
+  cache_belongs_to :user
+
   #user interaction APIs
   def viewed?(user)
     Rails.cache.fetch([self, user]){
