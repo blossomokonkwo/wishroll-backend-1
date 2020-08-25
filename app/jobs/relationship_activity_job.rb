@@ -29,7 +29,7 @@ class RelationshipActivityJob < ApplicationJob
                     end
                     (start_value..end_value).step(step_value) do |num| 
                         if followers_count == num
-                            activity_phrase = "#{activity_phrase_prefix}\nYou now have over #{followers_count.pred.to_s(:delimited) } followers"
+                            activity_phrase = "#{activity_phrase_prefix}\nYou now have over #{followers_count.pred.to_s(:delimited)} followers"
                             can_create_activity = true
                             break
                         end

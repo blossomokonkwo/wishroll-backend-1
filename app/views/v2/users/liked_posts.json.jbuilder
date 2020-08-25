@@ -1,5 +1,5 @@
-json.array! @posts.includes(:user).each do |post|
-    user = post.fetch_user
+json.array! @posts.each do |post|
+    user = User.fetch(post.user_id)
     cache post do
         json.id post.id
         json.created_at post.created_at

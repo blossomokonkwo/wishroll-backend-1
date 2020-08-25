@@ -5,7 +5,8 @@ class V2::LikesController < ApplicationController
             begin
                 like = roll.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
-                UpdateWishrollScoreJob.perform_now(roll.user.id, 1)                
+                UpdateWishrollScoreJob.perform_now(roll.user.id, 1)
+                UpdatePopularityRankJob.perform_now(content_id: roll.id)                
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not like the roll: #{roll}"}, status: :bad_request
@@ -14,7 +15,8 @@ class V2::LikesController < ApplicationController
             begin
                 like = comment.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
-                UpdateWishrollScoreJob.perform_now(comment.user.id, 1)                
+                UpdateWishrollScoreJob.perform_now(comment.user.id, 1)
+                UpdatePopularityRankJob.perform_now(content_id: comment.id)           
                 render json: nil, status: :created                
             rescue => exception
                 render json: {created: "Could not like the comment: #{comment}"}, status: :bad_request
@@ -24,6 +26,7 @@ class V2::LikesController < ApplicationController
                 like = post.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 1)
+                UpdatePopularityRankJob.perform_now(content_id: post.id)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not like the post: #{post}"}, status: :bad_request
@@ -55,9 +58,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found
@@ -73,9 +73,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: comment}).order('likes.created_at DESC').limit(limit)
             end
             if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
             else
                 render json: nil, status: :not_found
@@ -91,9 +88,6 @@ class V2::LikesController < ApplicationController
                 @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').limit(limit)
               end
               if @users.any?
-                @users.to_a.delete_if do |user|
-                    user.blocked?(current_user) or current_user.blocked?(user)
-                end
                 render :index, status: :ok
               else
                 render json: nil, status: :not_found

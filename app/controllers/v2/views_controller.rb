@@ -3,9 +3,10 @@ class V2::ViewsController < ApplicationController
     def create
         view = View.new(duration: params[:duration], viewable_id: params[:viewable_id], viewable_type: params[:viewable_type], user_id: current_user.id)
         if view.save
-            user = view.viewable.user
+            user = view.fetch_viewable.user
             user.view_count += 1
             user.save
+            UpdatePopularityRankJob.perform_now(content_id: view.fetch_viewable.id, content_type: view.fetch_viewable.class.name)
             render json: nil, status: :created
         else
             render json: nil, status: :bad_request
