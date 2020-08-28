@@ -7,20 +7,22 @@ class V2::UsersController < ApplicationController
         elsif params[:id]
             @user =  User.fetch(params[:id])
         end
-        if @user
-            if current_user.blocked?(@user)
-                render json: {id: @user.id, can_unblock: true}, status: :forbidden
-            elsif @user.blocked?(current_user)
-                render json: {id: @user.id, can_unblock: false}, status: :forbidden
-            else
-                @following = nil
-                if current_user.id != @user.id
-                    @following = current_user.following?(@user)
+        if stale?(@user)
+            if @user
+                if current_user.blocked?(@user)
+                    render json: {id: @user.id, can_unblock: true}, status: :forbidden
+                elsif @user.blocked?(current_user)
+                    render json: {id: @user.id, can_unblock: false}, status: :forbidden
+                else
+                    @following = nil
+                    if current_user.id != @user.id
+                        @following = current_user.following?(@user)
+                    end
+                    render :show, status: :ok
                 end
-                render :show, status: :ok
+            else
+                render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found
             end
-        else
-            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found
         end
     end
 
