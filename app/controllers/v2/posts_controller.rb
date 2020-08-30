@@ -30,11 +30,9 @@ class V2::PostsController < ApplicationController
     
     def show
       @post = Post.fetch(params[:id])
-      if stale?(@post)
-        @user = @post.fetch_user
-        @current_user = current_user
-        render :show, status: :ok
-      end
+      @user = @post.fetch_user
+      @current_user = current_user
+      render :show, status: :ok
     end
   
     def destroy
