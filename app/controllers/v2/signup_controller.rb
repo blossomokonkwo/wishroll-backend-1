@@ -17,7 +17,7 @@ class V2::SignupController < ApplicationController
 
 
     def new
-        @user = User.new(email: params[:email], password: params[:password], username: params[:username], name: params[:name], birth_date: params[:birth_date], gender: params[:gender])
+        @user = User.new(email: params[:email], password: params[:password], username: params[:username], name: params[:name], birth_date: params[:birth_date], gender: params[:gender] || 2)
         if @user.save 
             payload = {id: @user.id, username: @user.username}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
