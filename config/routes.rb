@@ -113,6 +113,8 @@ Rails.application.routes.draw do
       resources :chat_room_users
     end
 
+    resources :announcements, only: [:index, :create, :show]
+
     post 'chat_rooms/:id/appear', to: "chat_room_users#appear"
     delete 'chat_rooms/:id/disappear', to: "chat_room_users#disappear"
     post 'chat_rooms/:id/typing', to: 'chat_room_users#typing'

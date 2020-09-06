@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_04_102404) do
+ActiveRecord::Schema.define(version: 2020_09_01_204218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,6 +69,13 @@ ActiveRecord::Schema.define(version: 2020_08_04_102404) do
     t.string "thumbnail_url"
     t.index ["name"], name: "index_albums_on_name"
     t.index ["user_id"], name: "index_albums_on_user_id"
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.string "media_url"
+    t.string "thumbnail_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "block_relationships", force: :cascade do |t|
