@@ -19,10 +19,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  resources :wishlists, except: [:update] do
-    resources :wishes, except: [:update, :index] 
-  end
   
   resources :posts, except: [:update] do
     resources :comments, shallow: true 
@@ -63,6 +59,48 @@ Rails.application.routes.draw do
 
   #the delete account endpoint. Before the users account is destroyed make sure to flush the users session data and tokens.
   delete 'user/delete', to: "users#destroy"
+
+  namespace :v3 do
+    namespace :discover do
+      resources :rolls, only: [:index]
+      resources :posts, only: [:index]
+    end
+    namespace :feed do
+      resources :rolls, only: [:index]
+    end
+    namespace :search do
+      resources :rolls, only: [:index]
+      resources :posts, only: [:index]
+      resources :users, only: [:index]
+      resources :relationships, only: [:index]
+    end
+    
+    resources :users, only: [:update, :show] do 
+      resources :rolls, only: [:index]
+      resources :posts, only: [:index]
+    end
+
+    resources :rolls, only: [:show, :update, :destroy, :create] do
+      resources :comments, shallow: true do
+        resources :likes, shallow: true
+      end
+      resources :shares, only: [:create, :index]
+      resources :likes, shallow: true
+      resources :tags, shallow: true
+      resources :bookmarks, shallow: true
+    end
+
+    resources :posts, only: [:show, :update, :create, :destroy] do
+      resources :comments, shallow: true do
+        resources :likes, shallow: true
+      end
+      resources :shares, only: [:create, :index]
+      resources :likes, shallow: true
+      resources :tags, shallow: true
+      resources :bookmarks, shallow: true
+    end
+
+  end
 
   namespace :v2 do
     namespace :search do

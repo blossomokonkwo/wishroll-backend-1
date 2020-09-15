@@ -84,20 +84,8 @@ class User < ApplicationRecord
         end
     end
 
-    def created_rolls(limit: 25, offset: nil, show_private_rolls: true)
-        if offset
-            if show_private_rolls
-                Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
-            else
-                Roll.where(user: self).where.not(private: false).order(created_at: :desc).offset(offset).limit(limit)
-            end
-        else
-            if show_private_rolls
-                Roll.where(user: :self).order(created_at: :desc).limit(limit)
-            else
-                Roll.where(user: :self).where.not(private: false).order(created_at: :desc).limit(limit)
-            end  
-        end
+    def created_rolls(limit:, offset:)
+        Roll.where(user: self).order(created_at: :desc).offset(offset || 0).limit(limit || 15) 
     end
     
     

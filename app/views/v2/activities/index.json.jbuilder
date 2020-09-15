@@ -15,7 +15,6 @@ json.array! @activities.each do |activity|
                 json.share_count roll.share_count
                 json.comment_count roll.comments_count
                 json.view_count roll.view_count
-                json.reaction_count roll.reactions_count
                 json.viewed roll.viewed?(@current_user)
                 json.liked roll.liked?(@current_user)
                 json.bookmarked roll.bookmarked?(@current_user)
@@ -54,28 +53,54 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
-        elsif activity.activity_type == "Comment" and comment = Comment.where(id: activity.content_id).first and post = comment.fetch_post
-            json.post do
-                json.id post.id
-                json.media_url post.media_url
-                json.caption post.caption
-                json.thumbnail_url post.thumbnail_url
-                json.like_count post.likes_count
-                json.share_count post.share_count
-                json.comment_count post.comments_count
-                json.view_count post.view_count
-                json.viewed post.viewed?(@current_user)
-                json.liked post.liked?(@current_user)
-                json.bookmarked post.bookmarked?(@current_user)
-                json.bookmark_count post.bookmark_count
-                json.created_at post.created_at
-                json.updated_at post.updated_at
-                json.creator do
-                    user = post.user
-                    json.id user.id
-                    json.username user.username
-                    json.avatar user.avatar_url
-                    json.verified user.verified
+        elsif activity.activity_type == "Comment" and comment = Comment.where(id: activity.content_id).first
+            if roll = comment.roll
+                json.roll do
+                    json.id roll.id
+                    json.caption roll.caption
+                    json.media_url roll.media_url
+                    json.thumbnail_url roll.thumbnail_url
+                    json.like_count roll.likes_count
+                    json.share_count roll.share_count
+                    json.comment_count roll.comments_count
+                    json.view_count roll.view_count
+                    json.viewed roll.viewed?(@current_user)
+                    json.liked roll.liked?(@current_user)
+                    json.bookmarked roll.bookmarked?(@current_user)
+                    json.bookmark_count roll.bookmark_count
+                    json.created_at roll.created_at
+                    json.updated_at roll.updated_at
+                    json.creator do
+                        user = roll.fetch_user
+                        json.id user.id
+                        json.username user.username
+                        json.avatar user.avatar_url
+                        json.verified user.verified
+                    end
+                end
+            elsif post = comment.post                
+                json.post do
+                    json.id post.id
+                    json.media_url post.media_url
+                    json.caption post.caption
+                    json.thumbnail_url post.thumbnail_url
+                    json.like_count post.likes_count
+                    json.share_count post.share_count
+                    json.comment_count post.comments_count
+                    json.view_count post.view_count
+                    json.viewed post.viewed?(@current_user)
+                    json.liked post.liked?(@current_user)
+                    json.bookmarked post.bookmarked?(@current_user)
+                    json.bookmark_count post.bookmark_count
+                    json.created_at post.created_at
+                    json.updated_at post.updated_at
+                    json.creator do
+                        user = post.fetch_user
+                        json.id user.id
+                        json.username user.username
+                        json.avatar user.avatar_url
+                        json.verified user.verified
+                    end
                 end
             end
             json.comment do
