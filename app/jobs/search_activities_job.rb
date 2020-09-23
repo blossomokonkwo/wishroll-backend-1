@@ -21,9 +21,10 @@ class SearchActivitiesJob < ApplicationJob
                     end
                     user.searches.create!(query: query, result_type: result_type)
                 rescue => exception
-                    search = Search.find_by(query: query, user: user, result_type: result_type)
-                    search.occurences += 1
-                    search.save!
+                    if search = Search.find_by(query: query, user: user, result_type: result_type)
+                        search.occurences += 1
+                        search.save!
+                    end
                     logger.debug {"Couldn't create a Search object for query #{query} #{exception}"}
                 end
             end
