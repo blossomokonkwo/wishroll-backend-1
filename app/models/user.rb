@@ -3,12 +3,10 @@ class User < ApplicationRecord
     include IdentityCache
     acts_as_reader
     has_secure_password
-    #ensure that the password has a minmum length of 8 on the client side 
     validates :email, :uniqueness => {message: "The email you have entered is already taken"}, presence: {message: "Please enter an appropriate email address"}, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "Please enter an appropriate email address"}, on: [:create, :update]
-    validates :username, uniqueness: true, presence: {message: "You must provide a valid username"}, format: {with: /([a-z0-9])*/,message: "Your username must be lowercase and can not include symbols"}, on: [:create, :update]
+    validates :username, uniqueness: true, presence: {message: "You must provide a valid username"}, format: {with: /([a-z0-9])*/, message: "Your username must be lowercase and can not include symbols"}, on: [:create, :update]
     validates :birth_date, presence: {message: "Please enter your birthdate"}
     validates :bio, length: {maximum: 100, too_long: "%{count} is the maximum amount of characters allowed"}
-    #old value: 'profile_picture'
     has_one_attached(:avatar) #users can display an image or video as their profile avatar
     has_one_attached(:profile_background_media) #users can display a background image or video on their profile background 
     
@@ -16,21 +14,20 @@ class User < ApplicationRecord
     #Associations 
     enum gender: [:male, :female, :unspecified]
     has_one :location, as: :locateable, dependent: :destroy
-    has_many :posts, -> {order(created_at: :desc)}, class_name: "Post", dependent: :destroy
-    has_many :rolls, -> {order(created_at: :desc)}, class_name: "Roll", dependent: :destroy
-    has_many :comments, class_name: "Comment"
-    has_many :views, class_name: "View", foreign_key: :user_id
-    has_many :shares, class_name: "Share", foreign_key: :user_id
-    has_many :likes, class_name: "Like", foreign_key: :user_id
-    has_many :bookmarks 
-    has_many :albums
+    has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
+    has_many :rolls, -> {order(created_at: :desc)}, dependent: :destroy
+    has_many :comments, dependent: :destroy
+    has_many :views, foreign_key: :user_id
+    has_many :shares, foreign_key: :user_id
+    has_many :likes, dependent: :destroy
+    has_many :bookmarks, dependent: :destroy
+    has_many :albums, dependent: :destroy
+    has_many :searches, dependent: :destroy
 
 
     #cache API's 
     cache_index :username, unique: true
     cache_index :name
-
-    # User Content APIs
 
     #Returns all of the rolls that a user has viewed with a default limit of 25 seconds and no offset by default
     def viewed_rolls(limit: 25, offset: nil)
@@ -152,15 +149,6 @@ class User < ApplicationRecord
         gender == "unspecified" or gender == nil
     end
     
-    
-    
-    
-    
-
-
-
-    #Age APIs
-    
     #The users age in years
     def age
         ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
@@ -170,137 +158,6 @@ class User < ApplicationRecord
     def adult?
         age >= 18
     end
-
-    def student?
-        age.between?(13,24)
-    end
-
-    def college_student?
-        #this method will include more complex factors later own like belonging to a school and or doing a school related event?
-        age.between?(18,24)
-    end
-
-    def highschool_student?
-        age.between?(14,17)
-    end
-
-    def middle_school_student?
-        age.between?(13,14)
-    end
-
-    def teenager?
-        age.between?(13,19)
-    end
-
-    def teenage_girl?
-        teenager? and female?
-    end
-
-    def teenage_boy?
-        teenager? and male?
-    end
-    
-    
-
-    def young_adult?
-        age.between?(18,25)
-    end
-
-    def elder?
-        age.between?(60,100)
-    end
-
-    def millenial?
-        age.between?(25,40)
-    end
-
-    def generation_z?
-        age.between?(13,24)
-    end
-
-    def generation_x?
-        age.between?(40,60)
-    end
-
-    alias :boomer? :elder?
-
-    def self.adults(limit: 25, offset: nil)
-        if offset
-            User.where('birth_date <= ?', Date.today.years_ago(18)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where('birth_date <= ?', Date.today.years_ago(18)).order(created_at: :desc).limit(limit)
-        end
-    end
-    
-    def self.teenagers(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).order(created_at: :desc).limit(limit)
-        end
-    end
-    def self.teenage_girls(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).where(gender: :female).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).where(gender: :female).order(created_at: :desc).limit(limit)
-        end
-    end
-
-    def self.teenage_boys(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).where(gender: :male).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19)).where(gender: :male).order(created_at: :desc).limit(limit)
-        end
-    end
-    
-    
-    def self.young_adults(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(18)..Date.today.years_ago(25)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(18)..Date.today.years_ago(25)).order(created_at: :desc).limit(limit)
-        end
-    end
-    
-    def self.elders(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(60)..Date.today.years_ago(120)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(60)..Date.today.years_ago(120)).order(created_at: :desc).limit(limit)
-        end
-    end
-
-    def self.millenials(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(26)..Date.today.years_ago(40)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(26)..Date.today.years_ago(40)).order(created_at: :desc).limit(limit)
-        end
-    end
-
-    def self.generation_z(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(25)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(25)).order(created_at: :desc).limit(limit)
-        end
-    end
-
-    def self.generation_x(limit: 25, offset: nil)
-        if offset
-            User.where(birth_date: Date.today.years_ago(40)..Date.today.years_ago(60)).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            User.where(birth_date: Date.today.years_ago(40)..Date.today.years_ago(60)).order(created_at: :desc).limit(limit)
-        end
-    end
-    
-    
-    
-    
-    
-    #content sharing APIs
 
     #returns all of the posts that a user has shared
     def shared_posts(limit: 25, offset: nil)
@@ -368,131 +225,6 @@ class User < ApplicationRecord
         location.continent if location
     end
 
-    def self.americans(limit: 25, offset: nil)
-        self.users_from_country(country: "US", limit: limit, offset: offset)
-    end
-
-    def self.canadians(limit: 25, offset: nil)
-        self.users_from_country(country: "CA", limit: limit, offset: offset)
-    end
-
-    def self.chinese(limit: 25, offset: nil)
-        self.users_from_country(country: "CN", limit: limit, offset: offset)
-    end
-
-    def self.mexicans(limit: 25, offset: nil)
-        self.users_from_country(country: "MX", limit: limit, offset: offset)
-    end
-
-    def self.users_from_country(country:, limit: 25, offset: nil)
-        if offset and country
-            User.joins(:location).where(locations: {country: country}).where('users.created_at < ?', offset).order(created_at: :desc).limit(limit)
-        elsif country 
-            User.joins(:location).where(locations: {country: country}).order(created_at: :desc).limit(limit)
-        else
-            nil
-        end
-    end
-
-    def self.users_from_region(state: ,limit: 25, offset: nil)
-        if offset and state
-            User.joins(:location).where(locations: {region: state}).where('users.created_at < ?', offset).order(created_at: :desc).limit(limit)
-        elsif state 
-            User.joins(:location).where(locations: {region: state}).order(created_at: :desc).limit(limit)
-        else
-            nil
-        end
-    end 
-    
-    def self.new_yorkers(limit: 25, offset: nil)
-        self.users_from_region(state: "New York", limit: limit, offset: offset)
-    end
-
-    def self.teenagers_from_country(country:, limit: 25, offset: nil)
-        self.users_from_country(country, limit, offset).where(birth_date: Date.today.years_ago(13)..Date.today.years_ago(19))
-    end
-
-    def self.adults_from_country(country:,limit:,offset:)
-        self.users_from_country(country, limit, offset).where('birth_date <= ?', Date.today.years_ago(18))
-    end
-
-    def self.millenials_from_country(country:, limit:, offset:)
-        self.users_from_country(country, limit, offset).where(birth_date: Date.today.years_ago(25)..Date.today.years_ago(40))
-    end
-
-    def self.elders_from_country(country:, limit:, offset:)
-        self.users_from_country(country, limit, offset).where('birth_date >= ?', Date.today.years_ago(60))
-    end
-
-    def american_teenagers(limit: 25, offset: nil)
-        self.teenagers_from_country('US', limit, offset)
-    end
-    
-    def american_teenager?
-        american? and teenager?
-    end
-
-    def american_adult?
-        american? and adult?
-    end
-
-    def american_millenial?
-        american? and millenial?
-    end
-
-    def american_elder?
-        american? and elder?
-    end
-
-    def american_college_student?
-        american? and college_student?
-    end
-
-    def american_highshool_student?
-        american? and highschool_student?
-    end
-    
-    def american_middle_school_student?
-        american? and middle_school_student?
-    end
-    
-
-    def american_student?
-        american? and student?
-    end
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-
-
-    
-    
-
-
-    
-    
-
-
-    
-    
-    
-
-    
-    
-    
-
-    
-    
-    
-    
     #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
     has_many :active_relationships, -> {order(created_at: :desc, id: :desc)},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
 
@@ -514,10 +246,6 @@ class User < ApplicationRecord
     has_many :caused_activities, class_name: "Activity", foreign_key: :active_user_id
 
     scope :verified, -> { where(:verified => true)} #this scope returns all the verified users in the app
-
-    has_many :wishlists, dependent: :destroy
-
-    has_many :wishes, through: :wishlists, dependent: :destroy #a user has many wishlists through the many wishlists that they have
 
     #joins table that joins the chat room and user model. A ChatRoomUser model is a user that is a member of a particular chat room
     has_many :chat_room_users
@@ -546,9 +274,6 @@ class User < ApplicationRecord
     
     #all the posts that the user has reported/blocked
     has_many :reported_posts, through: :reported_posts_relationships, source: :post
-
-    #returns all of the tags that are associated with the posts that a user has reported
-    has_many :reported_tags, through: :reported_posts, source: :tags
 
     def reported?(post:)
         reported_posts.include?(post)
