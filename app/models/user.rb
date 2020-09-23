@@ -17,8 +17,8 @@ class User < ApplicationRecord
     has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
     has_many :rolls, -> {order(created_at: :desc)}, dependent: :destroy
     has_many :comments, dependent: :destroy
-    has_many :views, foreign_key: :user_id
-    has_many :shares, foreign_key: :user_id
+    has_many :views
+    has_many :shares
     has_many :likes, dependent: :destroy
     has_many :bookmarks, dependent: :destroy
     has_many :albums, dependent: :destroy
