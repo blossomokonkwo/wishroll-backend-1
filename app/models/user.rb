@@ -14,15 +14,14 @@ class User < ApplicationRecord
     #Associations 
     enum gender: [:male, :female, :unspecified]
     has_one :location, as: :locateable, dependent: :destroy
-    has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
-    has_many :rolls, -> {order(created_at: :desc)}, dependent: :destroy
-    has_many :comments, dependent: :destroy
-    has_many :views
-    has_many :shares
-    has_many :likes, dependent: :destroy
-    has_many :bookmarks, dependent: :destroy
+    has_many :posts, -> {order(created_at: :desc)}, class_name: "Post", dependent: :destroy
+    has_many :rolls, -> {order(created_at: :desc)}, class_name: "Roll", dependent: :destroy
+    has_many :comments, class_name: "Comment", dependent: :destroy
+    has_many :views, class_name: "View", foreign_key: :user_id, dependent: :destroy
+    has_many :shares, class_name: "Share", foreign_key: :user_id, dependent: :destroy
+    has_many :likes, class_name: "Like", foreign_key: :user_id, dependent: :destroy
+    has_many :bookmarks, dependent: :destroy 
     has_many :albums, dependent: :destroy
-    has_many :searches, dependent: :destroy
 
 
     #cache API's 
