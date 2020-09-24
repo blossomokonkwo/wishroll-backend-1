@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_06_120415) do
+ActiveRecord::Schema.define(version: 2020_09_23_182036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -256,18 +256,12 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "likes_count", default: 0
-    t.bigint "original_roll_id"
     t.bigint "share_count", default: 0, null: false
-    t.string "content_type"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.string "thumbnail_gif_url"
-    t.bigint "reactions_count", default: 0
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0
-    t.boolean "private", default: false, null: false
-    t.bigint "album_id"
+    t.boolean "featured", default: false, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
-    t.index ["original_roll_id"], name: "index_rolls_on_original_roll_id"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
     t.index ["user_id"], name: "index_rolls_on_user_id"
   end
@@ -347,7 +341,11 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
     t.integer "result_type", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["query", "result_type"], name: "index_searches_on_query_and_result_type", unique: true
+    t.bigint "user_id", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["user_id", "query", "result_type"], name: "index_searches_on_user_id_and_query_and_result_type", unique: true
+    t.index ["user_id"], name: "index_searches_on_user_id"
+    t.index ["uuid"], name: "index_searches_on_uuid", unique: true
   end
 
   create_table "shares", force: :cascade do |t|
@@ -362,31 +360,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
     t.index ["user_id", "shareable_id"], name: "index_shares_on_user_id_and_shareable_id", unique: true
     t.index ["user_id"], name: "index_shares_on_user_id"
     t.index ["uuid"], name: "index_shares_on_uuid"
-  end
-
-  create_table "stories", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "media_url"
-    t.string "thumbnail_url"
-    t.bigint "view_count", default: 0, null: false
-    t.bigint "share_count", default: 0, null: false
-    t.bigint "bookmark_count", default: 0, null: false
-    t.text "caption"
-    t.bigint "like_count", default: 0, null: false
-    t.float "popularity_rank"
-    t.boolean "restricted", default: false, null: false
-    t.integer "priority", default: 0, null: false
-    t.bigint "comment_count", default: 0, null: false
-    t.datetime "expiration_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "uuid", null: false
-    t.index ["expiration_date"], name: "index_stories_on_expiration_date"
-    t.index ["popularity_rank"], name: "index_stories_on_popularity_rank"
-    t.index ["priority"], name: "index_stories_on_priority"
-    t.index ["restricted"], name: "index_stories_on_restricted"
-    t.index ["user_id"], name: "index_stories_on_user_id"
-    t.index ["uuid"], name: "index_stories_on_uuid"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -441,6 +414,7 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
     t.integer "gender", default: 2, null: false
     t.bigint "wishroll_score", default: 0, null: false
     t.boolean "restricted", default: false
+    t.bigint "roll_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"
@@ -463,30 +437,6 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
     t.index ["viewable_type", "viewable_id"], name: "index_views_on_viewable_type_and_viewable_id"
   end
 
-  create_table "wishes", force: :cascade do |t|
-    t.decimal "price", precision: 8, scale: 2, default: "0.0", null: false, comment: "The price for a wish"
-    t.bigint "user_id", null: false
-    t.text "description"
-    t.string "image_url"
-    t.string "product_name", null: false
-    t.float "amount_covered", default: 0.0, comment: "The amount covered so far for a specific wish"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "wishlist_id"
-    t.index ["user_id"], name: "index_wishes_on_user_id"
-    t.index ["wishlist_id"], name: "index_wishes_on_wishlist_id"
-  end
-
-  create_table "wishlists", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "wishes_count", default: 0
-    t.float "total_amount_raised", default: 0.0, comment: "This column stores the total caches the total amount of money raised for all wishes in a users wishlist"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "name", null: false
-    t.index ["user_id"], name: "index_wishlists_on_user_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
   add_foreign_key "chat_room_users", "chat_rooms"
@@ -502,14 +452,10 @@ ActiveRecord::Schema.define(version: 2020_09_06_120415) do
   add_foreign_key "posts", "users"
   add_foreign_key "rolls", "users"
   add_foreign_key "shares", "users"
-  add_foreign_key "stories", "users"
   add_foreign_key "tags", "posts"
   add_foreign_key "tags", "rolls"
   add_foreign_key "topics", "users"
   add_foreign_key "user_blocked_posts", "posts"
   add_foreign_key "user_blocked_posts", "users"
   add_foreign_key "views", "users"
-  add_foreign_key "wishes", "users"
-  add_foreign_key "wishes", "wishlists"
-  add_foreign_key "wishlists", "users"
 end

@@ -1,5 +1,5 @@
 class UpdatePopularityRankJob < ApplicationJob
-    def perform(content_id:, content_type: "Post")
+    def perform(content_id:, content_type:)
         if content_type == "Post"
             content = Post.find(content_id)
         elsif content_type == "Roll"

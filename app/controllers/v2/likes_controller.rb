@@ -1,12 +1,12 @@
 class V2::LikesController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
+        if params[:roll_id] and roll = Roll.fetch(params[:roll_id])
             begin
                 like = roll.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
                 UpdateWishrollScoreJob.perform_now(roll.user.id, 1)
-                UpdatePopularityRankJob.perform_now(content_id: roll.id)                
+                UpdatePopularityRankJob.perform_now(content_id: roll.id, content_type: roll.class.name)                
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not like the roll: #{roll}"}, status: :bad_request
@@ -16,7 +16,7 @@ class V2::LikesController < ApplicationController
                 like = comment.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
                 UpdateWishrollScoreJob.perform_now(comment.user.id, 1)
-                UpdatePopularityRankJob.perform_now(content_id: comment.id)           
+                UpdatePopularityRankJob.perform_now(content_id: comment.id, content_type: comment.class.name)           
                 render json: nil, status: :created                
             rescue => exception
                 render json: {created: "Could not like the comment: #{comment}"}, status: :bad_request
@@ -26,7 +26,7 @@ class V2::LikesController < ApplicationController
                 like = post.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
                 UpdateWishrollScoreJob.perform_now(post.user.id, 1)
-                UpdatePopularityRankJob.perform_now(content_id: post.id)
+                UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: post.class.name)
                 render json: nil, status: :created
             rescue => exception
                 render json: {error: "Could not like the post: #{post}"}, status: :bad_request
@@ -77,7 +77,7 @@ class V2::LikesController < ApplicationController
             else
                 render json: nil, status: :not_found
             end
-        elsif params[:roll_id] and roll = Roll.find(params[:roll_id])
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
             @current_user = current_user
             limit = 10
             offset = params[:offset]

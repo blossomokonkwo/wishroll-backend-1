@@ -13,7 +13,7 @@ class CommentActivityJob < ApplicationJob
                         end
                     else
                         if user_id = commentable.user.id and user_id != active_user.id                            
-                            activity_phrase = "#{active_user.username} commented on your post"
+                            activity_phrase = "#{active_user.username} commented on your #{commentable.class.name.downcase!}"
                         else
                             #return out of the function if a user is commenting on their own post 
                             return

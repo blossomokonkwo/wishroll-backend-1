@@ -1,14 +1,12 @@
 class Post < ApplicationRecord
-    has_many :tags, -> {select([:id, :text])}, class_name: "Tag", dependent: :destroy
+    has_many :tags, -> {select([:id, :text])}, dependent: :destroy
     has_many :comments, dependent: :destroy
-    belongs_to :user, class_name: "User", foreign_key: "user_id"
+    belongs_to :user
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :views, as: :viewable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
-    has_many :viewers, through: :views, source: :user
     has_one :location, as: :locateable, dependent: :destroy
     has_many :bookmarks, as: :bookmarkable, dependent: :destroy
-    belongs_to :album, optional: true, counter_cache: :post_count
     has_one_attached(:media_item)
     has_one_attached(:thumbnail_item)
 
@@ -25,7 +23,6 @@ class Post < ApplicationRecord
         Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{self.uuid}") {
             self.views.find_by(user: user).present?
         }
-        
     end
     
     def liked?(user)
@@ -43,26 +40,12 @@ class Post < ApplicationRecord
 
     #callbacks APIs 
     after_destroy do
-        destroy_post_activities
-    end
-
-
-
-    private 
-    def destroy_post_activities
-        activities = Activity.where(content_id: self.id, activity_type: self.class.name)
-        activities.find_each do |activity|
-        activity.destroy
-        end if activities.present?
+        Activity.where(content_id: self.id, activity_type: self.class.name).destroy_all
     end
 
     #cache API's
     include IdentityCache
-
     cache_belongs_to :user
-    cache_has_many :comments
-    cache_has_many :views
-    cache_has_many :tags
 
 
 end
