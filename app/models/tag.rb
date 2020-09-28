@@ -8,7 +8,7 @@ class Tag < ApplicationRecord
 
     #search API's 
     pg_search_scope :search, against: :text, using: {tsearch: {prefix: false, dictionary: "english", normalization: 4, any_word: false, tsvector_column: "tsv_text"}}, order_within_rank: "tags.created_at DESC"
-    pg_search_scope :recommend, against: :text, using: {tsearch: {dictionary: :english, normalization: 4, tsvector_column: :tsv_text}}, order_within_rank: "tags.created_at DESC"
+    pg_search_scope :recommend, against: :text, using: {tsearch: {dictionary: :english, normalization: 4, tsvector_column: :tsv_text, any_word: true}}, order_within_rank: "tags.created_at DESC"
 
     after_create do
         self.update(tsv_text: self.text)
