@@ -1,7 +1,7 @@
 class V3::Recommendation::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def index
-        limit = params[:limit]
+        limit = 9
         offset = params[:offset]
         document_text = Post.fetch(params[:post_id]).tags.pluck(:text).flatten
         if content_type = params["content-type"] #if the reccommendation is specified by a content-type, search for all similar posts with the specified content type
