@@ -24,7 +24,6 @@ class User < ApplicationRecord
     has_many :albums, dependent: :destroy
     has_many :searches, dependent: :destroy
 
-
     #cache API's 
     cache_index :username, unique: true
     cache_index :name
