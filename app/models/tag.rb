@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
     validates :text, presence: true
 
     #search API's 
-    pg_search_scope :search, against: :text, using: {tsearch: {prefix: true, dictionary: :english, tsvector_column: :tsv_text}}, order_within_rank: "tags.created_at DESC"
+    pg_search_scope :search, against: :text, using: {tsearch: {prefix: true, any_word: false, dictionary: :english, tsvector_column: :tsv_text}}, order_within_rank: "tags.created_at DESC"
     pg_search_scope :recommend, against: :text, using: {tsearch: {dictionary: :english, normalization: 4, tsvector_column: :tsv_text, any_word: true}}, order_within_rank: "tags.created_at DESC"
 
     after_create do
