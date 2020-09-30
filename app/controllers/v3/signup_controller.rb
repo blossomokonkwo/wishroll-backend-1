@@ -1,7 +1,7 @@
-class V3::SignupController 
+class V3::SignupController < ApplicationController
     require 'securerandom'
     def new
-        @user = User.new(email: params[:email], password: params[:password], username: "user#{SecureRandom.alphanumeric(10)}") #create user w strong params
+        @user = User.new(email: params[:email], password: params[:password], username: "user#{SecureRandom.hex(10)}") #create user w strong params
         if @user.save #if the user is saved to the DB create tokens and send to client
             payload = {user_id: @user.id, username: @user.username, is_verified: @user.verified, email: @user.email, full_name: @user.name, profile_picture: @user.avatar_url}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
