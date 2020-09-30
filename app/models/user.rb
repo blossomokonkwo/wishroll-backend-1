@@ -5,7 +5,6 @@ class User < ApplicationRecord
     has_secure_password
     validates :email, :uniqueness => {message: "The email you have entered is already taken"}, presence: {message: "Please enter an appropriate email address"}, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "Please enter an appropriate email address"}, on: [:create, :update]
     validates :username, uniqueness: true, presence: {message: "You must provide a valid username"}, format: {with: /([a-z0-9])*/, message: "Your username must be lowercase and can not include symbols"}, on: [:create, :update]
-    validates :birth_date, presence: {message: "Please enter your birthdate"}
     validates :bio, length: {maximum: 100, too_long: "%{count} is the maximum amount of characters allowed"}
     has_one_attached(:avatar) #users can display an image or video as their profile avatar
     has_one_attached(:profile_background_media) #users can display a background image or video on their profile background 
