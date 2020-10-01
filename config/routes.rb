@@ -61,8 +61,8 @@ Rails.application.routes.draw do
   delete 'user/delete', to: "users#destroy"
 
   namespace :v3 do
-    namespace :discover do
-      resources :posts, only: [:index]
+    namespace :trending do
+      resources :trending_tags, only: [:index]
     end
     namespace :search do
       resources :posts, only: [:index]
