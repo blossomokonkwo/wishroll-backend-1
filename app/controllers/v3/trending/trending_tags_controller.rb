@@ -12,7 +12,7 @@ class V3::Trending::TrendingTagsController < ApplicationController
 
     def show
         @trending_tag = TrendingTag.find(params[:id])
-        @posts = @trending_tag.posts(offset: params[:offset], limit: 15).to_a
+        @posts = @trending_tag.posts(offset: params[:offset], limit: 18).to_a
         if @posts.any?
             @current_user = current_user
             render :show, status: :ok
