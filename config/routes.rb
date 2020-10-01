@@ -62,7 +62,7 @@ Rails.application.routes.draw do
 
   namespace :v3 do
     namespace :trending do
-      resources :trending_tags, only: [:index]
+      resources :trending_tags, only: [:index, :show]
     end
     namespace :search do
       resources :posts, only: [:index]
