@@ -1,16 +1,7 @@
 class V2::CommentsController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            begin
-                @comment = roll.comments.create!(body: params[:body], original_comment_id: params[:original_comment_id], user: current_user)
-                @user = current_user
-                CommentActivityJob.perform_now(@comment.id, current_user.id)
-                render :create, status: :created
-            rescue => exception
-                render json: {error: "Couldn't create comment for roll #{roll}"}, status: 500
-            end
-        elsif params[:post_id] and post = Post.fetch(params[:post_id])
+        if params[:post_id] and post = Post.fetch(params[:post_id])
             begin
                 @comment = post.comments.create!(body: params[:body], user_id: current_user.id, original_comment_id: params[:original_comment_id])
                 @user = current_user
@@ -38,15 +29,7 @@ class V2::CommentsController < ApplicationController
     def index
         limit = 10
         offset = params[:offset]
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @comments = roll.comments.order(created_at: :asc).offset(offset).limit(limit)
-            if @comments.any?
-                @id = current_user.id
-                render :index, status: :ok
-            else
-                render json: nil, status: :not_found
-            end
-        elsif params[:post_id] and post = Post.fetch(params[:post_id])
+        if params[:post_id] and post = Post.fetch(params[:post_id])
             @comments = post.comments.order(created_at: :asc).offset(offset).limit(limit)
             if @comments.any?
                 @current_user = current_user
@@ -60,13 +43,7 @@ class V2::CommentsController < ApplicationController
     end
     
     def show
-        @comment = Comment.fetch(params[:id])
-        @replies = @comment.replies.includes(:user)
-        if @replies.any?
-            render :show, status: :ok
-        else
-            render json: nil, status: :not_found
-        end
+        render json: nil, status: :not_found
     end
     
 
@@ -78,11 +55,4 @@ class V2::CommentsController < ApplicationController
             render json: {error: "There was an error with deleting your comment"}, status: 500
         end
     end
-
-    # private 
-    # def create_params
-    #     params.permit :orignal_post_id, :body, :post_id, :roll_id, :user_id
-    # end
-    
-    
 end

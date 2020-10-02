@@ -19,13 +19,7 @@ class V2::RollsController < ApplicationController
     end
     
     def show
-        @roll = Roll.find(params[:id])
-        @reactions = @roll.reactions
-        if @roll
-            render :show, status: :ok
-        else
-            render json: nil, status: :not_found
-        end
+        render json: nil, status: :not_found
     end
     
     def update

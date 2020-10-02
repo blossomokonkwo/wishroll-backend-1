@@ -1,41 +1,24 @@
 class V2::BookmarksController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            begin
-                bookmark = roll.bookmarks.create!(user: current_user)
-                UpdateWishrollScoreJob.perform_now(roll.user.id, 2)
-                UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: roll.class.name)
+        if params[:post_id] and post = Post.find(params[:post_id])
+            begin 
+                bookmark = post.bookmarks.create!(user: current_user)
+                UpdateWishrollScoreJob.perform_now(post.user.id, 2)
+                UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: post.class.name)
                 render json: nil, status: :created
-            rescue => exception
-                render json: {error: "Couldn't create bookmark for roll #{roll.inspect}"}, status: 500
+            rescue
+                render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
             end
-            elsif params[:post_id] and post = Post.find(params[:post_id])
-                begin 
-                    bookmark = post.bookmarks.create!(user: current_user)
-                    UpdateWishrollScoreJob.perform_now(post.user.id, 2)
-                    UpdatePopularityRankJob.perform_now(content_id: post.id, content_type: post.class.name)
-                    render json: nil, status: :created
-                rescue
-                    render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
-                end
-            else
-                render json: {error: "Couldn't find resource"}, status: :not_found
-            end
+        else
+            render json: {error: "Couldn't find resource"}, status: :not_found
+        end
     end
     
     def bookmarked_users
         offset = params[:offset]
         limit = 15
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
-            if @users.any?
-                @current_user = current_user
-                render :index_users, status: :ok
-            else
-                render json: nil, status: :not_found
-            end
-        elsif params[:post_id] and post = Post.find(params[:post_id])
+        if params[:post_id] and post = Post.find(params[:post_id])
             @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
                 @current_user = current_user
@@ -66,24 +49,11 @@ class V2::BookmarksController < ApplicationController
     end
 
     def bookmarked_rolls
-        offset = params[:offset]
-        limit = 15
-        @rolls = current_user.bookmarked_rolls(limit: limit, offset: offset)
-        if @rolls.any?
-            render :bookmarked_rolls, status: :ok
-        else 
-            render json: nil, status: :not_found
-        end
+        render json: nil, status: :not_found
     end
 
     def destroy
-        if params[:roll_id] and roll = Roll.find(params[:roll_id])
-            if roll.bookmarks.find_by(user: current_user).destroy 
-            render json: nil, status: :ok
-            else
-                render json: {error: "Couldn't destroy the bookmark"}, status: 500
-            end
-        elsif params[:post_id] and post = Post.find(params[:post_id])
+        if params[:post_id] and post = Post.find(params[:post_id])
             if post.bookmarks.find_by(user: current_user).destroy
                 render json: nil, status: :ok
             else

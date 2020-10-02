@@ -1,21 +1,13 @@
 class Roll < ApplicationRecord
   #Associations
-  belongs_to :user, counter_cache: :roll_count
+  belongs_to :user
   has_many :likes, as: :likeable, dependent: :destroy
-  has_many :comments, foreign_key: :roll_id, dependent: :destroy
   has_many :views, as: :viewable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
-  has_many :tags, foreign_key: :roll_id, dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
   has_many :bookmarks, as: :bookmarkable, dependent: :destroy
   has_one_attached(:media_item)
   has_one_attached(:thumbnail_image)
-
-  include IdentityCache
-  cache_belongs_to :user
-  cache_has_many :comments
-  cache_has_many :views
-  cache_has_many :tags
 
   #user interaction APIs
   def viewed?(user)

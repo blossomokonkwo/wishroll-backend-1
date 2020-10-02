@@ -1,7 +1,6 @@
 class Comment < ApplicationRecord
-  belongs_to :user, foreign_key: :user_id
-  belongs_to :post, counter_cache: :comments_count, foreign_key: :post_id, optional: true
-  belongs_to :roll, counter_cache: :comments_count, foreign_key: :roll_id, optional: true
+  belongs_to :user
+  belongs_to :post, counter_cache: :comments_count
   has_many :replies, class_name: "Comment", foreign_key: :original_comment_id, dependent: :destroy
   belongs_to :original_comment, class_name: "Comment", optional: true, counter_cache: :replies_count
   has_many :likes, as: :likeable, dependent: :destroy
@@ -19,7 +18,6 @@ class Comment < ApplicationRecord
   #cache API's
   include IdentityCache
   cache_belongs_to :post
-  cache_belongs_to :roll
   cache_belongs_to :user
 
 end
