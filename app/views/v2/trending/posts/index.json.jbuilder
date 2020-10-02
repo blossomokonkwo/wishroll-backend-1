@@ -9,7 +9,7 @@ json.array! @posts.each do |post|
         json.viewed post.viewed?(@current_user)
         json.bookmarked post.bookmarked?(@current_user)
         json.bookmark_count post.bookmark_count
-        json.comment_count post.comments_count
+        json.comment_count 0
         json.like_count post.likes_count
         json.liked post.liked?(@current_user)
         json.caption post.caption           

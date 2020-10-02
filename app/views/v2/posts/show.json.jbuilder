@@ -2,7 +2,7 @@ json.id @post.id
 json.view_count @post.view_count
 json.share_count @post.share_count
 json.viewed @post.viewed?(@current_user)
-json.comment_count @post.comments_count
+json.comment_count 0
 json.like_count @post.likes_count
 json.liked @post.liked?(@current_user)
 json.bookmarked @post.bookmarked?(@current_user)
