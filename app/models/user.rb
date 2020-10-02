@@ -138,7 +138,7 @@ class User < ApplicationRecord
     scope :verified, -> { where(:verified => true)} #this scope returns all the verified users in the app
 
     #joins table that joins the chat room and user model. A ChatRoomUser model is a user that is a member of a particular chat room
-    has_many :chat_room_users
+    has_many :chat_room_users, dependent: :destroy
 
     #all of the chat rooms that a user is a member of
     has_many :chat_rooms, through: :chat_room_users
