@@ -6,6 +6,7 @@ json.array! @trending_tags.each do |tag|
         json.media_url post.media_url
         json.thumbnail_url post.thumbnail_url
         json.viewed post.viewed?(@current_user)
+        json.bookmarked post.bookmarked?(@current_user)
         user = User.fetch(post.user_id)
         json.creator do
             json.id user.id
