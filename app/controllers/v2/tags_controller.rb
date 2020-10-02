@@ -1,15 +1,6 @@
 class V2::TagsController < ApplicationController
     def create
-      if params[:roll_id] and @roll = Roll.find(params[:roll_id])
-            begin
-                params[:tags].each do |text|
-                    @roll.tags.create!(text: text.delete!(":").delete!(";"))
-                end
-                render json: nil, status: :created
-            rescue => exception
-                render json: {error: "The tag could not be created for the specified roll: #{@roll}"}, status: :bad_request
-            end
-        elsif params[:post_id] and @post = Post.find(params[:post_id])
+        if params[:post_id] and @post = Post.find(params[:post_id])
             begin
                 params[:tags].each do |text|
                     @post.tags.create!(text: text)
@@ -35,8 +26,7 @@ class V2::TagsController < ApplicationController
 
 
     def destroy
-        @tag = Tag.find(params[:id])
-        if @tag.destroy
+        if @tag = Tag.find(params[:id]) and @tag.destroy
             render json: nil, status: :ok
         else
             render json: {error: "The specified tag with id #{params[:id]} could not be destroyed"}, status: 500
@@ -44,24 +34,10 @@ class V2::TagsController < ApplicationController
     end
 
     def index
-        if params[:roll_id]
-            @roll = Roll.find([:roll_id])
-            @tags = @roll.tags.to_a
-            if @tags.any?
-                render :index, status: :ok
-            else
-                render json: nil, status: :not_found
-            end
-        elsif params[:post_id]
-            @post = Post.find(params[:post_id])
-            @tags = @post.tags.to_a
-            if @tags.any?
-                render :index, status: :ok
-            else
-                render json: nil, status: :not_found
-            end
+        if @tags = Post.fetch(params[:post_id]).tags.to_a
+            render :index, status: :ok
         else
-            render json: {error: "Could not load the tags for the unspecified resource"}, status: :bad_request                    
+            render json: nil, status: :not_found
         end
     end
     

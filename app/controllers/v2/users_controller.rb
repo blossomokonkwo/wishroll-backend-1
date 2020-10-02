@@ -26,7 +26,6 @@ class V2::UsersController < ApplicationController
         end
     end
 
-
     def posts
         @user = User.fetch(params[:user_id])
         offset = params[:offset] #use the created at field to offset the data
@@ -55,49 +54,12 @@ class V2::UsersController < ApplicationController
     end
 
     def rolls
-        @user = User.fetch(params[:user_id])
-        offset = params[:offset]
-        limit = 15
-        if @user
-            unless current_user.blocked?(@user) or @user.blocked?(current_user)
-                can_show_private_rolls = @user == current_user
-                @rolls = @user.created_rolls(limit: limit, offset: offset, show_private_rolls: can_show_private_rolls)
-                if @rolls.any?
-                    @current_user = current_user
-                    render :rolls, status: :ok
-                else
-                    render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
-                end
-            else
-                render json: nil, status: :forbidden
-            end
-        else
-            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
-        end
+        render json: nil, status: :not_found
     end
 
     def liked_rolls
-        @user = User.fetch(params[:user_id])
-        offset = params[:offset]
-        limit = 15
-        if @user
-            unless current_user.blocked?(@user) or @user.blocked?(current_user)
-                @rolls = @user.liked_rolls(limit: limit, offset: offset)
-                if @rolls.any?
-                    @current_user = current_user
-                    render :liked_rolls, status: :ok
-                else
-                    render json: {error: "#{params[:username]} doesn't have any liked rolls"}, status: :not_found
-                end
-            else
-                render json: nil, status: :forbidden
-            end
-        else
-            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
-        end
+        render json: nil, status: :not_found
     end
-    
-    
 
     def liked_posts
         @user = User.fetch(params[:user_id])
@@ -107,7 +69,7 @@ class V2::UsersController < ApplicationController
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset
-                    @posts = @user.liked_posts(limit: limit, offset: offset).to_a #in later versions, there will be an optimization for speed using offset
+                    @posts = @user.liked_posts(limit: limit, offset: offset).to_a 
                 else
                     @posts = @user.liked_posts(limit: limit).to_a
                 end
@@ -162,8 +124,6 @@ class V2::UsersController < ApplicationController
         end
     end
     
-    
-
     def update
         begin
             current_user.update!(update_params)
@@ -178,7 +138,17 @@ class V2::UsersController < ApplicationController
             render json: {error: "An error occured when updating the current user's account"}, status: 500
         end
     end
-    
+
+    def destroy        
+        if current_user.id == params[:id].to_i and current_user.destroy
+            session = JWTSessions::Session.new(refresh_by_access_allowed: true, payload: claimless_payload)
+            session.flush_by_access_payload
+            render json: nil, status: :ok            
+        else
+            render json: {error: "Couldn't delete account"}, status: 500            
+        end
+    end
+
     private def update_params
         params.permit :username, :email, :name, :avatar, :profile_background_media, :bio
     end

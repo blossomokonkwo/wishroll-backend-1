@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_30_193740) do
+ActiveRecord::Schema.define(version: 2020_10_02_024400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,18 +57,6 @@ ActiveRecord::Schema.define(version: 2020_09_30_193740) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", null: false
     t.index ["email"], name: "index_admin_users_on_email"
-  end
-
-  create_table "albums", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "name"
-    t.boolean "private", default: false
-    t.bigint "post_count", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "thumbnail_url"
-    t.index ["name"], name: "index_albums_on_name"
-    t.index ["user_id"], name: "index_albums_on_user_id"
   end
 
   create_table "announcements", force: :cascade do |t|
@@ -215,7 +203,6 @@ ActiveRecord::Schema.define(version: 2020_09_30_193740) do
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0, null: false
-    t.bigint "album_id"
     t.boolean "restricted", default: false
     t.index ["caption"], name: "index_posts_on_caption"
     t.index ["media_url"], name: "index_posts_on_media_url"
@@ -421,7 +408,6 @@ ActiveRecord::Schema.define(version: 2020_09_30_193740) do
     t.integer "gender", default: 2, null: false
     t.bigint "wishroll_score", default: 0, null: false
     t.boolean "restricted", default: false
-    t.bigint "roll_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"

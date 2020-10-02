@@ -112,7 +112,7 @@ Rails.application.routes.draw do
       resources :bookmarks, shallow: true
     end
     
-    resources :users, only: [:update, :show] do
+    resources :users, only: [:update, :show, :destroy] do
       resources :albums, shallow: true
       resources :bookmarks, only: [:index]
     end

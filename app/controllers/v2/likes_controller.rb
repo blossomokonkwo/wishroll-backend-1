@@ -1,17 +1,7 @@
 class V2::LikesController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        if params[:roll_id] and roll = Roll.fetch(params[:roll_id])
-            begin
-                like = roll.likes.create!(user: current_user)
-                LikeActivityJob.perform_now(like_id: like.id)
-                UpdateWishrollScoreJob.perform_now(roll.user.id, 1)
-                UpdatePopularityRankJob.perform_now(content_id: roll.id, content_type: roll.class.name)                
-                render json: nil, status: :created
-            rescue => exception
-                render json: {error: "Could not like the roll: #{roll}"}, status: :bad_request
-            end            
-        elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
+        if params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             begin
                 like = comment.likes.create!(user: current_user)
                 LikeActivityJob.perform_now(like_id: like.id)
@@ -54,14 +44,14 @@ class V2::LikesController < ApplicationController
             @users = Array.new
             if offset
                 @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').offset(offset).limit(limit)
-              else
+            else
                 @users = User.joins(:likes).where(likes: {likeable: post}).order('likes.created_at DESC').limit(limit)
-              end
-              if @users.any?
+            end
+            if @users.any?
                 render :index, status: :ok
-              else
+            else
                 render json: nil, status: :not_found
-              end
+            end
         elsif params[:comment_id] and comment = Comment.fetch(params[:comment_id])
             @current_user = current_user
             limit = 10
@@ -77,21 +67,6 @@ class V2::LikesController < ApplicationController
             else
                 render json: nil, status: :not_found
             end
-        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
-            @current_user = current_user
-            limit = 10
-            offset = params[:offset]
-            @users = Array.new
-            if offset
-                @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').offset(offset).limit(limit)
-              else
-                @users = User.joins(:likes).where(likes: {likeable: roll}).order('likes.created_at DESC').limit(limit)
-              end
-              if @users.any?
-                render :index, status: :ok
-              else
-                render json: nil, status: :not_found
-              end
         else
             render json: {error: "Could not locate a resource to complete the operation"}, status: :not_found
         end
