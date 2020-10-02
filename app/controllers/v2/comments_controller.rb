@@ -27,19 +27,7 @@ class V2::CommentsController < ApplicationController
     end
     
     def index
-        limit = 10
-        offset = params[:offset]
-        if params[:post_id] and post = Post.fetch(params[:post_id])
-            @comments = post.comments.order(created_at: :asc).offset(offset).limit(limit)
-            if @comments.any?
-                @current_user = current_user
-                render :index, status: :ok
-            else
-                render json: nil, status: :not_found
-            end
-        else
-            render json: {error: "Couldn't locate parent resource"}, status: :not_found
-        end
+        render json: nil, status: :not_found
     end
     
     def show
