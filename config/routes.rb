@@ -70,6 +70,11 @@ Rails.application.routes.draw do
     namespace :recommendation do
       resources :posts, only: [:index]
     end
+    namespace :keyboard do 
+      namespace :trending do
+        resources :posts, only: [:index]
+      end
+    end
     post 'signup', to: "signup#new"
   end
 
