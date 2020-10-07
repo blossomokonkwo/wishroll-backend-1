@@ -74,6 +74,9 @@ Rails.application.routes.draw do
       namespace :trending do
         resources :posts, only: [:index]
       end
+      namespace :bookmarks do
+        resources :posts, only: [:index]
+      end
     end
     post 'signup', to: "signup#new"
   end
