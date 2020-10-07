@@ -1,4 +1,4 @@
-class V3::Bookmarks::PostsController < ApplicationController
+class V3::Keyboard::Bookmarks::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def index 
         offset = params[offset]
