@@ -52,7 +52,7 @@ class User < ApplicationRecord
     end
     
     def bookmarked_posts(limit: 25, offset:)
-        Post.joins(:bookmarks).where(bookmarks: {user: self}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
+        Post.joins(:bookmarks, media_item_attachment: :blob).where(bookmarks: {user: self}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
     end
     
     #Determines if a user has viewed a specified content
