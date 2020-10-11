@@ -5,6 +5,7 @@ json.array! @trending_tags.each do |tag|
         json.id post.id
         json.media_url post.media_url
         json.thumbnail_url post.thumbnail_url
+        json.comment_count post.comments_count
         json.viewed post.viewed?(@current_user)
         json.view_count post.view_count
         json.bookmarked post.bookmarked?(@current_user)

@@ -27,7 +27,18 @@ class V2::CommentsController < ApplicationController
     end
     
     def index
-        render json: nil, status: :not_found
+        offset = params[:offset]
+        limit = 15
+        if params[:post_id] and post = Post.fetch(params[:post_id])
+            @comments = post.comments.offset(offset).limit(limit).order(likes_count: :desc, created_at: :asc).to_a
+            if @comments.any?
+                render :index, status: :ok
+            else
+                render json: nil, status: :not_found
+            end
+        else
+            render json: nil, status: :not_found
+        end
     end
     
     def show
