@@ -6,6 +6,7 @@ class Roll < ApplicationRecord
   has_many :shares, as: :shareable, dependent: :destroy
   has_one :location, as: :locateable, dependent: :destroy
   has_many :bookmarks, as: :bookmarkable, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_one_attached(:media_item)
   has_one_attached(:thumbnail_image)
 
