@@ -30,7 +30,7 @@ class V2::CommentsController < ApplicationController
         offset = params[:offset]
         limit = 15
         if params[:post_id] and post = Post.fetch(params[:post_id])
-            @comments = post.comments.offset(offset).limit(limit).order(likes_count: :desc, created_at: :asc).to_a
+            @comments = post.comments.offset(offset).limit(limit).order(created_at: :asc).to_a
             if @comments.any?
                 @current_user = current_user
                 render :index, status: :ok

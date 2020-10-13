@@ -13,6 +13,7 @@ json.array! @trending_tags.each do |tag|
         json.liked post.liked?(@current_user)
         json.like_count post.likes_count
         json.share_count post.share_count
+        json.caption post.caption
         user = User.fetch(post.user_id)
         json.creator do
             json.id user.id
