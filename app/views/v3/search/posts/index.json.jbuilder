@@ -11,6 +11,7 @@ json.array! @posts.each do |post|
     json.liked post.liked?(@current_user)
     json.like_count post.likes_count
     json.share_count post.share_count
+    json.caption post.caption
     json.creator do
         json.id user.id
         json.username user.username
