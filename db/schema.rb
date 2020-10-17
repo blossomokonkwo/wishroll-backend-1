@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_02_024400) do
+ActiveRecord::Schema.define(version: 2020_10_16_204059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -374,10 +374,11 @@ ActiveRecord::Schema.define(version: 2020_10_02_024400) do
   end
 
   create_table "trending_tags", force: :cascade do |t|
-    t.string "text", null: false
+    t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["text"], name: "index_trending_tags_on_text", unique: true
+    t.text "description"
+    t.index ["title"], name: "index_trending_tags_on_title", unique: true
   end
 
   create_table "user_blocked_posts", force: :cascade do |t|
