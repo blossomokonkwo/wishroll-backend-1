@@ -8,8 +8,16 @@ class V2::CommentsController < ApplicationController
                 CommentActivityJob.perform_now(@comment.id, current_user.id)
                 render :create, status: :created
             rescue => exception
-                puts @comment.errors.inspect
-                render json: {error: "Couldn't create comment for post #{post}", messages: @comment.errors}, status: 500
+                render json: {error: "Couldn't create comment for post #{post}", messages: exception}, status: 500
+            end
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
+            begin
+                @comment = roll.comments.create!(body: params[:body], user_id: current_user.id, original_comment_id: params[:original_comment_id])
+                @user = current_user
+                CommentActivityJob.perform_now(@comment.id, current_user.id)
+            rescue => exception
+                puts exception
+                render json: {error: "Couldn't create comment for roll #{roll}", messages: exception}, status: 500
             end
         else
             render json: {error: "Couldn't find resource "}, status: :not_found
@@ -35,6 +43,14 @@ class V2::CommentsController < ApplicationController
                 @current_user = current_user
                 render :index, status: :ok
             else
+                render json: nil, status: :not_found
+            end
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
+            @comments = roll.comments.offset(offset).limit(limit).order(created_at: :asc).to_a
+            if @comments.any?
+                @current_user = current_user
+                render :index, status: :ok
+            else 
                 render json: nil, status: :not_found
             end
         else

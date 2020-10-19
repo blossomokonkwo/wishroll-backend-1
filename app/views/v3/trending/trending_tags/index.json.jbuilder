@@ -4,6 +4,8 @@ json.array! @trending_tags.each do |tag|
     json.description tag.description
     json.posts tag.posts(limit: 6, offset: 0).each do |post|
         json.id post.id
+        json.created_at post.created_at
+        json.updated_at post.updated_at
         json.media_url post.media_url
         json.thumbnail_url post.thumbnail_url
         json.comment_count post.comments_count

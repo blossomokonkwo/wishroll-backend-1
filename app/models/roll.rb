@@ -1,6 +1,7 @@
 class Roll < ApplicationRecord
   #Associations
-  belongs_to :user
+  belongs_to :user, counter_cache: :total_num_rolls
+  has_many :tags, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :views, as: :viewable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
@@ -12,29 +13,32 @@ class Roll < ApplicationRecord
 
   #user interaction APIs
   def viewed?(user)
-    Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{self.uuid}") {
-        self.views.find_by(user: user).present?
+    Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{uuid}") {
+      views.find_by(user: user).present?
     }
   end
 
   def liked?(user)
-    Rails.cache.fetch("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{self.uuid}") {
-        self.likes.find_by(user: user).present?
+    Rails.cache.fetch("WishRoll:Cache:Like:Liker:#{user.id}:Liked:#{uuid}") {
+      likes.find_by(user: user).present?
     }
   end
 
   def bookmarked?(user)
-    Rails.cache.fetch("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{self.uuid}") {
-        self.bookmarks.find_by(user: user).present?
+    Rails.cache.fetch("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{uuid}") {
+      bookmarks.find_by(user: user).present?
     }
   end
 
   after_destroy do
-    Activity.where(content_id: self.id, activity_type: self.class.name).destroy_all
+    Activity.where(content_id: id, activity_type: self.class.name).destroy_all
   end
 
   after_create do
     user.touch
   end
-  
+
+  #cache API's
+  include IdentityCache
+  cache_belongs_to :user
 end

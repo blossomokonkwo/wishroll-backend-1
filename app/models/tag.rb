@@ -2,6 +2,7 @@ class Tag < ApplicationRecord
     include PgSearch::Model
     include IdentityCache
     belongs_to :post
+    belongs_to :roll, optional: true
     has_one :location, as: :locateable, dependent: :destroy
     validates :text, presence: true
 
