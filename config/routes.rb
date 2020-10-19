@@ -64,11 +64,16 @@ Rails.application.routes.draw do
     namespace :trending do
       resources :trending_tags, only: [:index, :show]
     end
+    namespace :discover do
+      resources :rolls, only: [:index]
+    end
     namespace :search do
       resources :posts, only: [:index]
     end
     namespace :recommendation do
       resources :posts, only: [:index]
+      resources :rolls, only: [:index]
+      resources :users, only: [:index]
     end
     namespace :keyboard do 
       namespace :trending do

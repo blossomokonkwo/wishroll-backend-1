@@ -1,6 +1,6 @@
 class View < ApplicationRecord
   #Associations
-  belongs_to :user
+  belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url, :total_num_views])}, counter_cache: :total_num_views
   belongs_to :viewable, polymorphic: true, counter_cache: :view_count, touch: true
   has_one :location, as: :locateable, dependent: :destroy
 
@@ -10,10 +10,25 @@ class View < ApplicationRecord
   validates :duration, presence: {message: "A view object must contain the duration that a user has spent viewing the content in seconds"}
   after_create do
     Rails.cache.write("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)#write the boolean value of true to the cache
-    viewable.user.touch #we want to invalidate the cache for the the user whos content was viewed so that their view count can be accurate 
+    if user = viewable.user        
+      if viewable.instance_of? Post 
+        user.post_views_count += 1
+      elsif viewable.instance_of? Roll
+        user.roll_views_count += 1
+      end
+      user.save
+    end
   end
 
-  #cache API's
-  include IdentityCache
-  cache_belongs_to :viewable
+  after_destroy do
+    Rails.cache.delete("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)
+    if user = viewable.user
+      if viewable.instance_of? Post
+        user.post_views_count -= 1
+      elsif viewable.instance_of? Roll
+        user.roll_views_count -= 1
+      end
+      user.save
+    end
+  end
 end

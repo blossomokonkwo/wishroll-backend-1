@@ -10,6 +10,15 @@ class V2::BookmarksController < ApplicationController
             rescue
                 render json: {error: "Couldn't create bookmark for post #{post.inspect}"}, status: 500
             end
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
+            begin
+                bookmark = roll.bookmarks.create!(user: current_user)
+                UpdateWishrollScoreJob.perform_now(roll.user.id, 2)
+                UpdatePopularityRankJob.perform_now(content_id: roll.id, content_type: roll.class.name)
+                render json: nil, status: :created
+            rescue => exception
+                render json: {error: "Couldn't create bookmark for roll #{roll.inspect}"}, status: 500           
+            end
         else
             render json: {error: "Couldn't find resource"}, status: :not_found
         end
@@ -19,15 +28,23 @@ class V2::BookmarksController < ApplicationController
         offset = params[:offset]
         limit = 15
         if params[:post_id] and post = Post.find(params[:post_id])
-            @users = User.joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
+            @users = User.select([:username, :name, :verified, :id, :avatar_url]).joins([:bookmarks]).where(bookmarks: {bookmarkable: post}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
             if @users.any?
                 @current_user = current_user
                 render :index_users, status: :ok
             else
                 render json: nil, status: :not_found
             end
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
+            @users = User.select([:username, :name, :verified, :id, :avatar_url]).joins([:bookmarks]).where(bookmarks: {bookmarkable: roll}).order("bookmarks.created_at DESC").offset(offset).limit(limit).to_a
+            if @users.any? 
+                @current_user = current_user
+                render :index_users, status: :ok
+            else
+                render json: nil, status: :not_found
+            end
         else
-            render json: {error: "Roll not found with id #{params[:roll_id]}"}, status: :not_found
+            render json: {error: "Content not found with id #{params[:roll_id]}"}, status: :not_found
         end
     end
 
@@ -59,6 +76,12 @@ class V2::BookmarksController < ApplicationController
             else
                 render json: {error: "Couldn't destroy the bookmark"}, status: 500
             end
+        elsif params[:roll_id] and roll = Roll.fetch(params[:roll_id])
+            if roll.bookmarks.find_by(user: current_user).destroy
+                render json: nil, status: :ok
+            else 
+                render json: {error: "Couldn't destroy the bookmark"}, status: 500
+            end 
         end
     end
     

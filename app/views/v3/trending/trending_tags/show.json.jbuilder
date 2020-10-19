@@ -3,6 +3,8 @@ json.text @trending_tag.title
 json.description @trending_tag.description
 json.posts @posts.each do |post|
     json.id post.id
+    json.created_at post.created_at
+    json.updated_at post.updated_at
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
     json.comment_count post.comments_count

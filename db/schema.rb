@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_16_204059) do
+ActiveRecord::Schema.define(version: 2020_10_18_234252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(version: 2020_10_16_204059) do
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0
     t.boolean "featured", default: false, null: false
+    t.boolean "private", default: false, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
     t.index ["user_id"], name: "index_rolls_on_user_id"
@@ -404,11 +405,28 @@ ActiveRecord::Schema.define(version: 2020_10_16_204059) do
     t.bigint "followers_count", default: 0
     t.bigint "following_count", default: 0
     t.string "name"
-    t.bigint "view_count", default: 0, null: false
+    t.bigint "post_views_count", default: 0, null: false
     t.string "profile_background_url"
     t.integer "gender", default: 2, null: false
     t.bigint "wishroll_score", default: 0, null: false
     t.boolean "restricted", default: false
+    t.bigint "total_num_likes", default: 0, null: false
+    t.bigint "post_likes_count", default: 0, null: false
+    t.bigint "total_num_shares", default: 0, null: false
+    t.bigint "post_shares_count", default: 0, null: false
+    t.bigint "total_num_searches", default: 0, null: false
+    t.bigint "post_bookmarks_count", default: 0, null: false
+    t.bigint "total_num_bookmarks", default: 0, null: false
+    t.bigint "total_num_views", default: 0, null: false
+    t.bigint "total_num_comments", default: 0, null: false
+    t.bigint "post_comments_count", default: 0, null: false
+    t.bigint "total_num_rolls", default: 0, null: false
+    t.bigint "total_num_posts", default: 0, null: false
+    t.bigint "roll_likes_count", default: 0, null: false
+    t.bigint "roll_bookmarks_count", default: 0, null: false
+    t.bigint "roll_shares_count", default: 0, null: false
+    t.bigint "roll_comments_count", default: 0, null: false
+    t.bigint "roll_views_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"

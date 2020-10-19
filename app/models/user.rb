@@ -14,6 +14,7 @@ class User < ApplicationRecord
     enum gender: [:male, :female, :unspecified]
     has_one :location, as: :locateable, dependent: :destroy
     has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
+    has_many :rolls, dependent: :destroy
     has_many :comments, dependent: :destroy
     has_many :views, dependent: :destroy
     has_many :shares, dependent: :destroy

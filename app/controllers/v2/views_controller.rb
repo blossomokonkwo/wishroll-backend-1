@@ -1,14 +1,12 @@
 class V2::ViewsController < ApplicationController
     before_action :authorize_by_access_header!
     def create
-        view = View.new(duration: params[:duration], viewable_id: params[:viewable_id], viewable_type: params[:viewable_type], user_id: current_user.id)
-        if view.save
-            user = view.fetch_viewable.user
-            user.view_count += 1
-            user.save
-            UpdatePopularityRankJob.perform_now(content_id: view.fetch_viewable.id, content_type: view.fetch_viewable.class.name)
-            render json: nil, status: :created
-        else
+        begin
+            view = View.create!(duration: params[:duration], viewable_id: params[:viewable_id], viewable_type: params[:viewable_type], user_id: current_user.id)
+            UpdatePopularityRankJob.perform_now(content_id: view.viewable.id, content_type: view.viewable.class.name)
+            render json: nil, status: :created            
+        rescue => exception
+            puts exception
             render json: nil, status: :bad_request
         end
     end

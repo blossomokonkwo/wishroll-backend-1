@@ -9,6 +9,15 @@ class V2::TagsController < ApplicationController
             rescue => exception
                 render json: {error: "The tag could not be created for the specified post: #{@post}"}, status: :bad_request
             end
+        elsif params[:roll_id] and @roll = Roll.fetch(params[:roll_id])
+            begin
+                params[:tags].each do |text|
+                    @roll.tags.create!(text: text)
+                end
+                render json: nil, status: :created
+            rescue => exception
+                render json: {error: "The tag could not be created for the specified roll: #{@roll}"}, status: :bad_request
+            end
         else
             render json: {error: "Could not find a resource that can create tags"}, status: :bad_request
         end

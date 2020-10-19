@@ -1,5 +1,4 @@
 json.array! @comments.each do |comment|
-    user = comment.fetch_user
     json.id comment.id
     json.body comment.body
     json.created_at comment.created_at
@@ -8,6 +7,7 @@ json.array! @comments.each do |comment|
     json.reply_count comment.replies_count
     json.liked comment.liked?(@current_user)
     json.original_comment_id comment.original_comment_id
+    user = comment.user
     json.user do
         json.id user.id
         json.username user.username

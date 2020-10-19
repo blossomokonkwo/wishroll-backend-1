@@ -1,6 +1,8 @@
 json.array! @posts.each do |post|
     user = User.fetch(post.user_id)
     json.id post.id
+    json.created_at post.created_at
+    json.updated_at post.updated_at
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
     json.comment_count post.comments_count
