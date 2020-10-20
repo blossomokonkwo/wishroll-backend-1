@@ -29,74 +29,64 @@ class User < ApplicationRecord
     cache_index :username, unique: true
     cache_index :name
 
-    #Returns all of the posts that a user has viewed with a default limit of 25 records and no offset
-    def viewed_posts(limit: 25, offset: nil)
-        if offset
-            Post.joins(:views).where(views: {user: self}).where('created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            Post.joins(:views).where(views: {user: self}).order(created_at: :desc).limit(limit)
-        end 
-    end
-
     def liked_posts(limit: 25, offset: nil)
-        if offset
-            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).offset(offset).limit(limit)
-        else
-            Post.joins(:likes).order("likes.created_at DESC").where(likes: {user_id: self.id}).limit(limit)
-        end
-        
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .joins(:likes)
+        .order("likes.created_at DESC")
+        .where(likes: {user: self})
+        .offset(offset)
+        .limit(limit) 
     end
     
     def created_posts(limit: 25, offset: nil)
-        if offset
-            Post.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
-        else
-            Post.where(user: self).order(created_at: :desc).limit(limit)
-        end
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .where(user: self)
+        .order(created_at: :desc)
+        .offset(offset)
+        .limit(limit)
     end
 
     def created_rolls(limit: 25, offset:)
-        Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .where(user: self)
+        .order(created_at: :desc)
+        .offset(offset)
+        .limit(limit)
     end
     
     
     def bookmarked_posts(limit: 25, offset:)
-        Post.joins(:bookmarks, media_item_attachment: :blob).where(bookmarks: {user: self}).order("bookmarks.created_at DESC").offset(offset).limit(limit)
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .joins(:bookmarks, media_item_attachment: :blob)
+        .where(bookmarks: {user: self})
+        .order("bookmarks.created_at DESC")
+        .offset(offset)
+        .limit(limit)
+    end
+
+    #returns all of the posts that a user has shared
+    def shared_posts(limit: 25, offset: nil)
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .joins(:shares)
+        .where(shares: {user: self})
+        .offset(offset)
+        .order("shares.created_at DESC")
+        .limit(limit)       
     end
     
-    #Determines if a user has viewed a specified content
-    def has_viewed?(content)        
-        View.fetch_by_viewable_and_user(content, self).exists?
+    #Returns all of the posts that a user has viewed with a default limit of 25 records and no offset
+    def viewed_posts(limit: 25, offset: nil)
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count])
+        .joins(:views)
+        .where(views: {user: self})
+        .order("views.created_at DESC")
+        .offset(offset)
+        .limit(limit)      
     end
 
     #search apis
     pg_search_scope :search, against: {username: 'A', name: 'B'}, using: {tsearch: {prefix: true, any_word: true}}
 
-    #returns all of the posts that a user has shared
-    def shared_posts(limit: 25, offset: nil)
-        if offset
-            Post.joins(:shares).where(shares: {user: self}).where('posts.created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            Post.joins(:shares).where(shares: {user: self}).order(created_at: :desc).limit(limit)
-        end        
-    end
-
-    def shared?(content)
-        Share.where(shareable: content, user: self).present?
-    end
-
-    def viewed_posts(limit: 25, offset: nil)
-        if offset
-            Post.joins(:views).where(views: {user: self}).where('posts.created_at < ?', offset).order(created_at: :desc).limit(limit)
-        else
-            Post.joins(:views).where(views: {user: self}).order(created_at: :desc).limit(limit)
-        end        
-    end
-    
-    def viewed?(content)
-        View.where(viewable: content, user: self).present?
-    end
-    
     #location APIs
     def state
         location.region if location
