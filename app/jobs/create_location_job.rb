@@ -20,14 +20,14 @@ class CreateLocationJob < ApplicationJob
             location.ip = ip; location.city = city
             location.country = country; location.region = region; location.timezone = timezone || result.timezone
             location.postal_code = postal_code; location.latitude = lattitude; location.longitude = longitude
-            if location.save
+            if location.save!
                 logger.debug {"Location created: #{location.attributes.inspect}"}                
             else
-                logger.fatal {"Couldn't Create location: #{location.errors.inspect}"}
+                logger.fatal {"Couldn't Create location: #{location.errors}"}
             end 
                 logger.debug {"Location country: #{location.country_name}"}
             rescue => exception
-                logger.fatal {"Couldn't Create location: #{location.errors.inspect}"}
+                logger.fatal {"Couldn't Create location: #{location.errors}"}
                 return
             end
         end
