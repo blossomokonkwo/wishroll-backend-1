@@ -2,7 +2,6 @@ class View < ApplicationRecord
   #Associations
   belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url, :total_num_views])}, counter_cache: :total_num_views
   belongs_to :viewable, polymorphic: true, counter_cache: :view_count, touch: true
-  has_one :location, as: :locateable, dependent: :destroy
 
   #Validations
   validates :viewable_id, presence: {message: "The id of the viewable object must be included upon creation of a view object"}

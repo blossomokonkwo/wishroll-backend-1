@@ -1,10 +1,6 @@
 class Bookmark < ApplicationRecord
     belongs_to :bookmarkable, polymorphic: true, counter_cache: :bookmark_count, touch: true
-    has_one :location, as: :locateable, dependent: :destroy
     belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url])}, counter_cache: :total_num_bookmarks, touch: true
-
-    after_commit do
-    end
 
     after_destroy do
         Rails.cache.delete("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{bookmarkable.uuid}")

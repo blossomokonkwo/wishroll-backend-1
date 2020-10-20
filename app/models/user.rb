@@ -21,6 +21,9 @@ class User < ApplicationRecord
     has_many :likes, dependent: :destroy
     has_many :bookmarks, dependent: :destroy 
     has_many :searches, dependent: :destroy
+    has_many :created_mentions, class_name: "Mention", foreign_key: :user_id, dependent: :destroy
+    has_many :mentions, class_name: "Mention", foreign_key: :mentioned_user_id, dependent: :destroy
+    has_many :hashtags, dependent: :destroy
 
     #cache API's 
     cache_index :username, unique: true
@@ -96,7 +99,7 @@ class User < ApplicationRecord
     
     #location APIs
     def state
-        location.region
+        location.region if location
     end
 
     alias :region :state
@@ -126,10 +129,10 @@ class User < ApplicationRecord
     has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
     
     #the users that a specific user is currently following 
-    has_many :followed_users, through: :active_relationships, source: :followed_user
+    has_many :followed_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :following_count])}, through: :active_relationships, source: :followed_user
 
     #the users that currently follow a specific user 
-    has_many :follower_users, through: :passive_relationships, source: :follower_user
+    has_many :follower_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :followers_count])}, through: :passive_relationships, source: :follower_user
 
     #the activities that have happended to the user
     has_many :activities, -> {order(created_at: :desc)}, class_name: "Activity", foreign_key: :user_id, dependent: :destroy

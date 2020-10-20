@@ -1,7 +1,6 @@
 class Like < ApplicationRecord
   belongs_to :likeable, polymorphic: true, counter_cache: :likes_count, touch: true
   belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url, :total_num_likes])}, counter_cache: :total_num_likes
-  has_one :location, as: :locateable, dependent: :destroy
 
   after_destroy do
     #we want to update the likeable's updated at date when a like is being destroyed. This invalidates the cache for the likeable and forces a DB read.

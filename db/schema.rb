@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_20_003406) do
+ActiveRecord::Schema.define(version: 2020_10_20_192319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -140,6 +140,21 @@ ActiveRecord::Schema.define(version: 2020_10_20_003406) do
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
+  create_table "hashtags", force: :cascade do |t|
+    t.string "hashtaggable_type"
+    t.bigint "hashtaggable_id"
+    t.bigint "user_id", null: false
+    t.text "text", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.tsvector "tsv_text"
+    t.index ["hashtaggable_type", "hashtaggable_id"], name: "index_hashtags_on_hashtaggable_type_and_hashtaggable_id"
+    t.index ["tsv_text"], name: "hashtags_tsvtext", using: :gin
+    t.index ["user_id", "hashtaggable_id", "hashtaggable_type", "text"], name: "index_hashtags_on_user_id_hashtaggable", unique: true
+    t.index ["user_id"], name: "index_hashtags_on_user_id"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "likeable_type"
@@ -170,6 +185,20 @@ ActiveRecord::Schema.define(version: 2020_10_20_003406) do
     t.index ["latitude"], name: "index_locations_on_latitude"
     t.index ["locateable_type", "locateable_id"], name: "index_locations_on_locateable_type_and_locateable_id"
     t.index ["longitude"], name: "index_locations_on_longitude"
+  end
+
+  create_table "mentions", force: :cascade do |t|
+    t.string "mentionable_type"
+    t.bigint "mentionable_id"
+    t.bigint "user_id", null: false
+    t.bigint "mentioned_user_id", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mentionable_type", "mentionable_id"], name: "index_mentions_on_mentionable_type_and_mentionable_id"
+    t.index ["mentioned_user_id"], name: "index_mentions_on_mentioned_user_id"
+    t.index ["user_id", "mentionable_id", "mentionable_type", "mentioned_user_id"], name: "index_mentions_on_user_id_and_mentionable", unique: true
+    t.index ["user_id"], name: "index_mentions_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -250,6 +279,8 @@ ActiveRecord::Schema.define(version: 2020_10_20_003406) do
     t.boolean "featured", default: false, null: false
     t.boolean "private", default: false, null: false
     t.boolean "restricted", default: false, null: false
+    t.bigint "hashtag_count", default: 0, null: false
+    t.bigint "mention_count", default: 0, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["private"], name: "index_rolls_on_private"
     t.index ["restricted"], name: "index_rolls_on_restricted"
@@ -430,6 +461,11 @@ ActiveRecord::Schema.define(version: 2020_10_20_003406) do
     t.bigint "roll_shares_count", default: 0, null: false
     t.bigint "roll_comments_count", default: 0, null: false
     t.bigint "roll_views_count", default: 0, null: false
+    t.bigint "total_num_hashtags", default: 0, null: false
+    t.bigint "total_num_mentions", default: 0, null: false
+    t.bigint "total_mentioned_count", default: 0, null: false
+    t.bigint "total_num_created_mentions", default: 0, null: false
+    t.bigint "total_num_mentioned", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"

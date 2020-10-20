@@ -1,8 +1,8 @@
 class CreateLocationJob < ApplicationJob
     def perform(ip, timezone, locateable_id, locateable_type)
         logger.info {"Searching for location with ip address #{ip}"}
-        if !ip or !timezone
-            logger.debug {"Missing either an ip address or the timezone for the record"}
+        if !ip
+            logger.debug {"Missing an ip address for the record"}
             return
         end
         results = Geocoder.search(ip)
@@ -18,7 +18,7 @@ class CreateLocationJob < ApplicationJob
             lattitude = result.latitude; longitude = result.longitude
             location = Location.new(locateable_id: locateable_id, locateable_type: locateable_type)
             location.ip = ip; location.city = city
-            location.country = country; location.region = region; location.timezone = timezone
+            location.country = country; location.region = region; location.timezone = timezone || result.timezone
             location.postal_code = postal_code; location.latitude = lattitude; location.longitude = longitude
             if location.save
                 logger.debug {"Location created: #{location.attributes.inspect}"}                

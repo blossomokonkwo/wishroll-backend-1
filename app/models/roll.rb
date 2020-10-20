@@ -1,7 +1,8 @@
 class Roll < ApplicationRecord
   #Associations
   belongs_to :user, counter_cache: :total_num_rolls
-  has_many :tags, dependent: :destroy
+  has_many :hashtags, as: :hashtaggable, dependent: :destroy
+  has_many :mentions, as: :mentionable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :views, as: :viewable, dependent: :destroy
   has_many :shares, as: :shareable, dependent: :destroy
@@ -41,4 +42,33 @@ class Roll < ApplicationRecord
   #cache API's
   include IdentityCache
   cache_belongs_to :user
+
+  #mention and hashtag APIs
+  def extract_hashtags(&block)
+    caption.scan(/#(\w+)/).flatten.each(&block) if block_given? and caption
+  end
+
+  def extract_mentions(&block)
+    caption.scan(/@(\w+)/).flatten.each(&block) if block_given? and caption
+  end
+
+  #location APIs
+  def country
+    location.country_name if location
+  end
+
+  def city
+    location.city if location
+  end
+
+  def continent
+    location.continent if location
+  end
+
+  def state
+    location.region if location
+  end
+
+  alias :region :state
+
 end
