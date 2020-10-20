@@ -4,23 +4,25 @@ class Bookmark < ApplicationRecord
 
     after_destroy do
         Rails.cache.delete("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{bookmarkable.uuid}")
-        user = bookmarkable.user
-        if bookmarkable.instance_of? Post
-            user.post_bookmarks_count -= 1
-        elsif bookmarkable.instance_of? Roll
-            user.roll_bookmarks_count -= 1
+        if creator = bookmarkable.user
+            if bookmarkable.instance_of? Post
+                creator.post_bookmarks_count -= 1
+            elsif bookmarkable.instance_of? Roll
+                creator.roll_bookmarks_count -= 1
+            end
+            creator.save
         end
-        user.save
     end
 
     after_create do 
         Rails.cache.write("WishRoll:Cache:Bookmark:Bookmarker:#{user.id}:Bookmarked:#{bookmarkable.uuid}", true)
-        user = bookmarkable.user
-        if bookmarkable.instance_of? Post
-            user.post_bookmarks_count += 1
-        elsif bookmarkable.instance_of? Roll
-            user.roll_bookmarks_count += 1
+        if creator = bookmarkable.user
+            if bookmarkable.instance_of? Post
+                creator.post_bookmarks_count += 1
+            elsif bookmarkable.instance_of? Roll
+                creator.roll_bookmarks_count += 1
+            end
+            creator.save
         end
-        user.save
     end
 end

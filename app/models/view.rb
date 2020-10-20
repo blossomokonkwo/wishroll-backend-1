@@ -9,23 +9,23 @@ class View < ApplicationRecord
   validates :duration, presence: {message: "A view object must contain the duration that a user has spent viewing the content in seconds"}
   after_create do
     Rails.cache.write("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)#write the boolean value of true to the cache
-    if user = viewable.user        
+    if creator = viewable.user        
       if viewable.instance_of? Post 
-        user.post_views_count += 1
+        creator.post_views_count += 1
       elsif viewable.instance_of? Roll
-        user.roll_views_count += 1
+        creator.roll_views_count += 1
       end
-      user.save
+      creator.save
     end
   end
 
   after_destroy do
     Rails.cache.delete("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)
-    if user = viewable.user
+    if creator = viewable.user
       if viewable.instance_of? Post
-        user.post_views_count -= 1
+        creator.post_views_count -= 1
       elsif viewable.instance_of? Roll
-        user.roll_views_count -= 1
+        creator.roll_views_count -= 1
       end
       user.save
     end
