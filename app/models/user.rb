@@ -30,7 +30,7 @@ class User < ApplicationRecord
     cache_index :name
 
     def liked_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .joins(:likes)
         .order("likes.created_at DESC")
         .where(likes: {user: self})
@@ -39,7 +39,7 @@ class User < ApplicationRecord
     end
     
     def created_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .where(user: self)
         .order(created_at: :desc)
         .offset(offset)
@@ -47,7 +47,7 @@ class User < ApplicationRecord
     end
 
     def created_rolls(limit: 25, offset:)
-        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .where(user: self)
         .order(created_at: :desc)
         .offset(offset)
@@ -56,7 +56,7 @@ class User < ApplicationRecord
     
     
     def bookmarked_posts(limit: 25, offset:)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .joins(:bookmarks, media_item_attachment: :blob)
         .where(bookmarks: {user: self})
         .order("bookmarks.created_at DESC")
@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
     #returns all of the posts that a user has shared
     def shared_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .joins(:shares)
         .where(shares: {user: self})
         .offset(offset)
@@ -76,7 +76,7 @@ class User < ApplicationRecord
 
     #Returns all of the posts that a user has viewed with a default limit of 25 records and no offset
     def viewed_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .joins(:views)
         .where(views: {user: self})
         .order("views.created_at DESC")
