@@ -13,6 +13,7 @@ class V2::Search::RelationshipsController < ApplicationController
             if @users.any?
                 @current_user = current_user
                 render :index, status: :ok
+                SearchActivitiesJob.perform_now(query: params[:q], user_id: current_user.id, content_type: "user")
             else
                 render json: nil, status: :not_found
             end

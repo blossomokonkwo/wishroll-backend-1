@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     end
     namespace :search do
       resources :posts, only: [:index]
+      resources :rolls, only: [:index]
     end
     namespace :recommendation do
       resources :posts, only: [:index]

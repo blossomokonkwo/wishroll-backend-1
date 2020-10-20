@@ -5,6 +5,7 @@ class Comment < ApplicationRecord
   has_many :replies, class_name: "Comment", foreign_key: :original_comment_id, dependent: :destroy
   belongs_to :original_comment, class_name: "Comment", optional: true, counter_cache: :replies_count
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :mentions, as: :mentionable, dependent: :destroy
   
   after_destroy do
     if roll
@@ -34,6 +35,11 @@ class Comment < ApplicationRecord
       likes.where(user_id: user).exists?
     }
   end
+  
+  def extract_mentions(&block)
+    body.scan(/@(\w+)/).flatten.each(&block) if block_given? and body
+  end
+  
 
   #cache API's
   include IdentityCache

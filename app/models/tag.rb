@@ -2,8 +2,6 @@ class Tag < ApplicationRecord
     include PgSearch::Model
     include IdentityCache
     belongs_to :post
-    belongs_to :roll, optional: true
-    has_one :location, as: :locateable, dependent: :destroy
     validates :text, presence: true
 
     #search API's 
@@ -13,7 +11,7 @@ class Tag < ApplicationRecord
     pg_search_scope :trending_tag, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, prefix: true}}, order_within_rank: "tags.created_at ASC"
 
     after_create do
-        self.update(tsv_text: self.text)
+        update(tsv_text: text)
     end
 
 end

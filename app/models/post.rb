@@ -36,7 +36,25 @@ class Post < ApplicationRecord
             self.bookmarks.find_by(user: user).present?
         }
     end
-    
+
+    #location APIs
+    def country
+        location.country_name if location
+    end
+
+    def city
+        location.city if location
+    end
+
+    def continent
+        location.continent if location
+    end
+
+    def state
+        location.region if location
+    end
+
+    alias :region :state
 
     #callbacks APIs 
     after_destroy do

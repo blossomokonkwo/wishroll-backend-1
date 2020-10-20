@@ -13,10 +13,7 @@ class V2::UsersController < ApplicationController
             elsif @user.blocked?(current_user)
                 render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
-                @following = nil
-                if current_user.id != @user.id
-                    @following = current_user.following?(@user)
-                end
+                @following = current_user.following?(@user) if current_user.id != @user.id
                 render :show, status: :ok
             end
         else
@@ -40,19 +37,36 @@ class V2::UsersController < ApplicationController
                     @current_user = current_user
                     render :posts, status: :ok
                 else
-                    render json: {error: "#{params[:username]} doesn't have any posts"}, status: :not_found
+                    render json: nil, status: :not_found
                 end  
             else
                 render json: nil, status: :forbidden
             end
 
         else
-            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found 
+            render json: nil, status: :not_found 
         end
     end
 
     def rolls
-        render json: nil, status: :not_found
+        @user = User.fetch(params[:user_id])
+        offset = params[:offset]
+        limit = 12
+        if @user 
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
+                @rolls = @user.created_rolls(limit: limit, offset: offset).to_a
+                if @rolls.any?
+                    @current_user = current_user
+                    render :rolls, status: :ok
+                else
+                    render json: nil, status: :not_found
+                end
+            else
+               render json: nil, status: :forbidden 
+            end
+        else
+            render json: nil, status: :not_found
+        end
     end
 
     def liked_rolls

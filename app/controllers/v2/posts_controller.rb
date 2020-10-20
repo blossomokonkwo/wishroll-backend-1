@@ -8,6 +8,7 @@ class V2::PostsController < ApplicationController
       @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
       @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
       if @post.save
+        CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @post.id, @post.class.name)
         render json: {post_id: @post.id}, status: :created
       else 
         render json: nil, status: :bad
@@ -33,6 +34,7 @@ class V2::PostsController < ApplicationController
       @user = @post.fetch_user
       @current_user = current_user
       render :show, status: :ok
+      CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
     end
   
     def destroy

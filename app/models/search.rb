@@ -1,6 +1,5 @@
 class Search < ApplicationRecord
   validates :query, presence: true
-  has_many :locations, as: :locateable, dependent: :destroy
   belongs_to :user, counter_cache: :total_num_searches
   enum result_type: [:image, :video, :gif, :audio, :user, :location, :unknown]
 
