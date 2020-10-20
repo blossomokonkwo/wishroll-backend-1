@@ -8,7 +8,7 @@ class V2::PostsController < ApplicationController
       @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
       @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
       if @post.save
-        CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], @post.id, @post.class.name)
+        CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @post.id, @post.class.name)
         render json: {post_id: @post.id}, status: :created
       else 
         render json: nil, status: :bad
