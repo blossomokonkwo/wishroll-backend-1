@@ -23,11 +23,11 @@ class CreateLocationJob < ApplicationJob
             if location.save!
                 logger.debug {"Location created: #{location.attributes.inspect}"}                
             else
-                logger.fatal {"Couldn't Create location: #{location.errors}"}
+                logger.fatal {"Couldn't Create location: #{location.errors.first}"}
             end 
                 logger.debug {"Location country: #{location.country_name}"}
             rescue => exception
-                logger.fatal {"Couldn't Create location: #{location.errors}"}
+                logger.fatal {"Couldn't Create location: #{location.errors.first}"}
                 return
             end
         end
