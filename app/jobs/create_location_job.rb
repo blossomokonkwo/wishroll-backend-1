@@ -1,35 +1,16 @@
 class CreateLocationJob < ApplicationJob
     def perform(ip, timezone, locateable_id, locateable_type)
         logger.info {"Searching for location with ip address #{ip}"}
-        if !ip
-            logger.debug {"Missing an ip address for the record"}
-            return
-        end
-        results = Geocoder.search(ip)
-        if !results
-            logger.debug {"Unable to find location result that matched the specified ip address: #{ip}"}
-            return
-        end
-        logger.debug {"Found locations matching the specified ip address: #{results.inspect}"}
-        result = results.first
-        if result
+        if ip and result = Geocoder.search(ip).first
+            logger.debug {"Found location matching the specified ip address: #{result.inspect}"}
             begin
-            city = result.city; country = result.country; region = result.state; postal_code = result.postal_code
-            lattitude = result.latitude; longitude = result.longitude
-            location = Location.new(locateable_id: locateable_id, locateable_type: locateable_type)
-            location.ip = ip; location.city = city
-            location.country = country; location.region = region; location.timezone = timezone || result.timezone
-            location.postal_code = postal_code; location.latitude = lattitude; location.longitude = longitude
-            if location.save!
-                logger.debug {"Location created: #{location.attributes.inspect}"}                
-            else
-                logger.fatal {"Couldn't Create location: #{location.errors.first}"}
-            end 
-                logger.debug {"Location country: #{location.country_name}"}
+            location = Location.create!(locateable_id: locateable_id, locateable_type: locateable_type, ip: ip, country: result.country, city: result.city, region: result.region, timezone: result.timezone || timezone, postal_code: result.postal_code, lattitude: result.lattitude, longitude: result.longitude)
+            logger.debug {"Location created: #{location.attributes.inspect}"}   
             rescue => exception
-                logger.fatal {"Couldn't Create location: #{location.errors.first}"}
-                return
+                logger.fatal {"Couldn't Create location: #{location.errors[0]}"}
             end
+        else
+            logger.debug {"Unable to find location result that matched the specified ip address: #{ip}"}
         end
     end
     
