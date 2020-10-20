@@ -1,6 +1,6 @@
 class SearchActivitiesJob < ApplicationJob
     def perform(query:, user_id:, content_type:)
-        if user = User.fetch(user_id)
+        if user = User.find(user_id)
             ActiveRecord::Base.connected_to(role: :writing) do
                 begin
                     case content_type
