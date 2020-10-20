@@ -5,14 +5,13 @@ class Share < ApplicationRecord
   enum shared_service: [:library, :facebook, :email, :instagram, :imessage, :messenger, :pinterest, :snapchat, :tiktok, :twitter, :whatsapp, :keyboard, :other]
   after_create do
     shareable.touch
-     #invalidate the cache for the shareable assocication
     if creator = shareable.user
       if shareable.instance_of? Post
         creator.post_shares_count += 1      
       elsif shareable.instance_of? Roll
         creator.roll_shares_count += 1
       end
-      creator.save!
+      creator.save
     end
   end
 
@@ -24,7 +23,7 @@ class Share < ApplicationRecord
       elsif shareable.instance_of? Roll
         creator.roll_shares_count -= 1
       end
-      creator.save!
+      creator.save
     end
   end
 
