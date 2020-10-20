@@ -20,7 +20,7 @@ class View < ApplicationRecord
   end
 
   after_destroy do
-    Rails.cache.delete("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}", true)
+    Rails.cache.delete("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{viewable.uuid}")
     if creator = viewable.user
       if viewable.instance_of? Post
         creator.post_views_count -= 1
