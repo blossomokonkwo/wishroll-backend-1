@@ -51,6 +51,11 @@ class User < ApplicationRecord
             Post.where(user: self).order(created_at: :desc).limit(limit)
         end
     end
+
+    def created_rolls(limit: 25, offset:)
+        Roll.where(user: self).order(created_at: :desc).offset(offset).limit(limit)
+    end
+    
     
     def bookmarked_posts(limit: 25, offset:)
         Post.joins(:bookmarks, media_item_attachment: :blob).where(bookmarks: {user: self}).order("bookmarks.created_at DESC").offset(offset).limit(limit)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_18_234252) do
+ActiveRecord::Schema.define(version: 2020_10_20_003406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -249,7 +249,10 @@ ActiveRecord::Schema.define(version: 2020_10_18_234252) do
     t.float "popularity_rank", default: 0.0
     t.boolean "featured", default: false, null: false
     t.boolean "private", default: false, null: false
+    t.boolean "restricted", default: false, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
+    t.index ["private"], name: "index_rolls_on_private"
+    t.index ["restricted"], name: "index_rolls_on_restricted"
     t.index ["thumbnail_url"], name: "index_rolls_on_thumbnail_url"
     t.index ["user_id"], name: "index_rolls_on_user_id"
   end
