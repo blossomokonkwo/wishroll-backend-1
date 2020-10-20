@@ -15,7 +15,7 @@ class V2::UsersController < ApplicationController
             else
                 @following = current_user.following?(@user) if current_user.id != @user.id
                 render :show, status: :ok
-                CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
+                CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
             end
         else
             render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found

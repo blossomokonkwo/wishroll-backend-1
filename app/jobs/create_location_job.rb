@@ -4,8 +4,10 @@ class CreateLocationJob < ApplicationJob
         if ip and result = Geocoder.search(ip).first
             logger.debug {"Found location matching the specified ip address: #{result.inspect}"}
             begin
-            location = Location.create!(locateable_id: locateable_id, locateable_type: locateable_type, ip: ip, country: result.country, city: result.city, region: result.region, timezone:  result.data['timezone'] || timezone, postal_code: result.postal_code, latitude: result.latitude, longitude: result.longitude)
-            logger.debug {"Location created: #{location.attributes.inspect}"}   
+                ActiveRecord::Base.connected_to(role: :writing) do
+                    location = Location.create!(locateable_id: locateable_id, locateable_type: locateable_type, ip: ip, country: result.country, city: result.city, region: result.region, timezone:  result.data['timezone'] || timezone, postal_code: result.postal_code, latitude: result.latitude, longitude: result.longitude)
+                end
+                logger.debug {"Location created: #{location.attributes.inspect}"}   
             rescue => exception
                 logger.fatal {"Couldn't Create location: #{exception}"}
             end

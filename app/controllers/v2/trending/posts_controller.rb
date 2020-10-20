@@ -8,7 +8,7 @@ class V2::Trending::PostsController < ApplicationController
         if @posts.any?
             @current_user = current_user
             render :index, status: :ok 
-            CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], current_user.id, current_user.class.name) if !current_user.location
+            CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], current_user.id, current_user.class.name) if !current_user.location
         else
             render json: nil, status: :not_found
         end

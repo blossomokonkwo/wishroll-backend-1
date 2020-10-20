@@ -34,7 +34,7 @@ class V2::PostsController < ApplicationController
       @user = @post.fetch_user
       @current_user = current_user
       render :show, status: :ok
-      CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
+      CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
     end
   
     def destroy
