@@ -10,7 +10,7 @@ class V2::RollsController < ApplicationController
             if @roll.save
                 CaptionExtractionJob.perform_now(@roll.id)
                 CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], @roll.id, @roll.class.name)
-                render json: {roll_id: @roll.id}, status: :created
+                render json: nil, status: :created
             else
                 render json: {error: "Could not create media and thumbnail urls for the specified post"}, status: 500
             end
