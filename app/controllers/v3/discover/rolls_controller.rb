@@ -11,7 +11,7 @@ class V3::Discover::RollsController < ApplicationController
         .offset(offset)
         if @rolls.any?
             @current_user = current_user
-            render :index, status: :ok
+            render json: nil, status: :not_found
         else
             render json: nil, status: :not_found
         end
