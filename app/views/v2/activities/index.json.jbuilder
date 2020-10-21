@@ -78,6 +78,30 @@ json.array! @activities.each do |activity|
                         json.verified user.verified
                     end
                 end
+            elsif roll = comment.roll
+                json.roll do
+                    json.id roll.id
+                    json.media_url roll.media_url
+                    json.thumbnail_url roll.thumbnail_url
+                    json.caption roll.caption
+                    json.like_count roll.likes_count
+                    json.share_count roll.share_count
+                    json.comment_count roll.comments_count
+                    json.view_count roll.view_count
+                    json.viewed roll.viewed?(@current_user)
+                    json.liked roll.liked?(@current_user)
+                    json.bookmarked roll.bookmarked?(@current_user)
+                    json.bookmark_count roll.bookmark_count
+                    json.created_at roll.created_at
+                    json.updated_at roll.updated_at
+                    json.creator do
+                        user = roll.fetch_user
+                        json.id user.id
+                        json.username user.username
+                        json.avatar user.avatar_url
+                        json.verified user.verified
+                    end
+                end
             end
             json.comment do
                 json.id comment.id
