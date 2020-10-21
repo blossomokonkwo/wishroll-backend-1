@@ -4,7 +4,7 @@ class V3::Recommendation::RollsController < ApplicationController
         limit = 15
         offset = params[:offset]
         document_text = Roll.fetch(params[:roll_id]).hashtags.pluck(:text).flatten[0]
-        @rolls = Roll.fetch_multi(HashTag.recommend(document_text).limit(limit).offset(offset).pluck(:post_id)).uniq {|p| p.id}
+        @rolls = Roll.fetch_multi(Hashtag.recommend(document_text).limit(limit).offset(offset).pluck(:post_id)).uniq {|p| p.id}
         if @rolls.any?
             @current_user = current_user
             render :index, status: :ok
