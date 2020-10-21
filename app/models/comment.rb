@@ -44,5 +44,6 @@ class Comment < ApplicationRecord
   #cache API's
   include IdentityCache
   cache_belongs_to :post
+  cache_belongs_to :roll
 
 end
