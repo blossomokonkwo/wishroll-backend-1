@@ -139,13 +139,13 @@ class User < ApplicationRecord
     has_many :chat_rooms, through: :chat_room_users
 
     #all of the messages that a user has created
-    has_many :messages, foreign_key: :sender_id
+    has_many :messages, foreign_key: :sender_id, dependent: :destroy
 
     #all of the topics that a user has created
     has_many :topics
 
     #all of the chat rooms that a user is responsible for creating 
-    has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id
+    has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id, dependent: :destroy
 
     #a user can have multiple devices
     has_many :devices, class_name: "Device", foreign_key: :user_id, dependent: :destroy
