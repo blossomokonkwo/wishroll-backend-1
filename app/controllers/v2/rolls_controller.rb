@@ -9,7 +9,6 @@ class V2::RollsController < ApplicationController
              @roll.thumbnail_url = url_for(@roll.thumbnail_image) if @roll.thumbnail_image.attached?  
             if @roll.save
                 CaptionExtractionJob.perform_now(@roll.id)
-                CreateLocationJob.perform_now(params[:ip_address] || request.ip, params[:timezone], @roll.id, @roll.class.name)
                 render json: nil, status: :created
             else
                 render json: {error: "Could not create media and thumbnail urls for the specified post"}, status: 500
