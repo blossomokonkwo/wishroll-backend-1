@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
     has_many :tags, -> {select([:id, :text])}, dependent: :destroy
     has_many :comments, dependent: :destroy
-    belongs_to :user, counter_cache: :total_num_posts
+    belongs_to :user
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :views, as: :viewable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
