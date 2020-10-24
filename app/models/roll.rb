@@ -1,6 +1,6 @@
 class Roll < ApplicationRecord
   #Associations
-  belongs_to :user, counter_cache: :total_num_rolls
+  belongs_to :user
   has_many :hashtags, as: :hashtaggable, dependent: :destroy
   has_many :mentions, as: :mentionable, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
