@@ -13,14 +13,15 @@ class User < ApplicationRecord
     #Associations 
     enum gender: [:male, :female, :unspecified]
     has_one :location, as: :locateable, dependent: :destroy
+    has_many :visits, class_name: "Ahoy::Visit"
     has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
     has_many :rolls, dependent: :destroy
     has_many :comments, dependent: :destroy
-    has_many :views, dependent: :destroy
-    has_many :shares, dependent: :destroy
+    has_many :views
+    has_many :shares
     has_many :likes, dependent: :destroy
     has_many :bookmarks, dependent: :destroy 
-    has_many :searches, dependent: :destroy
+    has_many :searches
     has_many :created_mentions, class_name: "Mention", foreign_key: :user_id, dependent: :destroy
     has_many :mentions, class_name: "Mention", foreign_key: :mentioned_user_id, dependent: :destroy
     has_many :hashtags, dependent: :destroy
