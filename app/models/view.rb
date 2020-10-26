@@ -1,6 +1,6 @@
 class View < ApplicationRecord
   #Associations
-  belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url])}
+  belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url])}, optional: true
   belongs_to :viewable, polymorphic: true, counter_cache: :view_count, touch: true
 
   #Validations

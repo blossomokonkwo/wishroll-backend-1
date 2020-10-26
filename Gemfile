@@ -34,6 +34,7 @@ gem 'pg_search'
 gem 'identity_cache'
 gem 'cityhash'
 gem 'unread'
+gem 'ahoy_matey'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

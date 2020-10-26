@@ -17,7 +17,7 @@ class SearchActivitiesJob < ApplicationJob
                     when "location"
                         result_type = 5
                     else
-                        result_type = 6
+                        result_type = nil
                     end
                     user.searches.create!(query: query, result_type: result_type)
                 rescue => exception
@@ -25,6 +25,14 @@ class SearchActivitiesJob < ApplicationJob
                         search.occurences += 1
                         search.save!
                     end
+                    logger.debug {"Couldn't create a Search object for query #{query} #{exception}"}
+                end
+            end
+        else
+            ActiveRecord::Base.connected_to(role: :writing) do
+                begin
+                    Search.create!(query: query)
+                rescue => exception
                     logger.debug {"Couldn't create a Search object for query #{query} #{exception}"}
                 end
             end
