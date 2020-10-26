@@ -7,7 +7,9 @@ class V3::Search::PostsController < ApplicationController
         if @posts.any?
             @current_user = current_user
             render :index, status: :ok
+            SearchActivitiesJob.perform_now(query: params[:q], user_id: current_user.id, content_type: params['content-type'])
         else
+            SearchActivitiesJob.perform_now(query: params[:q], user_id: current_user.id, content_type: nil)
             render json: nil, status: :not_found
         end
     end
