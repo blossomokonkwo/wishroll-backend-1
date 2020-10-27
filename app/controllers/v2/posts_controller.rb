@@ -2,7 +2,7 @@ class V2::PostsController < ApplicationController
     before_action :authorize_by_access_header!
 
     def create
-      unless !current_user.banned
+      unless current_user.banned
         begin
           @post = current_user.posts.create!(caption: params[:caption], restricted: current_user.restricted, popularity_rank: 1.0)
           @post.media_item.attach params[:media_item]
