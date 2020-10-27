@@ -83,6 +83,18 @@ Rails.application.routes.draw do
       namespace :bookmarks do
         resources :posts, only: [:index]
       end
+      namespace :liked do
+        resources :posts, only: [:index]
+      end
+      namespace :recommendation do
+        resources :posts, only: [:index]
+      end
+      namespace :uploaded do
+        resources :posts, only: [:index]
+      end
+      namespace :search do 
+        resources :posts, only: [:index]
+      end
     end
     post 'signup', to: "signup#new"
   end
