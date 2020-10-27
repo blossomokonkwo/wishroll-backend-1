@@ -1,16 +1,24 @@
 class V2::PostsController < ApplicationController
     before_action :authorize_by_access_header!
-    #create a post object along with all the tags. Save the post and tags to the DB.
+
     def create
-      @post = Post.create(caption: params[:caption], user_id: current_user.id, restricted: current_user.restricted, popularity_rank: 1.0)
-      @post.media_item.attach params[:media_item]
-      @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
-      @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
-      @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
-      if @post.save
-        render json: {post_id: @post.id}, status: :created
-      else 
-        render json: nil, status: :bad
+      unless current_user.banned
+        begin
+          @post = current_user.posts.create!(caption: params[:caption], restricted: current_user.restricted, popularity_rank: 1.0)
+          @post.media_item.attach params[:media_item]
+          @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
+          @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
+          @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?
+          if @post.save
+            render json: {post_id: @post.id}, status: :created
+          else 
+            render json: nil, status: 400
+          end
+        rescue => exception
+          render json: {error: "An error occured when uploading post #{exception}"}, status: 500
+        end
+      else
+        render json: nil, status: :forbidden
       end
     end
 

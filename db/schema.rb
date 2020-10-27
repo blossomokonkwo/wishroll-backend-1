@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_26_061850) do
+ActiveRecord::Schema.define(version: 2020_10_27_154535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -483,6 +483,10 @@ ActiveRecord::Schema.define(version: 2020_10_26_061850) do
     t.integer "gender", default: 2, null: false
     t.bigint "wishroll_score", default: 0, null: false
     t.boolean "restricted", default: false
+    t.boolean "banned", default: false, null: false
+    t.boolean "deactivated", default: false, null: false
+    t.index ["banned"], name: "index_users_on_banned"
+    t.index ["deactivated"], name: "index_users_on_deactivated"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"
