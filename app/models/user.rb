@@ -12,8 +12,8 @@ class User < ApplicationRecord
     
     #Associations 
     enum gender: [:male, :female, :unspecified]
-    has_one :location, as: :locateable, dependent: :destroy
-    has_many :visits, class_name: "Ahoy::Visit"
+    has_one :location, as: :locateable, dependent: :destroy    
+    has_many :visits
     has_many :posts, -> {order(created_at: :desc)}, dependent: :destroy
     has_many :rolls, dependent: :destroy
     has_many :comments, dependent: :destroy
