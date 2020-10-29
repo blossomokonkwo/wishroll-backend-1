@@ -534,6 +534,8 @@ ActiveRecord::Schema.define(version: 2020_10_28_074035) do
     t.string "utm_term"
     t.string "utm_content"
     t.string "utm_campaign"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_visits_on_user_id"
     t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true
   end

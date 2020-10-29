@@ -35,6 +35,7 @@ class CreateVisits < ActiveRecord::Migration[6.0]
       t.string :utm_term
       t.string :utm_content
       t.string :utm_campaign
+      t.timestamps
     end
     add_index :visits, :visit_token, unique: true
   end
