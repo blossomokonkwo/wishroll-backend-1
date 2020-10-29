@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_27_154535) do
+ActiveRecord::Schema.define(version: 2020_10_28_074035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -507,6 +507,35 @@ ActiveRecord::Schema.define(version: 2020_10_27_154535) do
     t.index ["uuid"], name: "index_views_on_uuid"
     t.index ["viewable_id"], name: "index_views_on_viewable_id"
     t.index ["viewable_type", "viewable_id"], name: "index_views_on_viewable_type_and_viewable_id"
+  end
+
+  create_table "visits", force: :cascade do |t|
+    t.string "visit_token"
+    t.string "visitor_token"
+    t.bigint "user_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "referring_domain"
+    t.text "landing_page"
+    t.string "browser"
+    t.string "os"
+    t.string "device_type"
+    t.string "app_version"
+    t.string "os_version"
+    t.string "platform"
+    t.string "country"
+    t.string "region"
+    t.string "city"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "utm_campaign"
+    t.index ["user_id"], name: "index_visits_on_user_id"
+    t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -60,6 +60,10 @@ Rails.application.routes.draw do
   #the delete account endpoint. Before the users account is destroyed make sure to flush the users session data and tokens.
   delete 'user/delete', to: "users#destroy"
 
+  namespace :analytics do 
+    resources :visits, only: [:create]
+  end
+
   namespace :v3 do
     namespace :trending do
       resources :trending_tags, only: [:index, :show]
