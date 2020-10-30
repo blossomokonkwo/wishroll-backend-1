@@ -99,6 +99,7 @@ Rails.application.routes.draw do
       namespace :search do 
         resources :posts, only: [:index]
       end
+      resources :shares, only: [:create]
     end
     post 'signup', to: "signup#new"
   end
