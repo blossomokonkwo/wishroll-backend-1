@@ -1,4 +1,3 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'support@wishroll.co'
-  layout 'mailer'
+  default from: 'info@wishroll.co'
 end
