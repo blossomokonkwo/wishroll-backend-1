@@ -35,6 +35,7 @@ gem 'identity_cache'
 gem 'cityhash'
 gem 'unread'
 gem 'ahoy_matey'
+gem 'sendgrid-ruby'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
