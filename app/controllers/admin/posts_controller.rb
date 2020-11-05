@@ -1,4 +1,4 @@
-class Admin::PostsController < AdminController
+class Admin::PostsController < ActionController::API
     
     def index
         

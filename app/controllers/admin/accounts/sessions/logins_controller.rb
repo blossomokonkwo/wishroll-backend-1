@@ -1,4 +1,4 @@
-class Admin::Accounts::Sessions::LoginsController < AdminController
+class Admin::Accounts::Sessions::LoginsController < ActionController::API
     def create
         #the admin user authenticates by providing their email and password associated with their account
         if @admin_user = AdminUser.find_by(email: params[:email]) and @admin_user.authenticate(params[:password])
