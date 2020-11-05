@@ -5,18 +5,19 @@ Rails.application.routes.draw do
   get 'contact', to: "support#contact"
   get 'home', to: "home#homepage"
   get 'what-is-wishroll', to: "home#whatis"
-  constraints subdomain: 'admin' do 
-    namespace :admin do
+
+  
+
+  #Admin Routes
+  namespace :admin do
+    namespace :accounts do
+      namespace :sessions do
+        post 'login', to: 'logins#create'    
+        delete 'logout', to: 'logouts#destroy'
+      end
+    end
+    namespace :posts do
       
-      root to: 'admin#index'
-      resources :users
-      resources :wishlists, only: [:index, :show] do 
-        resources :wishes, only: [:index, :show, :destroy]
-      end
-      resources :posts, except: [:create, :update] do
-        delete 'report', to: 'admin/posts#report'
-        resources :comments, only: [:destroy, :index, :show]
-      end
     end
   end
   

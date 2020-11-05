@@ -51,6 +51,16 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
+  ActionMailer::Base.smtp_settings = {
+    :user_name => 'apikey',
+    :password => ENV["SENDGRID_API_KEY"],
+    :domain => 'www.wishroll.co',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false

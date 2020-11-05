@@ -7,12 +7,16 @@ class Relationship < ApplicationRecord
 
   after_destroy do
     #we want to flush the cache for the boolean value that determines whether a user is following another user 
-    logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.delete("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}")
-    follower_user.touch; followed_user.touch
+    if follower_user and followed_user
+      logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.delete("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}")
+      follower_user.touch; followed_user.touch
+    end
   end
   after_create do
-    #after a relationship is created, we want to write a boolean value of true to cache which indicates that the following user is indeed following the followed user
-    logger.debug {"[WishRoll Cache] write succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.write("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}", true)
-    follower_user.touch; followed_user.touch
+    if follower_user and followed_user
+      #after a relationship is created, we want to write a boolean value of true to cache which indicates that the following user is indeed following the followed user
+      logger.debug {"[WishRoll Cache] write succeeded for WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}"} if Rails.cache.write("WishRoll:Cache:Relationship:Follower#{follower_user.id}:Following#{followed_user.id}", true)
+      follower_user.touch; followed_user.touch
+    end
   end
 end

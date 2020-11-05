@@ -4,7 +4,6 @@ class V2::LoginController < ApplicationController
             payload = {id: @user.id, username: @user.username}
             session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
             tokens = session.login
-            ahoy.authenticate(@user)
             render json: {user: {id: @user.id, username: @user.username, bio: @user.bio != nil ? @user.bio : "", profile_background_url: @user.profile_background_url, verified: @user.verified, email: @user.email, name: @user.name, created_at: @user.created_at, avatar: @user.avatar_url}, access_token: {access: tokens[:access], csrf: tokens[:csrf], access_expires_at: tokens[:access_expires_at]}} , status: :ok
           else
             render json: {error: "Invalid credentials"}, status: :unauthorized
