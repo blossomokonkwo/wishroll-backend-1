@@ -21,7 +21,7 @@ class Post < ApplicationRecord
 
     def viewed?(user)
         Rails.cache.fetch("WishRoll:Cache:View:Viewer:#{user.id}:Viewed:#{self.uuid}") {
-            self.views.find_by(user: user).present?
+                self.views.find_by(user: user).present?
         }
     end
     
