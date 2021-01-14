@@ -64,7 +64,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
-    ahoy_matey (3.0.5)
+    ahoy_matey (3.1.0)
       activesupport (>= 5)
       device_detector
       geocoder (>= 1.4.5)
@@ -110,7 +110,7 @@ GEM
     crass (1.0.5)
     dalli (2.7.10)
     device_detector (1.0.5)
-    errbase (0.2.0)
+    errbase (0.2.1)
     erubi (1.9.0)
     ffi (1.11.1)
     geocoder (1.6.3)
