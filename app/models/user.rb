@@ -54,6 +54,15 @@ class User < ApplicationRecord
         .offset(offset)
         .limit(limit)
     end
+
+    def liked_rolls(limit: 25, offset:)
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        .joins(:likes)
+        .where(likes: {user: self})
+        .order("likes.created_at DESC")
+        .offset(offset)
+        .limit(limit)
+    end
     
     
     def bookmarked_posts(limit: 25, offset:)

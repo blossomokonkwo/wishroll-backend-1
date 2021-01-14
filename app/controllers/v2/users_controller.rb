@@ -70,7 +70,21 @@ class V2::UsersController < ApplicationController
     end
 
     def liked_rolls
-        render json: nil, status: :not_found
+        if @user = User.fetch(params[:user_id])
+            offset = params[:offset]
+            limit = 18
+            unless current_user.blocked?(@user) or @user.blocked?(current_user)
+                @rolls = @user.liked_rolls(limit: limit, offset: offset).to_a
+                if @rolls.any?
+                    @current_user = current_user
+                    render :liked_rolls, status: :ok
+                else 
+                    render json: nil, status: :not_found
+                end
+            end
+        else 
+            render json: {error: "Couldn't find user with id #{params[:user_id]}"}, status: :not_found
+        end
     end
 
     def liked_posts
