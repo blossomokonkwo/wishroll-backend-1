@@ -6,11 +6,11 @@ json.array! @posts.each do |post|
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
     json.comment_count post.comments_count
-    json.viewed post.viewed?(@current_user)
+    json.viewed true #post.viewed?(@current_user)
     json.view_count post.view_count
-    json.bookmarked post.bookmarked?(@current_user)
+    json.bookmarked true #post.bookmarked?(@current_user)
     json.bookmark_count post.bookmark_count
-    json.liked post.liked?(@current_user)
+    json.liked true #post.liked?(@current_user)
     json.like_count post.likes_count
     json.share_count post.share_count
     json.caption post.caption
@@ -19,6 +19,6 @@ json.array! @posts.each do |post|
         json.username user.username
         json.verified user.verified
         json.avatar user.avatar_url
-        json.following @current_user.following?(user) if user != @current_user
+        json.following nil #@current_user.following?(user) if user != @current_user
     end
 end
