@@ -1,4 +1,4 @@
-class V3::Keyboard::Uploaded::PostsController < ApplicationController
+class Api::V3::Keyboard::Uploaded::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     
     def index

@@ -1,4 +1,4 @@
-class V3::Keyboard::SharesController < ApplicationController 
+class Api::V3::Keyboard::SharesController < ApplicationController 
     def create
         if params[:post_id] and post = Post.find(params[:post_id])
             begin

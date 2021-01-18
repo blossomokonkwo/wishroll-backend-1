@@ -1,4 +1,4 @@
-class V3::Keyboard::Trending::PostsController < APIController
+class Api::V3::Keyboard::Trending::PostsController < APIController
     def index
         offset = params[:offset]
         limit = 15
