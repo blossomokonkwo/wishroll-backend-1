@@ -1,17 +1,12 @@
 class LoginController < ApplicationController
-  def create
-    #this method will be called when a user is logging in. Session should be created.
-    @user = User.where(username: params[:access]).or(User.where(email: params[:access])).first
-    if @user and @user.authenticate(params[:password])
-      #create session and render it to the client
-      #the users username, verification status, email, profile_picture, and name are returned via the payload
-      payload = {user_id: @user.id, username: @user.username, is_verified: @user.verified, email: @user.email, full_name: @user.name, profile_picture: @user.avatar_url}
-      session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
-      tokens = session.login
-      render json: {bio: @user.bio, access: tokens[:access], csrf: tokens[:csrf], access_expires_at: tokens[:access_expires_at]} , status: :ok
-    else
-      response["Unauthorized"] = "Invalid credntials. Please provide a valid email and password"
-      render json: {error: "Invalid credentials"}, status: :unauthorized
-    end
+  def new
+    if @user = User.where(username: params[:access]).or(User.where(email: params[:access])).first and @user.authenticate(params[:password])
+        payload = {id: @user.id, username: @user.username}
+        session = JWTSessions::Session.new(payload: payload, refresh_by_access_allowed: true)
+        tokens = session.login
+        render json: {user: {id: @user.id, username: @user.username, bio: @user.bio != nil ? @user.bio : "", profile_background_url: @user.profile_background_url, verified: @user.verified, email: @user.email, name: @user.name, created_at: @user.created_at, avatar: @user.avatar_url}, access_token: {access: tokens[:access], csrf: tokens[:csrf], access_expires_at: tokens[:access_expires_at]}} , status: :ok
+      else
+        render json: {error: "Invalid credentials"}, status: :unauthorized
+      end   
   end
 end

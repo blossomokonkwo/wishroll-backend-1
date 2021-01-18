@@ -1,17 +1,46 @@
 class UsersController < ApplicationController
-  before_action :authorize_by_access_header!
+  before_action :authorize_by_access_header!, only: [:update, :destroy, :block]
 
   def show
-    @user = User.find_by(username: params[:username])
-    @current_user = current_user
-    if @current_user.blocked_users.include?(@user) or @user.blocked_users.include?(@current_user)
-      render json: nil, status: 403 #the 403 status signifies that a user is blocked/forbidden from the requested content
-    else
-      if @user
-        render :show, status: :ok
-      else
-        render json: nil, status: 404
+    # fetch the user from the cache via the username in the params hash and check if the user exists
+    if @user = User.fetch_by_username(params[:username])
+      begin
+        # fetch the access tokens from the request header
+        authorize_by_access_header! 
+
+        # perfom any actions that require an authorized user
+
+        # Ensure that the current_user isn't the requested user. If not, ensure that the current_user isn't accessing a blocked account
+        unless current_user == @user 
+          unless current_user.blocked?(@user) or @user.blocked?(current_user) 
+
+            # set this var to the following status of the current_user and the requested user
+            @currently_following = current_user.following?(@user)
+          else
+            # respond to the blocked account based on request format
+            respond_to do |format|
+              format.html {render html: "Blocked Yo ass", status: :forbidden}
+              format.json {render json: {error: "The current user has been blocked"}, status: :forbidden}
+            end
+          end
+        end
+      rescue => exception
+        # if the request is unauthorized, handle the exception by doing the following: 
       end
+      
+      # return data based on format 
+      respond_to do |format|
+        format.html {render :show, status: :ok}
+        format.json {render :show, status: :ok}
+      end
+
+    else 
+      # return a not found error response when a user can't be found via their username or via their user id
+      respond_to do |format|
+        format.html {render html: "The account couldn't be found", status: :not_found }
+        format.json {render json: {error: "The account couldn't be found"}, status: :not_found}
+      end
+
     end
   end
 

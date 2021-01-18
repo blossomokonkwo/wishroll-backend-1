@@ -1,3 +1,5 @@
+require "active_support/core_ext/integer/time"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -23,7 +25,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.action_controller.asset_host = 'http://assets.example.com'
+  # config.asset_host = 'http://assets.example.com'
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -64,33 +66,28 @@ Rails.application.configure do
                      :pool_size => 5 #number five represents the max number of threads that the puma server utilizes
                     }
 
-config.identity_cache_store = :mem_cache_store, ENV["MEMCACHIER_SERVERS"].split(","), {
-  :username => ENV["MEMCACHIER_USERNAME"],
-  :password => ENV["MEMCACHIER_PASSWORD"],
-  expires_in: 6.hours.to_i, # in case of network errors when sending a delete
-  failover: false, # avoids more cache consistency issues
-}
+  config.identity_cache_store = :mem_cache_store, ENV["MEMCACHIER_SERVERS"].split(","), {
+    :username => ENV["MEMCACHIER_USERNAME"],
+    :password => ENV["MEMCACHIER_PASSWORD"],
+    expires_in: 6.hours.to_i, # in case of network errors when sending a delete
+    failover: false, # avoids more cache consistency issues
+  }
   # Use a real queuing backend for Active Job (and separate queues per environment)
   config.active_job.queue_adapter = :sidekiq
   config.active_job.queue_name_prefix = Rails.env
   config.active_job.queue_name_prefix = "wishroll_#{Rails.env}"
 
-  config.action_mailer.perform_caching = false
+  config.action_mailer.perform_caching = true
 
-
-config.active_record.database_selector = { delay: 2.seconds }
-config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
-
-ActionMailer::Base.smtp_settings = {
-  :user_name => 'apikey',
-  :password => ENV["SENDGRID_API_KEY"],
-  :domain => 'www.wishroll.co',
-  :address => 'smtp.sendgrid.net',
-  :port => 587,
-  :authentication => :plain,
-  :enable_starttls_auto => true
-}
+  ActionMailer::Base.smtp_settings = {
+    :user_name => 'apikey',
+    :password => ENV["SENDGRID_API_KEY"],
+    :domain => 'www.wishroll.co',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -98,6 +95,12 @@ ActionMailer::Base.smtp_settings = {
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
+
+  # Log disallowed deprecations.
+  config.active_support.disallowed_deprecation = :log
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
@@ -114,4 +117,25 @@ ActionMailer::Base.smtp_settings = {
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Inserts middleware to perform automatic connection switching.
+  # The `database_selector` hash is used to pass options to the DatabaseSelector
+  # middleware. The `delay` is used to determine how long to wait after a write
+  # to send a subsequent read to the primary.
+  #
+  # The `database_resolver` class is used by the middleware to determine which
+  # database is appropriate to use based on the time delay.
+  #
+  # The `database_resolver_context` class is used by the middleware to set
+  # timestamps for the last write to the primary. The resolver uses the context
+  # class timestamps to determine how long to wait before reading from the
+  # replica.
+  #
+  # By default Rails will store a last write timestamp in the session. The
+  # DatabaseSelector middleware is designed as such you can define your own
+  # strategy for connection switching and pass that into the middleware through
+  # these configuration options.
+  config.active_record.database_selector = { delay: 2.seconds }
+  config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+  config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end
