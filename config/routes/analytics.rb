@@ -1,3 +1,5 @@
-namespace :analytics do 
-    resources :visits, only: [:create]
+  scope module: :analytics do
+    constraints subdomain: :analytics do
+      resources :visits, only: [:create]
+    end
   end
