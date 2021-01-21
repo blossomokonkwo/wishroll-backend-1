@@ -151,5 +151,14 @@ scope module: :api do
         delete 'unlike', to: 'likes#destroy'
         get ':username', to: 'users#show', constraints: {username: /[0-9a-z_.]{1,60}/}
       end
+
+      scope module: :v1 do
+        resource :post
+      end
+
+
+
+
+
     end 
   end
