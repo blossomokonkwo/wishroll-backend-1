@@ -141,19 +141,18 @@ scope module: :api do
         get ':username', to: 'users#show', constraints: {username: /[0-9a-z_.]{1,60}/}
       end
 
-    scope module: :sessions do
-      post 'login', to: 'login#new'
-      delete 'logout', to: 'logout#destroy'
-    end
+    namespace :v1 do
+      scope module: :sessions do
+        post 'login', to: 'login#new'
+        delete 'logout', to: 'logout#destroy'
+      end
 
-    scope module: :registration do
-      post 'signup', to: "signup#new"
-      post 'signup/email', to: "signup#validate_email"
-      post 'signup/username', to: "signup#validate_username"
-    end
+      scope module: :registration do
+        post 'signup', to: "signup#new"
+        post 'signup/email', to: "signup#validate_email"
+        post 'signup/username', to: "signup#validate_username"
+      end
 
-    scope module: :v1 do
-      resource :post
     end
 
 

@@ -1,4 +1,4 @@
-class Api::Sessions::LogoutController < APIController
+class Api::V1::Sessions::LogoutController < APIController
     before_action :authorize_by_access_header!
     
     def destroy

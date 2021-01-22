@@ -1,4 +1,4 @@
-class Api::Sessions::LoginController < APIController
+class Api::V1::Sessions::LoginController < APIController
 
   def new
     if @user = User.where(username: params[:access]).or(User.where(email: params[:access])).first and @user.authenticate(params[:password])

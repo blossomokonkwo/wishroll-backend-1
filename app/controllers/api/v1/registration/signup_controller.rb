@@ -1,4 +1,4 @@
-class Api::Registration::SignupController < APIController
+class Api::V1::Registration::SignupController < APIController
     def validate_email        
         if User.find_by(email: params[:email])
             render json: {error: "That email is already in use with another account"}, status: :bad_request
