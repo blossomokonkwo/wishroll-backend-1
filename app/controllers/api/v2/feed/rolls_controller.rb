@@ -22,7 +22,12 @@ class Api::V2::Feed::RollsController < APIController
             if @rolls.any?
                 render :index, status: :ok
             else
-                render json: nil, status: :not_found
+                @rolls = Roll.where(featured: true).limit(25)
+                if @rolls.any? 
+                    render :index, status: :ok
+                else
+                    render json: nil, status: :not_found
+                end
             end
 
         rescue => exception

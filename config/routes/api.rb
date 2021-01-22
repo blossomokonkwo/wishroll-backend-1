@@ -99,17 +99,6 @@ scope module: :api do
         end
     
         resources :announcements, only: [:index, :create, :show]
-
-        scope module: :sessions do
-          post 'login', to: 'login#new'
-          delete 'logout', to: 'logout#destroy'
-        end
-
-        scope module: :registration do
-          post 'signup', to: "signup#new"
-          post 'signup/email', to: "signup#validate_email"
-          post 'signup/username', to: "signup#validate_username"
-        end
     
         post 'chat_rooms/:id/appear', to: "chat_room_users#appear"
         delete 'chat_rooms/:id/disappear', to: "chat_room_users#disappear"
@@ -152,10 +141,20 @@ scope module: :api do
         get ':username', to: 'users#show', constraints: {username: /[0-9a-z_.]{1,60}/}
       end
 
-      scope module: :v1 do
-        resource :post
-      end
+    scope module: :sessions do
+      post 'login', to: 'login#new'
+      delete 'logout', to: 'logout#destroy'
+    end
 
+    scope module: :registration do
+      post 'signup', to: "signup#new"
+      post 'signup/email', to: "signup#validate_email"
+      post 'signup/username', to: "signup#validate_username"
+    end
+
+    scope module: :v1 do
+      resource :post
+    end
 
 
 
