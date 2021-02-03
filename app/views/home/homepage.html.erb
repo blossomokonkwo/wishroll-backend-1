@@ -7,13 +7,13 @@
 
             <title>WishRoll</title>
 
-            <meta name="description" content="An app with an unlimited collection of reaction media, and a place for fun groupchats about interesting topics.">
+            <meta name="description" content="WishRoll App">
 
             <meta name="viewport" content="width=device-width">
 
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-            <meta name="keywords" content="wishroll, memes, memes 2020, twitter memes, funny coronavirus memes, stonks memes, ight imma head out memes, epstein memes, corona virus memes, coronavirus twitter, funny memes 2020">
+            <meta name="keywords" content="wishroll, memes, reaction pictures, reaction videos">
 
             <meta name="author" content="WishRoll Team">
             
@@ -21,95 +21,66 @@
             
             <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 
-            <%= stylesheet_link_tag "mainstylesheet.css" %>
+            <%# <link rel="stylesheet" href="Landing.css"> %>
 
-            <%= favicon_link_tag "wishrollfavicon.png"%>
+            <%= stylesheet_link_tag "Landing.css" %> 
+
+            <%= favicon_link_tag "wishrollfavicon.png"%> 
             
 
         </head>
 
         <body>
 
+            <div id="section1">
+
+                <div class="center">
+                    
+                        <h2>WishRoll</h2>
+                        <h1>candid self expression.</h1>
+                    
+
+
+                   
+                </div>
+
+                <div class="lower">
+                    <a href=#section2><h3>We're still in Beta, but this is what we've been up to...</h3></a>
             
-            <nav>
-                <input type="checkbox" id="check">
-
-                <label for="check" class="checkbtn">
-                    <i class="fas fa-bars"></i> 
-                     </label>
-                        <label class="logo">WishRoll <a><%= image_tag("wishrollfavicon.png")%></a></label>
-                    <ul>
-                        <li><a class="current" >Download</a></li>
-                        <li><a><%= link_to "What is WishRoll?", "/what-is-wishroll" %> </a></li>
-                        <li><a><%= link_to "Contact", "/contact" %> </a></li>
-                    </ul>
-                </nav>
-               
-               
-        
                     
-                <section id="showcase">
+                    <a href="#section2"><%= image_tag("Icon_down_outline-2.png",:size => "50x50")%></a>
 
-                <section id="boxes">
+                </div>
 
-                    <div class="container">
+            </div>
 
-                        <div class="box">
-                            <%= image_tag("ScreenOne.png")%>
+            <div id="section2">
+                <div class="center2">
                     
-                        </div>
-
-                        <div class="box">
-                        <%= image_tag("ScreenTwo.png")%>
+                    <h1>What we're building:</h1>
+                 
+                  
+                     
+                        <ul>
+                            <li>We're building a platform to allow people to express themselves <br> using short video messages</li>
                             
-                            </div>
-
-                        <div class="box">
-                        <%= image_tag("ScreenThree.png")%>
                             
 
-                        </div>
+                        </ul>
+                </div>  
 
-                         
-                    
-                    </div>
+                
 
-                    <h1>Download WishRoll</h1>
+            </div>
+
                     
+                
+
+                
 
                    
 
-                </section>
-
-                
-                </section>
-                
-                        
-                
-                
-                    <div class="containerImage">
-                        
-
-                        <%= link_to image_tag("GooglePlay.png")%>
-                        <%=link_to  image_tag("ApplePlay.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
-                        
-                        
-
-                        
-
-                        <!-- What The tutorial guy was saying I should type -->
-                        <!--
-                        <form>
-                            <input type= "email" placeholders="Enter Email...">  
-                    
-                        
-                        <button type="submit" class="button_1">Subscribe</button>
-                        </form>  
-                        I will be adding the download button instead, not sure how I will yet but its gonna happen folks
-                        -->
-                    
-
-                    </div>
+               
                 
                
 
@@ -120,16 +91,31 @@
            
 
 
-           <footer>
-                <p>WishRoll &copy; 2020 </p>
-                <p><a href="www.google.com">Privacy Policy</a> <a href="www.google.com"> Terms and Conditions</a> <a href="www.google.com"> Policy Terms</a></p>
-            </footer>
-    </body>        
+        <div id="section3">
+            
+                <div id="left">
+                    <h3>Come say hi:</h3>
+                    <a href="http://www.instagram.com/wishroll" target="_blank"><%= image_tag("instagram.png",:size => "30x30", :style =>"padding: 5px;")%></a>
+                    <a href="http://www.twitter.com/wishroll" target="_blank" ><%= image_tag("twitter.png",:size => "30x30")%></a>
+                    <a href="http://vm.tiktok.com/ZMJK1X8cx/" target="_blank" ><%= image_tag("tiktok.png",:size => "30x30")%></a>
+                     
+        
+
+                </div>
+
+
+
+                <div id="right">
+                    <h3>Contact Us:</h3>
+                    <p>info@wishroll.co</p>
+
+                </div>
+           
+        </div>
+
+    </body> 
+    
+    
         
 </html>
-
-
-
-
-
 

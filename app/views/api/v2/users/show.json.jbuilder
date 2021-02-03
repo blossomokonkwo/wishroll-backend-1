@@ -1,0 +1,12 @@
+json.id @user.id
+json.created_at @user.created_at
+json.updated_at @user.updated_at
+json.username @user.username
+json.name @user.name
+json.verified @user.verified
+json.bio @user.bio
+json.num_followers @user.followers_count
+json.num_following @user.following_count
+json.avatar @user.avatar_url
+json.profile_background_url @user.profile_background_url
+json.following @following

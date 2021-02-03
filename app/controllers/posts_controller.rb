@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authorize_by_access_header!
+  before_action :authorize_by_access_header!, only: [:create, :destroy]
   #create a post object along with all the tags. Save the post and tags to the DB.
   def create
     @post = Post.create(caption: params[:caption], user_id: current_user.id)
@@ -13,27 +13,51 @@ class PostsController < ApplicationController
   end
   
   def show
-    #render a specific post to the user along with all the involved tags
-    @post = Post.find(params[:id])
-    if @post 
+
+    # ensure that the post is found
+    if @post = Post.fetch(params[:id]) 
       @user = @post.user
-      if current_user.blocked_users.include?(@user) or @user.blocked_users.include?(current_user)
-          render json: nil, status: 403 #user is blocked therefore he is forbidden
-      else
-        @id = current_user.id #the user that posted the content
-        if @id != @user.id
-          ActiveRecord::Base.connected_to(role: :writing) do
-            @post.view_count += 1
-            @user.view_count += 1
-            @user.save 
-            @post.save
+      begin
+        # fetch the access tokens from the request header
+        authorize_by_access_header!
+
+        # perfom any actions that require an authorized user
+
+        unless current_user == @user
+
+          unless current_user.blocked?(@user) or @user.blocked?(current_user)
+            @following = current_user.following?(@user)
+          else
+
+            # handle a forbidden response due to blocked accounts
+            respond_to do |format|
+              format.html {render html: "Blocked yo ass", status: :forbidden}
+              format.json {render json: {error: "Blocked", status: :forbidden}}
+            end
+
           end
-        end
-          render :show, status: 200
+        end  
+        @current_user = current_user
+      rescue => exception
+        # handle any actions needed for an anauthorized user  
       end
-    else
-      render json: nil, status: 404
+
+      # handle a 200 ok response based on request format
+      respond_to do |format|
+        format.html {render :show, status: :ok}
+        format.json {render :show, status: :ok}
+      end
+
+    else 
+
+      # handle not found response
+      respond_to do |format|
+        format.html {render html: "Post Not Found", status: :not_found}
+        format.json {render json: "Not Found", status: :not_found}
+      end
+
     end
+
   end
 
   def destroy
@@ -41,7 +65,7 @@ class PostsController < ApplicationController
     if @post.destroy 
       render json: nil, status: :ok
     else
-      render json: {error: "Your post could not be deleted at this time"}, status: 400
+      render json: {error: "Post Couldn't be deleted"}, status: 400
     end
   end
 end

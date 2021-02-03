@@ -4,7 +4,7 @@ class User < ApplicationRecord
     acts_as_reader
     has_secure_password
     validates :email, :uniqueness => {message: "The email you have entered is already taken"}, presence: {message: "Please enter an appropriate email address"}, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "Please enter an appropriate email address"}, on: [:create, :update]
-    validates :username, uniqueness: true, presence: {message: "You must provide a valid username"}, format: {with: /([a-z0-9])*/, message: "Your username must be lowercase and can not include symbols"}, on: [:create, :update]
+    validates :username, uniqueness: true, presence: {message: "You must provide a valid username"}, exclusion: {in: %w(logout login signup signup home refresh terms privacy help account), message: "%{value} is reserved"}, format: {with: /[a-z0-9]([._](?![._])|[a-z0-9]){1,20}[a-z0-9]/, message: "Your username must be lowercase and can not include symbols"}, on: [:create, :update]
     validates :bio, length: {maximum: 100, too_long: "%{count} is the maximum amount of characters allowed"}
     has_one_attached(:avatar) #users can display an image or video as their profile avatar
     has_one_attached(:profile_background_media) #users can display a background image or video on their profile background 
@@ -51,6 +51,15 @@ class User < ApplicationRecord
         Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
         .where(user: self)
         .order(created_at: :desc)
+        .offset(offset)
+        .limit(limit)
+    end
+
+    def liked_rolls(limit: 25, offset:)
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        .joins(:likes)
+        .where(likes: {user: self})
+        .order("likes.created_at DESC")
         .offset(offset)
         .limit(limit)
     end
@@ -112,7 +121,7 @@ class User < ApplicationRecord
     end
 
     #a user can have many active relationships which relates a user to the account he / she follows through the Relationship model and the follower_id foreign key.
-    has_many :active_relationships, -> {order(created_at: :desc, id: :desc)},class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+    has_many :active_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
 
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 

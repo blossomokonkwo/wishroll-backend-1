@@ -1,10 +1,10 @@
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
     include JWTSessions::RailsAuthorization
     around_action :identity_cache_memoization
     rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
 
     def current_user
-        @current_user ||= User.current_user(payload["user_id"] || payload["id"])
+        @current_user ||= User.find(payload["id"])
     end
 
     #this method is called whenever an unauthorization occurs
