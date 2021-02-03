@@ -10,7 +10,7 @@ class Api::V2::Feed::RollsController < APIController
 
             # set the offset and limit
             offset = params[:offset]
-            limit = 18
+            limit = 25
 
             # create an array of the current user's followed users and appen the current user to the array.
             feed_users = current_user.followed_users.to_a << @current_user
@@ -22,7 +22,7 @@ class Api::V2::Feed::RollsController < APIController
             if @rolls.any?
                 render :index, status: :ok
             else
-                @rolls = Roll.where(featured: true).limit(25)
+                @rolls = Roll.limit(25)
                 if @rolls.any? 
                     render :index, status: :ok
                 else
