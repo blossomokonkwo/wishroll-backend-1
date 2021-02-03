@@ -1,9 +1,9 @@
 class Api::V2::Trending::PostsController < APIController
 
     def index 
-        limit = 18
+        limit = 25
         offset = params[:offset]
-        @posts = Post.where(restricted: false).order(popularity_rank: :desc).offset(offset).limit(limit).to_a
+        @posts = Post.order(created_at: :desc).offset(offset).limit(limit).to_a
         if @posts.any?
             begin
                 # fetch the access tokens from the HTTP header hash

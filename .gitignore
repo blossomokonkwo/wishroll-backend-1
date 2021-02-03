@@ -23,3 +23,5 @@
 /config/master.key
 
 sendgrid.env
+production.pem
+development.pem
