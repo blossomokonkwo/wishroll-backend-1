@@ -17,6 +17,7 @@ json.array! @rolls.each do |roll|
     json.user do 
         json.id user.id
         json.username user.username
+        json.name user.name
         json.verified user.verified
         json.avatar user.avatar_url
         json.following @current_user.following?(user) if @current_user and @current_user != user

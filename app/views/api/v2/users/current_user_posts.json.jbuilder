@@ -16,6 +16,7 @@ json.array! @posts.each do |post|
     json.user do 
         json.id @current_user.id
         json.username @current_user.username
+        json.name @current_user.name
         json.verified @current_user.verified
         json.avatar @current_user.avatar_url
     end
