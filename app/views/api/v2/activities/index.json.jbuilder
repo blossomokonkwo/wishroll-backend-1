@@ -11,6 +11,7 @@ json.array! @activities.each do |activity|
                 json.media_url roll.media_url
                 json.caption roll.caption
                 json.thumbnail_url roll.thumbnail_url
+                json.metadata roll.metadata
                 json.like_count roll.likes_count
                 json.share_count roll.share_count
                 json.comment_count roll.comments_count
@@ -35,6 +36,7 @@ json.array! @activities.each do |activity|
                 json.media_url post.media_url
                 json.caption post.caption
                 json.thumbnail_url post.thumbnail_url
+                json.metadata post.metadata
                 json.like_count post.likes_count
                 json.share_count post.share_count
                 json.comment_count post.comments_count
@@ -57,9 +59,10 @@ json.array! @activities.each do |activity|
             if post = comment.post                
                 json.post do
                     json.id post.id
-                    json.media_url post.media_url
                     json.caption post.caption
+                    json.media_url post.media_url
                     json.thumbnail_url post.thumbnail_url
+                    json.metadata post.metadata
                     json.like_count post.likes_count
                     json.share_count post.share_count
                     json.comment_count post.comments_count
@@ -83,6 +86,7 @@ json.array! @activities.each do |activity|
                     json.id roll.id
                     json.media_url roll.media_url
                     json.thumbnail_url roll.thumbnail_url
+                    json.metadata roll.metadata
                     json.caption roll.caption
                     json.like_count roll.likes_count
                     json.share_count roll.share_count
@@ -114,6 +118,7 @@ json.array! @activities.each do |activity|
                 json.liked comment.liked?(@current_user)
                 json.user do
                     json.id comment.user.id
+                    json.name comment.user.name
                     json.username comment.user.username
                     json.verified comment.user.verified
                 end
@@ -121,6 +126,7 @@ json.array! @activities.each do |activity|
         end
         json.active_user do 
             json.id active_user.id
+            json.name active_user.name
             json.username active_user.username
             json.avatar active_user.avatar_url
             json.verified active_user.verified

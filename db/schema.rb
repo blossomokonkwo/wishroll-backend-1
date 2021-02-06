@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_06_021747) do
+ActiveRecord::Schema.define(version: 2021_02_06_152522) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -102,6 +103,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_021747) do
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0, null: false
     t.boolean "restricted", default: false
+    t.hstore "metadata", default: {}, null: false
     t.index ["caption"], name: "index_posts_on_caption"
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["popularity_rank"], name: "index_posts_on_popularity_rank"
@@ -139,6 +141,7 @@ ActiveRecord::Schema.define(version: 2021_02_06_021747) do
     t.boolean "restricted", default: false, null: false
     t.bigint "hashtag_count", default: 0, null: false
     t.bigint "mention_count", default: 0, null: false
+    t.hstore "metadata", default: {}, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["private"], name: "index_rolls_on_private"
     t.index ["restricted"], name: "index_rolls_on_restricted"

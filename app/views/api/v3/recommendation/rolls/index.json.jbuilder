@@ -4,6 +4,7 @@ json.array! @rolls.each do |roll|
     json.updated_at roll.updated_at
     json.media_url roll.media_url
     json.thumbnail_url roll.thumbnail_url
+    json.metadata roll.metadata  
     json.comment_count roll.comments_count
     json.viewed roll.viewed?(@current_user) if @current_user
     json.view_count roll.view_count
