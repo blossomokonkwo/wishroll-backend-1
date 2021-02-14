@@ -14,6 +14,11 @@ json.array! @posts.each do |post|
     json.caption post.caption           
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
+    json.metadata do
+        json.width post.width.to_f
+        json.height post.height.to_f
+        json.duration post.duration.to_f
+    end
     json.user do 
         json.id user.id
         json.username user.username

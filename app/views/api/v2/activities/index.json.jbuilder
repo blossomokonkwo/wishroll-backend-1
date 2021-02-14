@@ -22,9 +22,9 @@ json.array! @activities.each do |activity|
                 json.media_url roll.media_url
                 json.thumbnail_url roll.thumbnail_url
                 json.metadata do
-                    json.width roll.width
-                    json.height roll.height
-                    json.duration roll.duration
+                    json.width roll.width.to_f
+                    json.height roll.height.to_f
+                    json.duration roll.duration.to_f
                 end
                 json.user do
                     user = roll.user
@@ -51,9 +51,9 @@ json.array! @activities.each do |activity|
                 json.media_url post.media_url
                 json.thumbnail_url post.thumbnail_url
                 json.metadata do
-                    json.width post.width
-                    json.height post.height
-                    json.duration post.duration
+                    json.width post.width.to_f
+                    json.height post.height.to_f
+                    json.duration post.duration.to_f
                 end
                 json.user do
                     user = post.user
@@ -81,9 +81,9 @@ json.array! @activities.each do |activity|
                     json.media_url post.media_url
                     json.thumbnail_url post.thumbnail_url
                     json.metadata do
-                        json.width post.width
-                        json.height post.height
-                        json.duration post.duration
+                        json.width post.width.to_f
+                        json.height post.height.to_f
+                        json.duration post.duration.to_f
                     end
                     json.user do
                         user = post.fetch_user
@@ -110,9 +110,9 @@ json.array! @activities.each do |activity|
                     json.media_url roll.media_url
                     json.thumbnail_url roll.thumbnail_url
                     json.metadata do
-                        json.width roll.width
-                        json.height roll.height
-                        json.duration roll.duration
+                        json.width roll.width.to_f
+                        json.height roll.height.to_f
+                        json.duration roll.duration.to_f
                     end
                     json.user do
                         user = roll.fetch_user
@@ -142,6 +142,7 @@ json.array! @activities.each do |activity|
         end
         json.active_user do 
             json.id active_user.id
+            json.name active_user.name
             json.username active_user.username
             json.avatar active_user.avatar_url
             json.verified active_user.verified

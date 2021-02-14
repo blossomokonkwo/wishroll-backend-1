@@ -1,7 +1,7 @@
 # Scope all api routes under the api namespace without requiring 'api' in the url
 scope module: :api do
     # all routes inteded for the WishRoll API must use the 'api' subdomain and have an Accept header of JSON
-    constraints subdomain: 'api', format: 'json' do
+    constraints subdomain: '', format: 'json' do
       namespace :v3 do
 
         namespace :trending do
