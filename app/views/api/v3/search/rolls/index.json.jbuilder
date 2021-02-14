@@ -13,7 +13,11 @@ json.array! @rolls.each do |roll|
     json.caption roll.caption           
     json.media_url roll.media_url
     json.thumbnail_url roll.thumbnail_url
-    json.metadata roll.metadata  
+    json.metadata do
+        json.width roll.width
+        json.height roll.height
+        json.duration roll.duration
+    end 
 
     user = User.fetch(roll.user_id)
     json.user do 

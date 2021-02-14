@@ -1,10 +1,7 @@
 json.array! @posts.each do |post|
     json.id post.id
     json.created_at post.created_at
-    json.updated_at post.updated_at
-    json.media_url post.media_url
-    json.thumbnail_url post.thumbnail_url
-    json.metadata post.metadata  
+    json.updated_at post.updated_at  
     json.comment_count post.comments_count
     json.viewed post.viewed?(@current_user)
     json.view_count post.view_count
@@ -14,7 +11,13 @@ json.array! @posts.each do |post|
     json.like_count post.likes_count
     json.share_count post.share_count
     json.caption post.caption
-    
+    json.media_url post.media_url
+    json.thumbnail_url post.thumbnail_url
+    json.metadata do
+        json.width post.width
+        json.height post.height
+        json.duration post.duration
+    end
     user = User.fetch(post.user_id)
     json.user do
         json.id user.id
