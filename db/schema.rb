@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_022237) do
+ActiveRecord::Schema.define(version: 2021_02_14_220525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(version: 2021_02_14_022237) do
     t.integer "bookmark_count", default: 0, null: false
     t.float "popularity_rank", default: 0.0, null: false
     t.boolean "restricted", default: false
-    t.decimal "width", default: "0.0", null: false
-    t.decimal "height", default: "0.0", null: false
-    t.decimal "duration", default: "0.0", null: false
+    t.float "width", default: 0.0, null: false
+    t.float "height", default: 0.0, null: false
+    t.float "duration", default: 0.0, null: false
     t.index ["caption"], name: "index_posts_on_caption"
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["popularity_rank"], name: "index_posts_on_popularity_rank"
@@ -143,9 +143,9 @@ ActiveRecord::Schema.define(version: 2021_02_14_022237) do
     t.boolean "restricted", default: false, null: false
     t.bigint "hashtag_count", default: 0, null: false
     t.bigint "mention_count", default: 0, null: false
-    t.decimal "width", default: "0.0", null: false
-    t.decimal "height", default: "0.0", null: false
-    t.decimal "duration", default: "0.0", null: false
+    t.float "width", default: 0.0, null: false
+    t.float "height", default: 0.0, null: false
+    t.float "duration", default: 0.0, null: false
     t.index ["media_url"], name: "index_rolls_on_media_url"
     t.index ["private"], name: "index_rolls_on_private"
     t.index ["restricted"], name: "index_rolls_on_restricted"
