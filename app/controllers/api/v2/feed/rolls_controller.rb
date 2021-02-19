@@ -16,13 +16,13 @@ class Api::V2::Feed::RollsController < APIController
             feed_users = current_user.followed_users.to_a << @current_user
 
             # return all rolls created by the users in the feed_users array
-            @rolls = Roll.includes(:user).where(user: feed_users).or(Roll.where(restricted: false)).order(popularity_rank: :desc, created_at: :desc).offset(offset).limit(limit)
+            @rolls = Roll.includes(:user).where(user: feed_users).or(Roll.where(restricted: false)).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(limit)
 
             # check that rolls array isn't empty
             if @rolls.any?
                 render :index, status: :ok
             else
-                @rolls = Roll.where(restricted: false).order(popularity_rank: :desc, created_at: :desc).offset(offset).limit(limit)
+                @rolls = Roll.where(restricted: false).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(limit)
                 if @rolls.any? 
                     render :index, status: :ok
                 else
