@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_220525) do
+ActiveRecord::Schema.define(version: 2021_04_03_162244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 2021_02_14_220525) do
     t.string "profile_background_url"
     t.boolean "restricted", default: false
     t.bigint "rolls_count", default: 0, null: false
+    t.bigint "posts_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"

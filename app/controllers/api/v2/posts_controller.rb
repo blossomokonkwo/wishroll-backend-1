@@ -13,7 +13,7 @@ class Api::V2::PostsController < APIController
             render json: {post_id: @post.id}, status: :created
           else 
             render json: nil, status: 400
-          end
+          end 
         rescue => exception
           render json: {error: "An error occured when uploading post #{exception}"}, status: 500
         end
