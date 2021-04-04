@@ -30,6 +30,7 @@ json.array! @activities.each do |activity|
                     user = roll.user
                     json.id user.id
                     json.username user.username
+                    json.user user.name
                     json.avatar user.avatar_url
                     json.verified user.verified 
                 end
@@ -59,6 +60,7 @@ json.array! @activities.each do |activity|
                     user = post.user
                     json.id user.id
                     json.username user.username
+                    json.name user.name
                     json.avatar user.avatar_url
                     json.verified user.verified
                 end               
@@ -89,6 +91,7 @@ json.array! @activities.each do |activity|
                         user = post.fetch_user
                         json.id user.id
                         json.username user.username
+                        json.name user.name
                         json.avatar user.avatar_url
                         json.verified user.verified
                     end
@@ -118,6 +121,7 @@ json.array! @activities.each do |activity|
                         user = roll.fetch_user
                         json.id user.id
                         json.username user.username
+                        json.name user.name
                         json.avatar user.avatar_url
                         json.verified user.verified
                     end
@@ -142,6 +146,7 @@ json.array! @activities.each do |activity|
         end
         json.active_user do 
             json.id active_user.id
+            json.name active_user.name
             json.username active_user.username
             json.avatar active_user.avatar_url
             json.verified active_user.verified
