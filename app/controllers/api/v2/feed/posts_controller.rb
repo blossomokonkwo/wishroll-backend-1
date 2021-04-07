@@ -10,7 +10,7 @@ class Api::V2::Feed::PostsController < APIController
 
             # set the offset and limit
             offset = params[:offset]
-            limit = 25
+            limit = 12
 
             # create an array of the current user's followed users and appen the current user to the array.
             feed_users = current_user.followed_users.to_a << @current_user
