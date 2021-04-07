@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_162244) do
+ActiveRecord::Schema.define(version: 2021_04_06_171226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -122,6 +122,14 @@ ActiveRecord::Schema.define(version: 2021_04_03_162244) do
     t.index ["followed_id", "follower_id"], name: "index_relationships_on_followed_id_and_follower_id", unique: true
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "reported_posts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.integer "reason", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "rolls", force: :cascade do |t|

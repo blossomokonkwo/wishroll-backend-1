@@ -86,8 +86,7 @@ class Api::V2::RelationshipsController < APIController
 
 
     def block
-        @blocked_user = User.find(params[:user_id])
-        if @blocked_user
+        if @blocked_user = User.find(params[:user_id])
             if current_user != @blocked_user
                 if @current_user.following?(@blocked_user)
                     Relationship.find_by(followed_id: @blocked_user.id, follower_id: current_user.id).destroy
