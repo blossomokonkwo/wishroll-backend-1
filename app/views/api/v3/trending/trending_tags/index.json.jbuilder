@@ -27,6 +27,7 @@ json.array! @trending_tags.each do |tag|
         json.user do
             json.id user.id
             json.username user.username
+            json.name user.name
             json.avatar user.avatar_url
             json.verified user.verified
             json.following @current_user.following?(user) if @current_user and user != @current_user
