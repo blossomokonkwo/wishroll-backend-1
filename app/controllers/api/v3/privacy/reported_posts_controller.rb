@@ -1,4 +1,4 @@
-class API::V3::Privacy::ReportPostsController < APIController
+class Api::V3::Privacy::ReportPostsController < APIController
     def create
         begin
             # fetch the access tokens from the request header
