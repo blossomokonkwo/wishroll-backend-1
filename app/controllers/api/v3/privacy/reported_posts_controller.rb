@@ -7,7 +7,7 @@ class Api::V3::Privacy::ReportedPostsController < APIController
             # set the @current_user instance variable
             @current_user = current_user
 
-            reported_post = ReportPost.create!(post_id: params[:post_id], user: @current_user, reason: params[:reason]) 
+            reported_post = ReportedPost.create!(post_id: params[:post_id], user: @current_user, reason: params[:reason]) 
 
             if reported_post 
                 render json: nil, status: :ok
