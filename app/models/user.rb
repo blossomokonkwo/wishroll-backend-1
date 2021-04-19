@@ -39,9 +39,10 @@ class User < ApplicationRecord
         .limit(limit) 
     end
     
-    def created_posts(limit: 25, offset: nil)
+    def created_posts(limit: 25, offset: nil, reported_posts: nil)
         Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .where(user: self)
+        .where.not(id: reported_posts)
         .order(created_at: :desc)
         .offset(offset)
         .limit(limit)

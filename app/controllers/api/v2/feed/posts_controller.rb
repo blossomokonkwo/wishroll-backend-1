@@ -22,7 +22,7 @@ class Api::V2::Feed::PostsController < APIController
             if @posts.any?
                 render :index, status: :ok
             else
-                @posts = Post.where(restricted: false).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(limit)
+                @posts = Post.includes(:user).joins(:user).where(restricted: false).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(25)
                 if @posts.any? 
                     render :index, status: :ok
                 else
