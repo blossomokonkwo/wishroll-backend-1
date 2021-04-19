@@ -16,7 +16,7 @@ class Api::V2::Feed::PostsController < APIController
             feed_users = current_user.followed_users.to_a << @current_user
 
             # return all posts created by the users in the feed_users array
-            @posts = Post.includes(:user).joins(:user).where(user: feed_users).or(Post.where(restricted: false)).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc, popularity_rank: :desc).offset(2).limit(25)
+            @posts = Post.includes(:user).joins(:user).where(user: feed_users).or(Post.where(restricted: false)).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(25)
 
             # check that posts array isn't empty
             if @posts.any?
