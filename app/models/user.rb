@@ -136,7 +136,7 @@ class User < ApplicationRecord
     #the users that currently follow a specific user 
     has_many :follower_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :followers_count])}, through: :passive_relationships, source: :follower_user
 
-    has_many :blocked_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, through: :active_block_relationships, source: :blocked_user
+    has_many :blocked_users, through: :active_block_relationships, source: :blocked_user
 
     has_many :blocker_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, through: :passive_block_relationships, source: :blocker_user
 
