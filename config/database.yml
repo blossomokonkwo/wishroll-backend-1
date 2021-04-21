@@ -94,7 +94,7 @@ production:
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
 
-  primary_replica:
-    <<: *default
-    url: <%= ENV['HEROKU_POSTGRESQL_COPPER_URL']%>
-    replica: true
+  # primary_replica:
+  #   <<: *default
+  #   url: <%= ENV['HEROKU_POSTGRESQL_COPPER_URL']%>
+  #   replica: true
