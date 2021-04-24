@@ -9,4 +9,5 @@ json.num_followers @user.followers_count
 json.num_following @user.following_count
 json.avatar @user.avatar_url
 json.profile_background_url @user.profile_background_url
+json.posts_count @user.posts_count
 json.following @following

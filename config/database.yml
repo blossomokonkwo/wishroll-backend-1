@@ -96,5 +96,5 @@ production:
 
   # primary_replica:
   #   <<: *default
-  #   url: <%= ENV['HEROKU_POSTGRESQL_RED_URL'] || ENV['HEROKU_POSTGRESQL_PUCE_URL'] %>
+  #   url: <%= ENV['HEROKU_POSTGRESQL_COPPER_URL']%>
   #   replica: true

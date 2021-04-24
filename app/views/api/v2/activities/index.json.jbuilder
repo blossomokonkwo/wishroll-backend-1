@@ -8,9 +8,9 @@ json.array! @activities.each do |activity|
         if activity.activity_type == "Roll" and roll = Roll.where(id: activity.content_id).first
             json.roll do
                 json.id roll.id
-                json.media_url roll.media_url
+                json.created_at roll.created_at
+                json.updated_at roll.updated_at
                 json.caption roll.caption
-                json.thumbnail_url roll.thumbnail_url
                 json.like_count roll.likes_count
                 json.share_count roll.share_count
                 json.comment_count roll.comments_count
@@ -19,12 +19,18 @@ json.array! @activities.each do |activity|
                 json.liked roll.liked?(@current_user)
                 json.bookmarked roll.bookmarked?(@current_user)
                 json.bookmark_count roll.bookmark_count
-                json.created_at roll.created_at
-                json.updated_at roll.updated_at
+                json.media_url roll.media_url
+                json.thumbnail_url roll.thumbnail_url
+                json.metadata do
+                    json.width roll.width.to_f
+                    json.height roll.height.to_f
+                    json.duration roll.duration.to_f
+                end
                 json.user do
                     user = roll.user
                     json.id user.id
                     json.username user.username
+                    json.user user.name
                     json.avatar user.avatar_url
                     json.verified user.verified 
                 end
@@ -32,9 +38,9 @@ json.array! @activities.each do |activity|
         elsif activity.activity_type == "Post" and post = Post.where(id: activity.content_id).first
             json.post do
                 json.id post.id
-                json.media_url post.media_url
+                json.created_at post.created_at
+                json.updated_at post.updated_at
                 json.caption post.caption
-                json.thumbnail_url post.thumbnail_url
                 json.like_count post.likes_count
                 json.share_count post.share_count
                 json.comment_count post.comments_count
@@ -43,12 +49,18 @@ json.array! @activities.each do |activity|
                 json.liked post.liked?(@current_user)
                 json.bookmarked post.bookmarked?(@current_user)
                 json.bookmark_count post.bookmark_count
-                json.created_at post.created_at
-                json.updated_at post.updated_at
+                json.media_url post.media_url
+                json.thumbnail_url post.thumbnail_url
+                json.metadata do
+                    json.width post.width.to_f
+                    json.height post.height.to_f
+                    json.duration post.duration.to_f
+                end
                 json.user do
                     user = post.user
                     json.id user.id
                     json.username user.username
+                    json.name user.name
                     json.avatar user.avatar_url
                     json.verified user.verified
                 end               
@@ -57,9 +69,9 @@ json.array! @activities.each do |activity|
             if post = comment.post                
                 json.post do
                     json.id post.id
-                    json.media_url post.media_url
+                    json.created_at post.created_at
+                    json.updated_at post.updated_at
                     json.caption post.caption
-                    json.thumbnail_url post.thumbnail_url
                     json.like_count post.likes_count
                     json.share_count post.share_count
                     json.comment_count post.comments_count
@@ -68,12 +80,18 @@ json.array! @activities.each do |activity|
                     json.liked post.liked?(@current_user)
                     json.bookmarked post.bookmarked?(@current_user)
                     json.bookmark_count post.bookmark_count
-                    json.created_at post.created_at
-                    json.updated_at post.updated_at
+                    json.media_url post.media_url
+                    json.thumbnail_url post.thumbnail_url
+                    json.metadata do
+                        json.width post.width.to_f
+                        json.height post.height.to_f
+                        json.duration post.duration.to_f
+                    end
                     json.user do
                         user = post.fetch_user
                         json.id user.id
                         json.username user.username
+                        json.name user.name
                         json.avatar user.avatar_url
                         json.verified user.verified
                     end
@@ -81,8 +99,8 @@ json.array! @activities.each do |activity|
             elsif roll = comment.roll
                 json.roll do
                     json.id roll.id
-                    json.media_url roll.media_url
-                    json.thumbnail_url roll.thumbnail_url
+                    json.created_at roll.created_at
+                    json.updated_at roll.updated_at
                     json.caption roll.caption
                     json.like_count roll.likes_count
                     json.share_count roll.share_count
@@ -92,12 +110,18 @@ json.array! @activities.each do |activity|
                     json.liked roll.liked?(@current_user)
                     json.bookmarked roll.bookmarked?(@current_user)
                     json.bookmark_count roll.bookmark_count
-                    json.created_at roll.created_at
-                    json.updated_at roll.updated_at
+                    json.media_url roll.media_url
+                    json.thumbnail_url roll.thumbnail_url
+                    json.metadata do
+                        json.width roll.width.to_f
+                        json.height roll.height.to_f
+                        json.duration roll.duration.to_f
+                    end
                     json.user do
                         user = roll.fetch_user
                         json.id user.id
                         json.username user.username
+                        json.name user.name
                         json.avatar user.avatar_url
                         json.verified user.verified
                     end
@@ -114,6 +138,7 @@ json.array! @activities.each do |activity|
                 json.liked comment.liked?(@current_user)
                 json.user do
                     json.id comment.user.id
+                    json.name comment.user.name
                     json.username comment.user.username
                     json.verified comment.user.verified
                 end

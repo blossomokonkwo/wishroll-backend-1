@@ -14,9 +14,15 @@ json.array! @posts.each do |post|
     json.caption post.caption           
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
+    json.metadata do
+        json.width post.width.to_f
+        json.height post.height.to_f
+        json.duration post.duration.to_f
+    end
     json.user do 
         json.id user.id
         json.username user.username
+        json.name user.name
         json.verified user.verified
         json.avatar user.avatar_url
         json.following @current_user.following?(user) if user != @current_user
