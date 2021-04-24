@@ -31,7 +31,7 @@ class User < ApplicationRecord
     cache_index :name
 
     def liked_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .joins(:likes)
         .order("likes.created_at DESC")
         .where(likes: {user: self})
@@ -39,16 +39,17 @@ class User < ApplicationRecord
         .limit(limit) 
     end
     
-    def created_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+    def created_posts(limit: 25, offset: nil, reported_posts: nil)
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .where(user: self)
+        .where.not(id: reported_posts)
         .order(created_at: :desc)
         .offset(offset)
         .limit(limit)
     end
 
     def created_rolls(limit: 25, offset:)
-        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .where(user: self)
         .order(created_at: :desc)
         .offset(offset)
@@ -56,7 +57,7 @@ class User < ApplicationRecord
     end
 
     def liked_rolls(limit: 25, offset:)
-        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Roll.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .joins(:likes)
         .where(likes: {user: self})
         .order("likes.created_at DESC")
@@ -66,7 +67,7 @@ class User < ApplicationRecord
     
     
     def bookmarked_posts(limit: 25, offset:)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .joins(:bookmarks, media_item_attachment: :blob)
         .where(bookmarks: {user: self})
         .order("bookmarks.created_at DESC")
@@ -76,7 +77,7 @@ class User < ApplicationRecord
 
     #returns all of the posts that a user has shared
     def shared_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .joins(:shares)
         .where(shares: {user: self})
         .offset(offset)
@@ -86,7 +87,7 @@ class User < ApplicationRecord
 
     #Returns all of the posts that a user has viewed with a default limit of 25 records and no offset
     def viewed_posts(limit: 25, offset: nil)
-        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid])
+        Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
         .joins(:views)
         .where(views: {user: self})
         .order("views.created_at DESC")
@@ -126,13 +127,19 @@ class User < ApplicationRecord
     #a user can have many passive relationships which relates a user to the accounts he / she follows through the Relationship model.
     has_many :passive_relationships, -> {order(created_at: :desc, id: :desc)}, class_name: "Relationship", foreign_key: :followed_id, dependent: :destroy 
     
-    has_and_belongs_to_many :blocked_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, class_name: "User", join_table: :block_relationships, foreign_key: :blocker_id, association_foreign_key: :blocked_id
+    has_many :active_block_relationships, class_name: "BlockRelationship", foreign_key: :blocker_id
+
+    has_many :passive_block_relationships, class_name: "BlockRelationship", foreign_key: :blocked_id
     
     #the users that a specific user is currently following 
     has_many :followed_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :following_count])}, through: :active_relationships, source: :followed_user
 
     #the users that currently follow a specific user 
     has_many :follower_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :followers_count])}, through: :passive_relationships, source: :follower_user
+
+    has_many :blocked_users, through: :active_block_relationships, source: :blocked_user
+
+    has_many :blocker_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, through: :passive_block_relationships, source: :blocker_user
 
     #the activities that have happended to the user
     has_many :activities, -> {order(created_at: :desc)}, class_name: "Activity", foreign_key: :user_id, dependent: :destroy
@@ -163,23 +170,13 @@ class User < ApplicationRecord
     #returns a users must current device
     has_one :current_device, -> {where(current_device: true).limit(1)}, class_name: "Device", foreign_key: :user_id, dependent: :destroy
 
-    #user has many reported posts. We use this array of reported posts to filter content that the user doesn't want to view. This property also allows administrators
-    #to discover posts that users are reporting and find out if this post needs to be deleted of the app
-    has_many :reported_posts_relationships, -> {order "created_at DESC"}, class_name: "UserBlockedPost", foreign_key: :user_id, dependent: :destroy
-    
-    #all the posts that the user has reported/blocked
+    has_many :reported_posts_relationships, class_name: "ReportedPost", foreign_key: :user_id, dependent: :destroy
+
     has_many :reported_posts, through: :reported_posts_relationships, source: :post
-
-    def reported?(post:)
-        reported_posts.include?(post)
-    end
-
-    
-
-    #cache methods
+    # Convenience Methods
 
     def cached_reported_posts
-        Rails.cache.fetch([self, "reported_posts"]) {reported_posts.to_a}
+        # Rails.cache.fetch([self, "reported_posts"]) {reported_posts.to_a}
         #we convert the relation object to an array to make it clear that we are using a cached version of the reported_posts
         #remember to flush the cache when changing the data base schema
     end

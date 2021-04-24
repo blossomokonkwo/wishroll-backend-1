@@ -29,9 +29,9 @@ class Api::V2::UsersController < APIController
             unless current_user.blocked?(@user) or @user.blocked?(current_user)
                 @posts = Array.new
                 if offset 
-                    @posts = @user.created_posts(limit: limit, offset: offset).to_a
+                    @posts = @user.created_posts(limit: limit, offset: offset, reported_posts: current_user.reported_posts).to_a
                 else 
-                    @posts = @user.created_posts(limit: limit).to_a
+                    @posts = @user.created_posts(limit: limit, reported_posts: current_user.reported_posts).to_a
                 end
                 if @posts.any?
                     @current_user = current_user

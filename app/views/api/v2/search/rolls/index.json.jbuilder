@@ -13,7 +13,12 @@ json.array! @rolls.each do |roll|
     json.liked @current_user ? roll.liked?(@current_user.id) : nil
     json.caption roll.caption           
     json.media_url roll.media_url
-    json.thumbnail_url roll.thumbnail_url    
+    json.thumbnail_url roll.thumbnail_url
+    json.metadata do
+        json.width roll.width.to_f
+        json.height roll.height.to_f
+        json.duration roll.duration.to_f
+    end    
     json.user do 
         json.id user.id
         json.username user.username
