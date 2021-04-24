@@ -4,7 +4,7 @@ class Api::V2::PostsController < APIController
     def create
       unless current_user.banned
         begin
-          @post = current_user.posts.create!(caption: params[:caption], restricted: current_user.restricted, popularity_rank: 1.0)
+          @post = current_user.posts.create!(caption: params[:caption], restricted: current_user.restricted, popularity_rank: 1.0, width: params[:width], height: params[:height], duration: params[:duration])
           @post.media_item.attach params[:media_item]
           @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
           @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
@@ -13,7 +13,7 @@ class Api::V2::PostsController < APIController
             render json: {post_id: @post.id}, status: :created
           else 
             render json: nil, status: 400
-          end
+          end 
         rescue => exception
           render json: {error: "An error occured when uploading post #{exception}"}, status: 500
         end

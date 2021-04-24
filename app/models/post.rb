@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
     has_many :tags, -> {select([:id, :text])}, dependent: :destroy
     has_many :comments, dependent: :destroy
-    belongs_to :user
+    belongs_to :user, counter_cache: :posts_count #keeps track of the number of posts that a user has uploaded
     has_many :likes, as: :likeable, dependent: :destroy
     has_many :views, as: :viewable, dependent: :destroy
     has_many :shares, as: :shareable, dependent: :destroy
@@ -55,6 +55,10 @@ class Post < ApplicationRecord
     end
 
     alias :region :state
+
+    has_many :reported_relationships, class_name: "ReportedPost", foreign_key: :post_id, dependent: :destroy
+
+    has_many :reporter_users, through: :reported_relationships, source: :user
 
     #callbacks APIs 
     after_destroy do

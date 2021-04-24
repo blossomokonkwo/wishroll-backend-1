@@ -12,6 +12,9 @@ scope module: :api do
           resources :rolls, only: [:index]
         end
 
+        namespace :privacy do 
+          resources :reported_posts, only: [:create]
+        end
         namespace :search do
           resources :posts, :users, :rolls, only: [:index]
         end
