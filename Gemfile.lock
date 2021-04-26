@@ -291,7 +291,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 6.1.0)
   rb-readline
-  redis
+  redis (~> 4.0)
   rpush
   ruby-continent (~> 0.1.0)
   sendgrid-ruby
