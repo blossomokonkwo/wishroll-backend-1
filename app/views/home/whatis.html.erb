@@ -20,12 +20,13 @@
 <body >
     
     <header id="menuBarB">
-        <a href="homepage.html">
-            <h3 style="font-family: Roboto; color: black;">WishRoll</h3>
-        </a>
-        <a href="about.html">
-            <div class="menuItem" style="font-family: Roboto; color: black;">About</div>
-        </a>
+            <a><%= link_to "WishRoll", "/home" %>
+                <h3 style="font-family: Roboto; color: black;">WishRoll</h3>
+            </a>
+        
+            <a><%= link_to "About", "/whatis" %>
+                <div class="menuItem" style="font-family: Roboto; color: black;">About</div>
+            </a>
     </header> 
 
     <div id="aboutHeader">
@@ -35,7 +36,9 @@
     <div id="teamContainer" class="contentContainer">
         <a href="" target="_blank">
           <div class="flexPeopleCard">
-            <div class="flexPeopleAvatarContainer"><img class="flexPeopleAvatar" src="Media/o_great2.jpg"></div>
+            <div class="flexPeopleAvatarContainer">
+                <%= image_tag("o_great2.jpg", :class => "flexPeopleAvatar")%>
+            </div>
             <h2 class="flexPeopleName" style="color: black; font-family: Roboto; font-weight: 600;">Great</h2>
             <p class="flexPeopleTitle" style="color: #646464;">iOS Developer, Backend</p>
           </div>
@@ -43,7 +46,9 @@
     
         <a href="" target="_blank">
           <div class="flexPeopleCard">
-            <div class="flexPeopleAvatarContainer"><img class="flexPeopleAvatar" src="Media/o_blossom1.jpg"></div>
+            <div class="flexPeopleAvatarContainer">
+                <%= image_tag("o_blossom1.jpg", :class => "flexPeopleAvatar")%>
+            </div>
             <h2 class="flexPeopleName" style="color: black; font-family: Roboto; font-weight: 600;">Blossom</h2>
             <p class="flexPeopleTitle" style="color: #646464;">Android Developer, Marketing</p>
           </div>
@@ -57,7 +62,7 @@
 
     <footer id="flexFooter" class="contentContainer " >
         <div class="footerCol">
-            <a href="index.html">
+            <a>
                 <h3 style="color: black; font-family: Roboto;">WishRoll</h3>
             </a>
             <small>© 2021 WishRoll</small>
@@ -66,13 +71,14 @@
         <div class="footerCol">
             <h3 style="color: black;" >Policy</h3>
             <div class="footerLink">
-                <a href="about.html">About</a>
+                <a><%= link_to "Home", "/home" %></a>
             </div>
             <div class="footerLink">
-                <a href="privacy.html">Privacy Policy</a>
+                <a><%= link_to "Privacy Policy", "/privacy" %></a>
+               
             </div>
             <div class="footerLink">
-                <a href="terms.html">Terms of Use</a>
+                <a><%= link_to "Terms of Use", "/terms" %></a>
             </div>
         </div>
         

@@ -8,14 +8,16 @@
         <meta name="keywords" content="WishRoll, Reaction pics">
 
         <meta name="description" content="Search, download & share reaction pics and vids, all in one app.">
+
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;1,100;1,200;1,500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"> 
         <%= stylesheet_link_tag 'mainstylesheet' %>
+
         <link rel="icon" type="image/png" href="Media/favicon.png" />    
-        <%= favicon_link_tag asset_path('wishrollfavicon.png') %>
+        <%= favicon_link_tag "wishrollfavicon.png" %>
 
-
-
-        
-        
 
     </head>
   <body>
@@ -25,7 +27,7 @@
               <h3 style="font-family: Roboto;">WishRoll</h3>
           </a>
           <a><%= link_to "About", "/whatis" %> 
-                      <div class="menuItem"> About</div>
+                <div class="menuItem"> About</div>
           </a>
       </header>     
 
@@ -34,7 +36,7 @@
               <div id="heroiPhonePreview" class="iphonePreviewS" data-parallax='{"y": 100, "smoothness": 5}'>
                 <div class="iphoneFrameS"></div>
                 <div class="iphoneScreenS">
-                  <%= image_tag("discover_web@2x.png", :class =>"iphoneUIImage", :alt => "Discover Page") %>
+                  <%=  image_tag("discover_web@2x.png",  :alt => "Discover Page", :class =>"iphoneUIImage") %>
                 </div>
               </div>
             </div>
@@ -50,10 +52,8 @@
     
 
             <div class="downloadFlexCard" >
-              <a href="https://apps.apple.com/us/app/wishroll-reaction-memes/id1549503766" target="_blank"
-                >
-
-                <%= link_to 'facebook', 'https://www.facebook.com' %> 
+              <a href="https://apps.apple.com/us/app/wishroll-reaction-memes/id1549503766" target="_blank">
+ 
                 <button type="button" name="notify_me" class="button buttonNotify">Download on iPhone</button>
               </a>
               <div class="downloadTitle">Coming soon to Android</div>
@@ -85,7 +85,7 @@
                 <div class="iphonePreviewS">
                   <div class="iphoneFrameS"></div>
                   <div class="iphoneScreenS">
-                    <video muted playsinline id="SGVideo" class="iphoneUIImage" src="src/session guide_recording.mov" poster="src/sg_set_rest@3x.png">
+                    <%# <video muted playsinline id="SGVideo" class="iphoneUIImage" src="src/session guide_recording.mov" poster="src/sg_set_rest@3x.png"> %>
                       <!-- <source src="src/session guide_recording.mov" type="video/mp4"> -->
                       <img src="src/sg_set_rest@3x.png" style="width: 100%; height: 100%;"/>
                     </video>
@@ -150,7 +150,7 @@
                 <div id="workoutEditorMockup" class="iphonePreviewXS">
                   <div class="iphoneFrameXS"></div>
                   <div class="iphoneScreenXS">
-                    <img class="iphoneUIImage" src="src/edit set.png" />
+                    <%# <img class="iphoneUIImage" src="src/edit set.png" /> %>
                   </div>
                 </div>
               </div>
@@ -159,40 +159,40 @@
       
         </div>
       
-      #   <div class="sectionDarkBlue">
-      #     <div class="contentContainerWide">
-      #       <div class="contentContainer">
+      <%#    <div class="sectionDarkBlue">
+           <div class="contentContainerWide">
+             <div class="contentContainer">
       
-      #         <h1 id="editorTitle">Download the Keyboard Extension</h1>
-      #         <p id="editorText" class="AIp">WishRoll allows you to customize your profile, see notifications and follow others.</p>
-      #       </div>
+               <h1 id="editorTitle">Download the Keyboard Extension</h1>
+               <p id="editorText" class="AIp">WishRoll allows you to customize your profile, see notifications and follow others.</p>
+             </div>
       
-      #       <div class="factCardL whiteBg statsFactCard">
-      #         <div class="factIntro">
-      #           <h4>Profile Page</h4>
-      #           <h2 style="color: black;" >Your exercise progress, neatly visualized over time.</h2>
-      #         </div>
-      #         <div id="statsChartImage"></div>
-      #       </div>
+             <div class="factCardL whiteBg statsFactCard">
+               <div class="factIntro">
+                 <h4>Profile Page</h4>
+                 <h2 style="color: black;" >Your exercise progress, neatly visualized over time.</h2>
+               </div>
+               <div id="statsChartImage"></div>
+             </div>
       
-      #       <div class="factCard whiteBg">
-      #         <div class="factIntro">
-      #           <h4>Workout Calendar</h4>
-      #           <h3>Visualize your workout consistency. Skipped a day? Flex will reschedule automatically.</h3>
-      #         </div>
-      #         <div id="calendarImage"></div>
-      #       </div>
+             <div class="factCard whiteBg">
+               <div class="factIntro">
+                 <h4>Workout Calendar</h4>
+                 <h3>Visualize your workout consistency. Skipped a day? Flex will reschedule automatically.</h3>
+               </div>
+               <div id="calendarImage"></div>
+             </div>
       
-      #       <div class="factCardS streakFactCard">
-      #         <div class="factIntro">
-      #           <h4>Streak</h4>
-      #           <h3>Hit your streak goals by following your workout routine.</h3>
-      #           <div id="streakWidget"></div>
-      #         </div>
-      #       </div>
-      #     </div>
+             <div class="factCardS streakFactCard">
+               <div class="factIntro">
+                 <h4>Streak</h4>
+                 <h3>Hit your streak goals by following your workout routine.</h3>
+                 <div id="streakWidget"></div>
+               </div>
+             </div>
+           </div>
       
-      #   </div> 
+         </div>  %>
       
         <div id="moreFactsSection">
           <h3>More to love...</h3>
@@ -225,27 +225,27 @@
       
 
 
-        <footer id="flexFooter" class="contentContainer ">
-          <div class="footerCol">
-              <a href="index.html">
-                  <h3 style="color: black; font-family: Roboto;">WishRoll</h3>
-              </a>
-              <small> © 2021 WishRoll</small>
-          </div>
+      <footer id="flexFooter" class="contentContainer " >
+        <div class="footerCol">
+            <a>
+                <h3 style="color: black; font-family: Roboto;">WishRoll</h3>
+            </a>
+            <small>© 2021 WishRoll</small>
+        </div>
 
-          <div class="footerCol">
-              <h3 style="color: black;" >Policy</h3>
-              <div class="footerLink">
-                  <a href="about.html">About</a>
-              </div>
-              <div class="footerLink">
-                  <a href="privacy.html">Privacy Policy</a>
-              </div>
-              <div class="footerLink">
-                  <a href="terms.html">Terms of Use</a>
-              </div>
-          </div>
-          
+        <div class="footerCol">
+            <h3 style="color: black;" >Policy</h3>
+            <div class="footerLink">
+                <a><%= link_to "Home", "/home" %></a>
+            </div>
+            <div class="footerLink">
+                <a><%= link_to "Privacy Policy", "/privacy" %></a>
+               
+            </div>
+            <div class="footerLink">
+                <a><%= link_to "Terms of Use", "/terms" %></a>
+            </div>
+        </div>
           
           <div class="footerCol">
               <h3 style="color: black;" >Find us on</h3>
