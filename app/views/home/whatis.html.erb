@@ -1,167 +1,106 @@
-<!DOCTYPE  html >
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WishRoll</title>
+    <meta name="keywords" content="WishRoll, Reaction pics">
 
-    <html>
-        <head>
-           
-            <meta charset="utf-8"> 
-
-            <title>WishRoll</title>
-
-            <meta name="description" content="An app with an unlimited collection of reaction media, and a place for fun groupchats about interesting topics.">
-
-            <meta name="viewport" content="width=device-width">
-
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-            <meta name="keywords" content="wishroll, memes, memes 2020, twitter memes, funny coronavirus memes, stonks memes, ight imma head out memes, epstein memes, corona virus memes, coronavirus twitter, funny memes 2020">
-
-            <meta name="author" content="WishRoll Team">
-            
-            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-            
-            <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-
-            <%= stylesheet_link_tag "mainstylesheet.css" %>
-
-            <%= favicon_link_tag "wishrollfavicon.png"%>
-           
-            
-
-        </head>
-
-        <body>
-
-            <nav>
-                <input type="checkbox" id="check">
-
-                <label for="check" class="checkbtn">
-                    <i class="fas fa-bars"></i> 
-                </label>
-
-                <label class="logo">WishRoll
-                <a><%= image_tag("wishrollfavicon.png")%></a></label>
-
-                <ul>
-                    <li><a><%= link_to "Download", "/home" %></a></li>
-                    <li><a class="current">What is WishRoll?</a></li>
-                    <li><a><%= link_to "Contact", "/contact" %> </a></li>
-                </ul>
-
-            </nav>
+    <meta name="description" content="Fostering vibrant communication,
+    all over the interwebs.">
+    <link rel="stylesheet" type="text/css" href="wishroll_universal.css">
+    <link rel="icon" type="image/png" href="Media/favicon.png" />
 
 
-                
+    
+    
+
+</head>
+<body >
+    
+    <header id="menuBarB">
+        <a href="homepage.html">
+            <h3 style="font-family: Roboto; color: black;">WishRoll</h3>
+        </a>
+        <a href="about.html">
+            <div class="menuItem" style="font-family: Roboto; color: black;">About</div>
+        </a>
+    </header> 
+
+    <div id="aboutHeader">
+        <div id="aboutHeaderTitle">Meet the team.</div>
+    </div>
+
+    <div id="teamContainer" class="contentContainer">
+        <a href="" target="_blank">
+          <div class="flexPeopleCard">
+            <div class="flexPeopleAvatarContainer"><img class="flexPeopleAvatar" src="Media/o_great2.jpg"></div>
+            <h2 class="flexPeopleName" style="color: black; font-family: Roboto; font-weight: 600;">Great</h2>
+            <p class="flexPeopleTitle" style="color: #646464;">iOS Developer, Backend</p>
+          </div>
+        </a>
+    
+        <a href="" target="_blank">
+          <div class="flexPeopleCard">
+            <div class="flexPeopleAvatarContainer"><img class="flexPeopleAvatar" src="Media/o_blossom1.jpg"></div>
+            <h2 class="flexPeopleName" style="color: black; font-family: Roboto; font-weight: 600;">Blossom</h2>
+            <p class="flexPeopleTitle" style="color: #646464;">Android Developer, Marketing</p>
+          </div>
+        </a>
+
         
-                    
-            <div class="mainTitle">
-                
-                   <h1>WishRoll is the #1 app for All Things Reactions</h1>
-                
-            </div> 
-
-
-
-          <div class="responsive">
-            <div class="gallery">
-
-                <a><%= image_tag("ImageQuadOne.png")%></a>
-                <div class="des">
-                    <h1>Search for any Reaction Meme</h1>
-                    <p>Take a look at the trending page or use the search bar to find the exact picture, video, or gif youre looking for.</p>
-                </div>
-            </div>
-          
-          </div>
-
-          <div class="responsive">
-            <div class="gallery">
-
-                <a><%= image_tag("ImageQuadTwo.png")%></a>
-                <div class="des">
-                    <h1>Upload to Your Profile</h1>
-                    <p>Upload your reaction pictures, videos, and gifs to your Profile to have easy access to them all the time.</p>
-                
-                </div>
-            </div>
-          
-          </div>
-
-          <div class="responsive">
-            <div class="gallery">
-
-                <a><%= image_tag("ImageQuadThree.png")%></a>
-                 <div class="des">
-                    <h1>Tag Your Reactions for Searchability</h1>
-                    <p>When uploading, use our Tagging feature to be able to find it through search. When you tag them, they can be found through those same tags.</p>
-                </div>
-            </div>
-          
-          </div>
-
-          <div class="responsive">
-            <div class="gallery">
-
-                <a><%= image_tag("Reacting.png")%></a>
-                 <div class="des">
-                    <h1>React to Anything</h1>
-                    <p>Use the Rolls feature, post your reactions, and share with friends.</p>
-                </div>
-            </div>
-          
-          </div>
-
-
-
-    <section class="container">
-    </section>
-            
-
-
-
-
-          <div class="containerImage">
-                        <%= link_to image_tag("GooglePlay.png")%>
-                        <%=link_to  image_tag("ApplePlay.png"), "https://apps.apple.com/us/app/wishroll-express-yourself/id1491280186"%>
-                        
-                        
-
-                        
-
-                      
-
-            </div>
-            
-
-            
-
-
-                
-                
+    
         
-              
+        
+    </div>
 
-                
-                    
-               
+    <footer id="flexFooter" class="contentContainer " >
+        <div class="footerCol">
+            <a href="index.html">
+                <h3 style="color: black; font-family: Roboto;">WishRoll</h3>
+            </a>
+            <small>© 2021 WishRoll</small>
+        </div>
 
-                
-                    
-                    
-                
-  
-            
-            <footer>
-                <p>WishRoll &copy; 2020 </p>
-                <p><a href="www.google.com">Privacy Policy</a> <a href="www.google.com"> Terms and Conditions</a> <a href="www.google.com"> Policy Terms</a></p>
-            </footer>
-            
-            
-        </body>
-</html>
+        <div class="footerCol">
+            <h3 style="color: black;" >Policy</h3>
+            <div class="footerLink">
+                <a href="about.html">About</a>
+            </div>
+            <div class="footerLink">
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <div class="footerLink">
+                <a href="terms.html">Terms of Use</a>
+            </div>
+        </div>
+        
+        
+        <div class="footerCol">
+            <h3 style="color: black;" >Find us on</h3>
+            <div class="footerLink">
+                <a href="https://www.instagram.com/wishroll/" target="_blank">Instagram</a>
+            </div>
+            <div class="footerLink">
+                <a href="https://www.twitter.com/wishroll/" target="_blank">Twitter</a>
+            </div>
+            <div class="footerLink">
+                <a href="https://www.twitter.com/wishroll/" target="_blank">TikTok</a>
+            </div>
+        </div>
+
+        <div class="footerCol">
+            <h3 style="color: black;" >Contact Us</h3>
+            <div class="footerLink">
+                <a href="" target="_blank">info@wishroll.co</a>
+           
+            </div>
+        </div>
+      </footer>
+    
 
 
-
-
-
-
+    
+</body>
 </html>
