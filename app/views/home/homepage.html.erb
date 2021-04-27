@@ -1,121 +1,283 @@
-<!DOCTYPE  html >
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WishRoll</title>
+        <meta name="keywords" content="WishRoll, Reaction pics">
 
-    <html>
-        <head>
-           
-            <meta charset="utf-8"> 
+        <meta name="description" content="Search, download & share reaction pics and vids, all in one app.">
 
-            <title>WishRoll</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;1,100;1,200;1,500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet"> 
+        <%= stylesheet_link_tag 'mainstylesheet' %>
 
-            <meta name="description" content="WishRoll App">
-
-            <meta name="viewport" content="width=device-width">
-
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-            <meta name="keywords" content="wishroll, memes, reaction pictures, reaction videos">
-
-            <meta name="author" content="WishRoll Team">
-            
-            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-            
-            <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-
-            <%# <link rel="stylesheet" href="Landing.css"> %>
-
-            <%= stylesheet_link_tag "Landing.css" %> 
-
-            <%= favicon_link_tag "wishrollfavicon.png"%> 
-            
-
-        </head>
-
-        <body>
-
-            <div id="section1">
-
-                <div class="center">
-                    
-                        <h2>WishRoll</h2>
-                        <h1>candid self expression.</h1>
-                    
+        <link rel="icon" type="image/png" href="Media/favicon.png" />    
+        <%= favicon_link_tag "wishrollfavicon.png" %>
 
 
-                   
+    </head>
+  <body>
+      
+      <header id="menuBarB" style="background: #16a2ef;" >
+          <a>
+              <h3 style="font-family: Roboto;">WishRoll</h3>
+          </a>
+          <a><%= link_to "About", "/whatis" %> 
+                <div class="menuItem"> About</div>
+          </a>
+      </header>     
+
+      <div id="heroContainer" style="background: #16a2ef;" > 
+          <div id="heroiPhoneWrap">
+              <div id="heroiPhonePreview" class="iphonePreviewS" data-parallax='{"y": 100, "smoothness": 5}'>
+                <div class="iphoneFrameS"></div>
+                <div class="iphoneScreenS">
+                  <%=  image_tag("discover_web@2x.png",  :alt => "Discover Page", :class =>"iphoneUIImage") %>
                 </div>
-
-                <div class="lower">
-                    <a href=#section2><h3>We're still in Beta, but this is what we've been up to...</h3></a>
-            
-                    
-                    <a href="#section2"><%= image_tag("Icon_down_outline-2.png",:size => "50x50")%></a>
-
-                </div>
-
+              </div>
             </div>
 
-            <div id="section2">
-                <div class="center2">
-                    
-                    <h1>What we're building:</h1>
-                 
-                  
-                     
-                        <ul>
-                            <li>We're building a platform to allow people to express themselves <br> using short video messages</li>
-                            
-                            
+      </div>
 
-                        </ul>
-                </div>  
+      <div style="background: #16a2ef;">
+      
+      <div class="contentContainerWide" style="background: #16a2ef;" >
+          <div id="heroTitleArea" > 
+            <h1 style="color: #FFFFFF;">Search, download & share</h1>
+            <h1 class="subtitleH1" style="color: #FFFFFF; font: Roboto; font-weight: 100;"> reaction pics and vids, all in one app.</h1>
+    
 
-                
-
+            <div class="downloadFlexCard" >
+              <a href="https://apps.apple.com/us/app/wishroll-reaction-memes/id1549503766" target="_blank">
+ 
+                <button type="button" name="notify_me" class="button buttonNotify">Download on iPhone</button>
+              </a>
+              <div class="downloadTitle">Coming soon to Android</div>
             </div>
+          </div>
+        </div>
+    
+      </div>
+      </div>
 
-                    
-                
+      <div class="sectionDarkBlue">
 
-                
-
-                   
-
-               
-                
-               
-
-                
-
-            
-
-           
-
-
-        <div id="section3">
-            
-                <div id="left">
-                    <h3>Connect:</h3>
-                    <a href="http://www.instagram.com/wishroll" target="_blank"><%= image_tag("instagram.png",:size => "30x30", :style =>"padding: 5px;")%></a>
-                    <a href="http://www.twitter.com/wishroll" target="_blank" ><%= image_tag("twitter.png",:size => "30x30")%></a>
-                    <a href="http://vm.tiktok.com/ZMJK1X8cx/" target="_blank" ><%= image_tag("tiktok.png",:size => "30x30")%></a>
-                     
-        
-
+          <div class="contentContainerWide">
+            <div id="aiSection" class="contentContainer">
+              <h1 id="aiTitle" >Search, download & share.</h1>
+              <p id="aiText" class="AIp">Find and download any reaction media by using the search feature.</p>
+            </div>
+      
+            <div class="factCardL whiteBg searchingFact">
+              <div class="factIntro">
+                <h4>Searching</h4>
+                <h2 style="color: black;">Search emotions, public figures, phrases, and emojis.</h2>
+                <div id="SGReplayButton" class="replayButton panelHide">
+                  <div class="refreshIcon"></div>
+                  <h4>Replay</h4>
                 </div>
-
-
-
-                <div id="right">
-                    <h3>Contact Us:</h3>
-                    <p>info@wishroll.co</p>
-
+              </div>
+              <div class="factImage">
+                <div class="iphonePreviewS">
+                  <div class="iphoneFrameS"></div>
+                  <div class="iphoneScreenS">
+                    <%# <video muted playsinline id="SGVideo" class="iphoneUIImage" src="src/session guide_recording.mov" poster="src/sg_set_rest@3x.png"> %>
+                      <!-- <source src="src/session guide_recording.mov" type="video/mp4"> -->
+                      <img src="src/sg_set_rest@3x.png" style="width: 100%; height: 100%;"/>
+                    </video>
+                  </div>
                 </div>
-           
+              </div>
+            </div>
+      
+            <div class="factCard whiteBg spreadsheetFactCard">
+              <div class="factIntro">
+                <h4>Downloading</h4>
+                <h3 style="color: black;" >Download videos and pictures straight from the app.</h3>
+              </div>
+              <div id="spreadsheetCellImage"></div>
+            </div>
+      
+            <div class="factCardS whiteBg progressionFactCard">
+              <div class="factIntro">
+                <h4>Sharing</h4>
+                <h3 style="color: black;">Share your reaction media with others.</h3>
+              </div>
+              <div id="progressionArrows">
+                <div id="progressionArrowUp" class="progressionArrowUpHidden"></div>
+                <div id="progressionArrowDown" class="progressionArrowDownHidden"></div>
+              </div>
+            </div>
+      
+          </div>
+      
+        </div>
+      
+        <div class="sectionWhite">
+          <div class="contentContainerWide">
+            <div class="contentContainer">
+              <h1 id="statsTitle" style="color: black;" >Tagging</h1>
+              <p id="statsText" class="AIp">Tag each post with descriptions to facilitate searchability.</p>
+            </div>
+      
+            <div class="factCard quaternaryBg fitnessGoalFactCard">
+              <div class="factIntro">
+                <h4>Split Media Searching</h4>
+                <h3 style="color: black;">Filter between videos, pictures, and gifs.</h3>
+              </div>
+              <div id="goalEmblems" data-parallax='{"x": -130, "smoothness": 4}'></div>
+            </div>
+      
+            <div class="factCardS quaternaryBg gymHomeFactCard">
+              <div class="factIntro">
+                <h4>Tagging Flexibilty</h4>
+                <div id="gymHomeIcons"></div>
+              </div>
+              <h3 style="color: black;">Tag with phrases, nouns, public figures, cartoon characters, celebrities, and more.</h3>
+            </div>
+      
+            <div class="factCardL blackBg workoutEditorFact">
+              <div class="factIntro">
+                <h4>Discover</h4>
+                <h2 style="color: white;">Real time discover page with trending reaction media.</h2>
+                <div></div>
+              </div>
+              <div class="factImage">
+                <div id="workoutEditorMockup" class="iphonePreviewXS">
+                  <div class="iphoneFrameXS"></div>
+                  <div class="iphoneScreenXS">
+                    <%# <img class="iphoneUIImage" src="src/edit set.png" /> %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      
+      <%#    <div class="sectionDarkBlue">
+           <div class="contentContainerWide">
+             <div class="contentContainer">
+      
+               <h1 id="editorTitle">Download the Keyboard Extension</h1>
+               <p id="editorText" class="AIp">WishRoll allows you to customize your profile, see notifications and follow others.</p>
+             </div>
+      
+             <div class="factCardL whiteBg statsFactCard">
+               <div class="factIntro">
+                 <h4>Profile Page</h4>
+                 <h2 style="color: black;" >Your exercise progress, neatly visualized over time.</h2>
+               </div>
+               <div id="statsChartImage"></div>
+             </div>
+      
+             <div class="factCard whiteBg">
+               <div class="factIntro">
+                 <h4>Workout Calendar</h4>
+                 <h3>Visualize your workout consistency. Skipped a day? Flex will reschedule automatically.</h3>
+               </div>
+               <div id="calendarImage"></div>
+             </div>
+      
+             <div class="factCardS streakFactCard">
+               <div class="factIntro">
+                 <h4>Streak</h4>
+                 <h3>Hit your streak goals by following your workout routine.</h3>
+                 <div id="streakWidget"></div>
+               </div>
+             </div>
+           </div>
+      
+         </div>  %>
+      
+        <div id="moreFactsSection">
+          <h3>More to love...</h3>
+          <div id="mfFree" class="moreFactsCell">
+            <h2 style="color: black;" >Customizable Profile Page</h2>
+          </div>
+      
+          <div id="mfEasy" class="moreFactsCell">
+            <h2 style="color: black;" >Follow other profiles</h2>
+          </div>
+      
+          <div id="mfBWT" class="moreFactsCell">
+            <h2 style="color: black;" >Get comments and likes</h2>
+          </div>
+      
+          <div id="mfPlateCal" class="moreFactsCell">
+            <h2 style="color: black;">Bookmark reactions you like</h2>
+          </div>
+      
+      
+        </div>
+      
+        <div class="downloadFlexCardBtm ">
+          <a href="https://apps.apple.com/us/app/wishroll-reaction-memes/id1549503766">
+            <button type="button" name="notify_me" class="button buttonNotify">Download on iPhone</button>
+          </a>
+
+          <div class="downloadTitle" style="color: black;">Coming soon to Android</div>
+        </div>
+      
+
+
+      <footer id="flexFooter" class="contentContainer " >
+        <div class="footerCol">
+            <a>
+                <h3 style="color: black; font-family: Roboto;">WishRoll</h3>
+            </a>
+            <small>© 2021 WishRoll</small>
         </div>
 
-    </body> 
-    
-    
-        
-</html>
+        <div class="footerCol">
+            <h3 style="color: black;" >Policy</h3>
+            <div class="footerLink">
+                <a><%= link_to "Home", "/home" %></a>
+            </div>
+            <div class="footerLink">
+                <a><%= link_to "Privacy Policy", "/privacy" %></a>
+               
+            </div>
+            <div class="footerLink">
+                <a><%= link_to "Terms of Use", "/terms" %></a>
+            </div>
+        </div>
+          
+          <div class="footerCol">
+              <h3 style="color: black;" >Find us on</h3>
+              <div class="footerLink">
+                  <a href="https://www.instagram.com/wishroll/" target="_blank">Instagram</a>
+              </div>
+              <div class="footerLink">
+                  <a href="https://www.twitter.com/wishroll/" target="_blank">Twitter</a>
+              </div>
+              <div class="footerLink">
+                  <a href="https://www.twitter.com/wishroll/" target="_blank">TikTok</a>
+              </div>
+          </div>
 
+          <div class="footerCol">
+            <h3 style="color: black;" >Contact Us</h3>
+            <div class="footerLink">
+                <a href="" target="_blank">info@wishroll.co</a>
+          
+            </div>
+        </div>
+        </footer>
+      
+      
+    </body>
+      
+      
+      
+  </html>
+    
+
+      
+
+
+  
