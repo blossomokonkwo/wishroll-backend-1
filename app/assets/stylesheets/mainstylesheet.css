@@ -1,385 +1,1577 @@
+@font-face {
+  font-family: Roboto;
+  src: url(Roboto/Roboto-Light.ttf);
+  font-weight: 100;
+}
 
+@font-face {
+  font-family: Roboto;
+  src: url(Roboto/Roboto-Medium.ttf);
+  font-weight: 600;
+}
 
+@font-face {
+  font-family: Roboto;
+  src: url(Roboto/Roboto-Bold.ttf);
+  font-weight: 800;
+}
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-*{
+@font-face {
+  font-family: Raleway;
+  src: url(Raleway/static/Raleway-Regular.ttf);
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Raleway;
+  src: url(Raleway/static/Raleway-Bold.ttf);
+  font-weight: 800;
+}
+
+::selection {
+  background-color: black;
+  color: white;
+}
+
+html, body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  list-style: none;
+  height: 100%;
+  min-width: 320px;
+  font-family: sans-serif;
+  background-color: white;
+}
+
+a {
+  transition-property: all;
+  transition-duration: .7s;
+  font-family: Raleway;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+a:link {
   text-decoration: none;
 }
 
-.gallery{
-  margin-bottom: 20px;
-
+a:visited {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.gallery img{
-  margin-bottom: 20px;
-  width: 100%;
-  height: auto;
-
+a:hover {
+  color: #000000;
 }
 
-.responsive{
-  margin-bottom: 20px;
-
-  padding: 10px 10px ;
-  float: left;
-  width: 25%;
-}
-
-.des{
-  font-family: 'Poppins', sans-serif;
-  text-align: left;
-}
-
-.des h1{
-  margin-bottom: 10px;
-  font-size: 20px;
-  text-align: left;
-}
-
-.des p{
-  font-size: 15px;
-  text-align: left;
-}
-
-
-
-nav{
-  background: #17202A;
-  height: 120px;
-  width: 100%;
-  
-}
-
-label.logo{
-  color: #f2f2f2;
-  font-size: 33px;
-  line-height: 120px;
-  padding: 0 40px;
+p {
+  transition-property: all;
+  transition-duration: 1s;
+  font-family: Raleway;
+  font-size: 32px;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.38;
+  letter-spacing: normal;
+  color: #a1a7ae;
 }
 
-nav ul{
+h1 {
+  transition-property: all;
+  transition-duration: .7s;
+  color: #FFFFFF;
+  font-family: Raleway;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+}
+
+h2 {
+  transition-property: all;
+  transition-duration: .7s;
+  font-family: Raleway;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #FFFFFF;
+}
+
+h3 {
+  transition-property: all;
+  transition-duration: .7s;
+  font-family: Raleway;
+  font-size: 18px;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #FFFFFF;
+  margin: 0 0 30px 0;
+}
+
+.factIntro h3 {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 36px;
+  margin: 36px 0 0 0;
+}
+
+.fitnessGoalFactCard h3 {
+  font-size: 32px;
+  line-height: 44px;
+}
+
+h4 {
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: #1BA2F0;
+  margin: 0;
+}
+
+small {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+  margin: 72px 0 30px 0;
+}
+
+ol {
+  list-style-type: none;
+  counter-reset: item;
+  margin: 0;
+  padding: 0;
+}
+
+ol>li {
+  display: table;
+  counter-increment: item;
+  margin-bottom: 0.6em;
+}
+
+ol>li:before {
+  content: counters(item, ".") ". ";
+  display: table-cell;
+  padding-right: 0.6em;
+}
+
+li ol>li {
+  margin: 0;
+}
+
+li ol>li:before {
+  content: counters(item, ".") ". ";
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.dimmedOverlay {
+  transition-property: all;
+  transition-duration: .3s;
+  background-color: black;
+  opacity: 0;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.h2Text {
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #000000;
+}
+
+.pText {
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.44;
+  letter-spacing: normal;
+  color: #000000;
+}
+
+.button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition-property: all;
+  transition-duration: .7s;
   float: right;
-  margin-right: 40px;
-  
-}
-
-nav ul li{
-  display: inline-block;
-  line-height: 120px;
-  
-}
-
-nav ul li a{
-  color: #f2f2f2;
-  font-weight: 500;
-  font-size: 17px;
-  padding: 7px 13px;
-  border-radius: 3px;
-  font-family: 'Poppins', sans-serif;
-}
-
-.current{
-    border-bottom: 5px solid #85C8F3;
-}
-
-a.active, a:hover{
-  transition: .025s;
-  color: #85C8F3;
-}
-
-.checkbtn{
-  font-size: 30px;
-  color: white;
-  float: right;
-  line-height: 120px;
-  margin-right: 40px;
+  outline: none;
+  border: 0;
+  margin: 0;
+  padding: 0 24px 0 24px;
+  height: 54px;
+  border-radius: 32px;
+  background-color: #002F48;
+  font-family: Raleway;
+  font-size: 20px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
   cursor: pointer;
-  display: none;
 }
 
-#check{
-  display: none;
+.button:hover {
+  transition-property: all;
+  transition-duration: .2s;
+  background-color: #99DBFF;
+  background-image: none;
+  /* color: #000000; */
 }
 
-@media (max-width: 952px){
-
-  .responsive{
-    width: 50%;
-    margin: 6px 0;
-  }
-
-  label.logo{
-    font-size: 27px;
-    padding-left: 40px;
-  }
-
-  nav ul li a{
-    font-size: 16px;
-  }
-
-  .containerImage img{
-    padding: 50px;
-    
-  }
-
+.buttonContact {
+  float: none;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  width: 212px;
 }
-@media (max-width: 858px){
-  .checkbtn{
-    display: block;
-    margin-right: 40px;
-  }
 
-  .responsive{
+.buttonIns {
+  background-image: linear-gradient(to right, #ff216e, #b937ff);
+}
+
+.buttonLinkedIn {
+  background-image: linear-gradient(to right, #218aff, #3769ff);
+}
+
+#wordmark {
+  width: 72px;
+  height: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(Media/wishroll.png);
+}
+
+#menuBarB {
+  padding: 36px;
+  width: calc(100% - 72px);
+  z-index: 200;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.menuItemsColorW {
+  color: white;
+}
+
+.menuItem {
+  transition-property: all;
+  transition-duration: .7s;
+  color: #FFFFFF;
+  font-family: Raleway, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.11;
+  letter-spacing: normal;
+  margin-left: 44px;
+}
+
+.menuItem:visited {
+  color: #FFFFFF;
+}
+
+.menuItem:hover {
+  transition-property: all;
+  transition-duration: .3s;
+  opacity: 1;
+  transform: translate(0, -2px);
+  color: #99DBFF;
+}
+
+.flexLongText {
+  font-family: Roboto;
+  color: black;
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+.panelHide {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.textHidden {
+  opacity: 0;
+  transform: translate(0, 100px);
+}
+
+.factCardTextHidden {
+  opacity: 0;
+  transform: translate(-20px, 0);
+}
+
+.factCardHidden {
+  opacity: 0;
+  transform: scale(1.2);
+}
+
+.iphoneHidden {
+  opacity: 0;
+  transform: scale(1.3);
+  z-index: 300;
+}
+
+.cardHidden {
+  opacity: 0;
+  transform: translate(0, 200px) scale(1.2);
+}
+
+.whiteBg {
+  background-color: #ffffff;
+}
+.darkBlueBg {
+  background-color: #002F48;
+}
+
+.blackBg {
+  background-color: #000000;
+}
+
+.quaternaryBg {
+  background: rgba(132, 140, 196, 0.1);
+}
+
+.spreadsheetFactCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#spreadsheetCellImage {
+  width: 100%;
+  height: 340px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: contain;
+  background-image: url(../src/spreadsheet-exercise.png);
+}
+
+.progressionFactCard {
+  display: flex;
+  flex-direction: column;
+}
+
+#progressionArrows {
+  position: relative;
+  height: 260px;
+}
+
+#progressionArrowUp {
+  transition: all 1s cubic-bezier(.36, 1.5, .63, .91);
+  position: absolute;
+  right: 64px;
+  bottom: -36px;
+  width: 180px;
+  height: 180px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-arrow_up.png);
+}
+
+#progressionArrowDown {
+  transition: all 1s cubic-bezier(.36, 1.5, .63, .91);
+  position: absolute;
+  right: -28px;
+  bottom: 80px;
+  width: 180px;
+  height: 180px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-arrow_down.png);
+}
+
+.progressionArrowUpHidden {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.progressionArrowDownHidden {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+#goalEmblems {
+  width: 1000px;
+  height: 116px;
+  margin: 148px 0 80px 0;
+  background-repeat: repeat-x;
+  background-position: left;
+  background-size: contain;
+  background-image: url(../src/goals.png);
+}
+
+.gymHomeFactCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gymHomeFactCard h3 {
+  margin: 0 48px 48px 48px;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+
+#gymHomeIcons {
+  width: 80%;
+  max-width: 226px;
+  height: 132px;
+  margin-top: 36px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/gym-home.png);
+}
+
+.workoutEditorFact h2 {
+  color: #ffffff;
+}
+
+.replayButton {
+  transition: all;
+  transition-duration: .3s;
+  display: flex;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.replayButton h4 {
+  font-family: Raleway;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: lighter;
+  line-height: 22px;
+  color: #A1A7AE;
+  margin: 0 0 0 8px;
+}
+
+.refreshIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-refresh.png);
+  width: 22px;
+  height: 22px;
+}
+
+#statsChartImage {
+  transition-property: all;
+  transition-duration: 2s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  position: absolute;
+  z-index: -1;
+  width: 0%;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-image: url(../src/statsLine.png);
+}
+
+#calendarImage {
+  width: 100%;
+  height: 339px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: contain;
+  background-image: url(../src/calendar.png);
+}
+
+.streakFactCard {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url(../src/streak-bg.png);
+}
+
+.streakFactCard h3 {
+  color: white;
+  font-size: 32px;
+  line-height: 44px;
+}
+
+.streakFactCard h4 {
+  color: white;
+  opacity: 0.72;
+}
+
+.streakFactCard .factIntro {
+  display: flex;
+  height: calc(100% - 96px);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#streakWidget {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/streak.png);
+  width: 100%;
+  max-width: 343px;
+  height: 98px;
+}
+
+#moreFactsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white; 
+}
+
+#moreFactsSection h3 {
+  text-align: center;
+  color: #A1A7AE;
+  font-weight: 400;
+}
+
+.moreFactsCell {
+  transition-property: all;
+  transition-duration: .4s;
+  display: flex;
+  flex-direction: row;
+}
+
+.moreFactsCell h2 {
+  margin: 0 0 0 12px;
+  font-weight: 400;
+}
+
+#freeIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-checkmark.png);
+}
+
+#easyIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-magic.png);
+}
+
+#bodyIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-body.png);
+}
+
+#plateIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-workout.png);
+}
+
+#musicIcon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/g-music.png);
+}
+
+#SGVideo {
+  border: none;
+}
+
+@media (min-width:100px) and (max-width:960px) {
+  h1 {
+    font-size: 40px;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+  }
+  h2 {
+    font-size: 36px;
+  }
+  .buttonContact {
+    float: none;
     width: 100%;
+  }
+  .contentContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 64px;
+  }
+  .contentContainerWide {
+    position: relative;
+    width: calc(100% - 64px);
+    padding: 32px;
+  }
+  .iphonePreview {
+    position: relative;
+    width: 303px;
+    height: 527px;
+    margin: 0 auto;
+  }
+  .iphoneFrame {
+    position: absolute;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url(Media/iphone_frame@2x.png);
+  }
+  .iphoneScreen {
+    position: absolute;
+    z-index: 100;
+    top: 29px;
+    left: 47px;
+    width: 205px;
+    height: 443px;
+    border-radius: 20px;
+    background-color: #000000;
+    overflow: hidden;
+  }
+  .iphonePreviewS, .iphonePreviewXS {
+    position: relative;
+    width: 208px;
+    height: 428px;
+    margin: 0 auto;
+  }
+  .iphoneFrameS, .iphoneFrameXS {
+    position: absolute;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url(Media/iphone_frame@2x.png);
+  }
+  .iphoneScreenS, .iphoneScreenXS {
+    position: absolute;
+    z-index: 100;
+    top: 34px;
+    left: 24px;
+    width: 160px;
+    height: 340px;
+    border-radius: 20px;
+    background-color: #000000;
+    overflow: hidden;
+  }
+  #heroContainer {
+    transition-property: all;
+    transition-duration: 1s;
+    position: relative;
+    overflow: hidden;
+  }
+  #heroiPhoneWrap {
+    transition-property: all;
+    transition-duration: 1s;
+    position: relative;
+    z-index: 100;
+    margin: 0 auto;
+  }
+  #heroiPhonePreview {
+    position: relative;
+  }
+  /* #heroBubblesContainer {
+    transition-property: all;
+    transition-duration: 1s;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 300px;
+    top: 20vh;
+  }
+  .heroBubbles {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  #heroBubble_1 {
+    z-index: 2;
+    left: 0;
+    top: 60px;
+    width: 136px;
+    height: 137px;
+    background-image: url(../src/landing_b_lose@2x.png);
+  }
+  #heroBubble_2 {
+    z-index: 5;
+    left: -50px;
+    top: -80px;
+    width: 184px;
+    height: 185px;
+    background-image: url(../src/landing_b_gain@2x.png);
+  }
+  #heroBubble_3 {
+    z-index: 6;
+    top: 180px;
+    left: -60px;
+    width: 153px;
+    height: 153px;
+    background-image: url(../src/landing_b_general@2x.png);
+  }
+  #heroBubble_4 {
+    z-index: 3;
+    right: -70px;
+    top: 0;
+    width: 184px;
+    height: 185px;
+    background-image: url(../src/landing_b_cardio@2x.png);
+  }
+  #heroBubble_5 {
+    z-index: 4;
+    right: 1px;
+    top: -125px;
+    width: 137px;
+    height: 136px;
+    background-image: url(../src/landing_b_flexibility@2x.png);
+  }
+  #heroBubble_6 {
+    z-index: 1;
+    right: -10px;
+    top: 160px;
+    width: 191px;
+    height: 191px;
+    background-image: url(../src/landing_b_strength@2x.png);
+  } */
+
+  #heroTitleArea {
+    transition-property: all;
+    transition-duration: 1s;
+    margin-top: 28px;
+  }
+  .downloadFlexCard {
+    position: relative;
+    max-width: 400px;
+    padding-top: 36px;
+    margin: 0 auto;
+    border-radius: 32px;
+  }
+  .buttonNotify {
+    float: none;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .factCardL, .factCard, .factCardS {
+    border-radius: 24px;
+    padding: 24px 24px 0 24px;
+    margin-bottom: 44px;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+  }
+  .factIntro {
+    z-index: 20;
+  }
+  .factIntro h3 {
+    font-size: 26px;
+    margin: 0;
+    line-height: 34px;
+  }
+  .factIntro h4 {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+  .factIntro h2 {
+    font-size: 26px;
+    margin: 0;
+    line-height: 34px;
+  }
+  .introP {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .poweredByAI {
+    position: relative;
+    z-index: 4;
+  }
+  #progressionArrows {
+    transform: translate(48px, 24px) scale(0.8);
+    height: 160px;
+  }
+  .AIp {
+    font-size: 22px;
+    margin-bottom: 48px;
+  }
+  #aiGradientBg {
+    height: 400px;
+  }
+  #goalFactTitle {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  #goalEmblems {
+    width: 600px;
+    height: 64px;
+    margin: 88px 0 48px 0;
+  }
+  .gymHomeFactCard h3 {
+    margin: 48px 0 32px 0;
+  }
+  #gymHomeIcons {
+    width: 200px;
+    height: 112px;
+  }
+  #workoutEditorMockup, #calendarImage {
+    margin-top: 32px;
+  }
+  .iconImage {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  .sectionWhite {
+    background-color: #ffffff;
+  }
+
+  
+  .downloadFlexCardBtm {
+    max-width: 400px;
+    width: calc(100% - 64px);
+    margin: 0 auto;
+    padding: 36px 0 36px 0;
+    background-color: white; 
+  }
+  #statsChartImage {
+    top: 0;
+    background-size: calc(100vw - 64px);
+    height: 100%;
+  }
+  .statsFactCard h2 {
+    margin: 108px auto 168px auto;
+    text-align: left;
+  }
+  .streakFactCard h3 {
+    text-align: left;
+  }
+  #streakWidget {
+    margin: 80px 0 32px 0;
+  }
+  #moreFactsSection {
+    padding: 48px 32px 0 32px;
+  }
+  #moreFactsSection h3 {
+    font-size: 16px;
+    line-height: 16px;
+  }
+  .moreFactsCell {
+    margin-bottom: 20px;
+  }
+  .moreFactsCell h2 {
+    font-size: 26px;
+    line-height: 30px;
+    font-weight: 400;
+  }
+  .moreFactsIcon {
+    width: 30px;
+    height: 30px;
+  }
+  #flexFooter {
+    width: calc(100% - 64px);
+    margin: 0 auto;
+    border-top: 1px solid #EDEEF2;
+  }
+  #aboutHeader {
+    position: relative;
+    width: calc(100% - 64px);
+    margin: 0 auto;
+    padding-top: 1px;
+    padding-bottom: 24px;
+    border-radius: 32px;
+    background-color: rgba(132, 140, 196, 0.1);
+  }
+  #aboutHeaderTitle {
+    margin: 24vw 28% 0 24px;
+    font-family: Raleway;
+    font-size: 7vw;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    color: #000000;
+  }
+  #teamContainer {
+    display: grid;
+    grid-template-columns: repeat(2, calc((100% - 16px) / 2));
+    grid-auto-rows: auto;
+    grid-gap: 16px;
+    padding: 24px 32px 0 32px;
+    width: calc(100% - 64px);
+  }
+  .flexPeopleCard {
+    transition-property: all;
+    transition-duration: .7s;
+    padding-bottom: 3vw;
     
+    border-radius: 16px;
+    overflow: hidden;
   }
-
-  .containerImage img{
-    padding: 70px;
+  .flexPeopleAvatarContainer {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    overflow: hidden;
   }
+  .flexPeopleName {
+    margin-bottom: -10px;
+    font-size: 20px;
+    /* font-size: 4vw; */
+  }
+  .flexPeopleTitle {
+    font-size: 14px;
+    color: #e5e5e5;
+  }
+  #getInTouch {
+    width: calc(100% - 64px);
+  }
+  .getInTouchH2 {
+    font-weight: 400;
+    font-stretch: normal;
+    font-style: normal;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: normal;
+    color: #a1a7ae;
+  }
+  .downloadTitle {
+    font-size: 16px;
+    line-height: 54px;
+  }
+}
 
-  ul{
+@media (min-width:960px) {
+  h1 {
+    font-size: 64px;
+  }
+  h2 {
+    font-size: 48px;
+    line-height: 56px;
+  }
+  .subtitleH1 {
+    margin: -40px 0 48px 0;
+  }
+  .iphonePreviewS {
+    position: relative;
+    width: 376px;
+    height: 730px;
+    margin: 0 auto;
+  }
+  .iphoneFrameS {
+    position: absolute;
+    z-index: 200;
+    width: 376px;
+    height: 730px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url(Media/iphone_frame@2x.png);
+  }
+  .iphoneScreenS {
+    position: absolute;
+    z-index: 100;
+    top: 40px;
+    left: 47px;
+    width: 282px;
+    height: 610px;
+    border-radius: 28px;
+    background-color: #000000;
+    overflow: hidden;
+  }
+  .iphonePreviewXS {
+    position: relative;
+    width: 320px;
+    height: 621px;
+    margin: 0 auto;
+  }
+  .iphoneFrameXS {
+    position: absolute;
+    z-index: 200;
+    width: 320px;
+    height: 621px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url(Media/iphone_frame@2x.png);
+  }
+  .iphoneScreenXS {
+    position: absolute;
+    z-index: 100;
+    top: 34px;
+    left: 40px;
+    width: 240px;
+    height: 519px;
+    border-radius: 21px;
+    background-color: #000000;
+    overflow: hidden;
+  }
+  #heroiPhoneWrap {
+    transition-property: all;
+    transition-duration: 1s;
+    z-index: 100;
+    margin-bottom: 64px;
+  }
+  #heroTitleArea {
+    transition-property: all;
+    transition-duration: 1s;
+    width: 800px;
+    margin-left: 48px;
+  }
+  #modalViewContainer {
+    display: none;
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100vh;
-    background: #2c3e50;
-    top: 80px;
-    left: -100%;
-    text-align: center;
-    transition: all .5s;
+    z-index: 800;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
   }
+  .poweredByAI {
+    position: relative;
+    z-index: 4;
+    margin-top: 100px;
+    text-align: left;
+  }
+  .contentContainer {
+    position: relative;
+    margin-left: 48px;
+    padding-top: 130px;
+  }
+  .contentContainerWide {
+    position: relative;
+    width: calc(100% - 72px);
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  #heroContainer {
+    transition-property: all;
+    transition-duration: 1s;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  #heroiPhonePreview {
+    position: relative;
+    z-index: 100;
+    margin: 0 auto;
+  }
+  /* #heroBubblesContainer {
+    transition-property: all;
+    transition-duration: 1s;
+    position: absolute;
+    z-index: 1;
+    width: 1440px;
+    height: 300px;
+    top: 240px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .heroBubbles {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  #heroBubble_1 {
+    z-index: 2;
+    left: -88px;
+    top: 30px;
+    width: 272px;
+    height: 273px;
+    background-image: url(Media/favicon.png);
+    }
 
-  nav ul li{
-    display: block;
-    margin: 50px 0;
+  #heroBubble_2 {
+    z-index: 5;
+    left: calc(50% - 560px);
+    top: -80px;
+    width: 368px;
+    height: 369px;
+    background-image: url(Media/favicon.png);  }
+  #heroBubble_3 {
+    z-index: 6;
+    left: calc(50% - 370px);
+    width: 306px;
+    height: 306px;
+    background-image: url(Media/favicon.png);  }
+  #heroBubble_4 {
+    z-index: 3;
+    right: calc(50% - 370px);
+    top: -20px;
+    width: 368px;
+    height: 369px;
+    background-image: url(Media/favicon.png);  }
+  #heroBubble_5 {
+    z-index: 4;
+    right: 90px;
+    top: -60px;
+    width: 273px;
+    height: 272px;
+    background-image: url(Media/favicon.png);  }
+  #heroBubble_6 {
+    z-index: 1;
+    right: -120px;
+    top: -80px;
+    width: 382px;
+    height: 382px;
+    background-image: url(Media/favicon.png);
+  } */
+
+  .downloadFlexCard {
+    margin-top: 54px;
+    height: 54px;
+  }
+  .downloadFlexCardBtm {
+    width: 450px;
+    height: 54px;
+    margin: 0 auto;
+    padding: 72px 0 72px 0;
+    background-color: white; 
+  }
+  .buttonNotify {
+    float: left;
+  }
+  .downloadTitle {
+    float: left;
+    margin-left: 32px;
+  }
+  .introP {
+    margin-left: 78px;
+    margin-right: 78px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .AIp {
+    max-width: 746px;
+    margin-bottom: 114px;
+  }
+  .factCard {
+    transition: all .3s ease-out;
+    width: 58%;
+    height: auto;
+    border-radius: 32px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .factCardS {
+    transition: all .3s ease-out;
+    width: 38%;
+    height: auto;
+    border-radius: 32px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .factCardL {
+    transition: all .3s ease-out;
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: auto;
+    border-radius: 32px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .factIntro {
+    z-index: 20;
+    margin: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .factImage {
+    margin-right: 20px;
+    max-height: 591px;
+  }
+  .searhcingFact {
+    display: flex;
+    justify-content: space-between;
+  }
+  .searchingFact .iphonePreviewS {
+    transform: translateY(-130px);
+  }
+  .workoutEditorFact {
+    display: flex;
+    justify-content: space-between;
+  }
+  #workoutEditorMockup {
+    transform: scale(0.94);
+    margin-bottom: 20px;
+  }
+  #statsChartImage {
+    top: 0;
+    background-size: 1040px;
+    height: 100%;
+  }
+  .statsFactCard h2 {
+    max-width: 655px;
+    margin: 128px auto 188px auto;
+    text-align: center;
+  }
+  .streakFactCard h3 {
+    text-align: center;
+  }
+  #moreFactsSection {
+    padding: 132px 0 0 0;
+  }
+  #moreFactsSection h3 {
+    font-size: 32px;
+    line-height: 44px;
+  }
+  .moreFactsCell {
+    margin-bottom: 32px;
+  }
+  .moreFactsCell h2 {
+    font-size: 48px;
+    line-height: 56px;
+  }
+  .moreFactsIcon {
+    width: 56px;
+    height: 56px;
+  }
+  .iconImage {
+    width: 88px;
+    height: 88px;
+    margin-bottom: 36px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  .sectionWhite {
+    position: relative;
+    width: 100%;
+    background: #ffffff;
+    overflow: hidden;
+  }
+  #improvementsP {
+    margin-left: 110px;
+    margin-right: 110px;
+  }
+  #aboutHeader {
+    position: relative;
+    width: calc(100% - 72px);
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-top: 1px;
+    padding-bottom: 48px;
+    border-radius: 32px;
+    background-color: rgba(132, 140, 196, 0.1);
+  }
+  #aboutHeaderTitle {
+    margin: 260px 320px 0 48px;
+    font-family: Raleway;
+    font-size: 64px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    color: #000000;
+  }
+  #teamContainer {
+    display: grid;
+    width: calc(100% - 72px);
+    max-width: 1040px;
+    margin: 0 auto;
+    grid-template-columns: repeat(4, calc((100% - 90px) / 4));
+    grid-auto-rows: auto;
+    grid-gap: 30px;
+    padding-top: 54px;
+  }
+  .flexPeopleCard {
+    transition-property: all;
+    transition-duration: .7s;
+    padding-bottom: 24px;
+    border-radius: 20px;
+    
+    overflow: visible;
+  }
+  .flexPeopleAvatarContainer {
+    transition-property: all;
+    transition-duration: .2s;
+    width: 100%;
+    max-height: 237px;
+    overflow: hidden;
+    border-radius: 20px;
+  }
+  .flexPeopleAvatarContainer:hover {
+    transition-property: all;
+    transition-duration: .4s;
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.16);
+  }
+  .flexPeopleName {
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 600;
     line-height: 30px;
   }
-
-  nav ul li a{
+  .flexPeopleTitle {
+    margin-top: 4px;
+    font-size: 18px;
+  }
+  #getInTouch {
+    max-width: 1040px;
+    width: calc(100% - 72px);
+  }
+  .getInTouchH2 {
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #a1a7ae;
+  }
+  #flexFooter {
+    width: calc(100% - 72px);
+    max-width: 1040px;
+    margin: 0 auto;
+    border-top: 1px solid #EDEEF2;
+  }
+  .downloadTitle {
     font-size: 20px;
-  }
-
-  a:hover,a.active{
-    background: none;
-    color: #0082e6;
-  }
-
-  #check:checked ~ ul{
-    left: 0;
+    line-height: 54px;
   }
 }
 
-
-/* Global */
-.container{
-    font-family: 'Poppins', sans-serif;
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+.downloadFlexCardLeft {
+  display: flex;
+  justify-content: flex-start;
 }
 
-
-
-
-
-
-.containerImage{
-    margin-bottom: 100px;
-    margin-top: 20px;
+.flexPeopleCard:hover {
+  transition-property: all;
+  transition-duration: .3s;
+  transform: scale(1.1) translateY(-20px);
 }
 
-
-
-.containerImage img{
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: auto;
-    width: 100%;
-    padding: 10px;
-    max-width: 300px;
-    display: flex;
-    justify-content: center;
-    
-    
+.flexPeopleAvatar {
+  width: 100%;
+  vertical-align: middle;
 }
 
-
-/* Showcase */
-#showcase{
-    min-height: 400px;
-    background-color:white;
-    /* background-image: url('BackBackground.png'); */
-    text-align: center;
-    color:#14202b;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
-
-
-#showcaseContact h1{
-  font-family: 'Poppins', sans-serif;
-  
-  font-size: 35px;
-  margin-bottom:10px;
-  
-}
-
-
-
-#showcase h1{
-    font-family: 'Poppins', sans-serif;
-    margin-top: 10px;
-    font-size: 35px;
-    margin-bottom:10px;
-    margin-top: 30px;
-}
-
-#showcase p{
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-
-}
-
-/* Title for What is */
-
-
-
-/* Boxes */
-
-#boxes{
-    margin-top: 0px;
-    background: white;
-    text-align: center;
-
-}
-
-#boxes h1{
-  margin: 90px;
-  
-
-}
-
-#boxes .box{
-    float: left;
-    width: 33.33333%;
-    padding: 10px;
-    text-align: center;
-    
-    
-    
-    
-
-}
-
-#boxes .box img{
-  max-width: 200px;
-  
-  
-  
-  
-
-}
-
-.cardHolder{
-  
-  width:100%;
-  font-family: 'Poppins', sans-serif;
-  
-
-}
-
-.cardHolder h1{
-  font-size: 25px;
-  
-
-}
-
-.cardHolder .card{
-  margin: 0px;
-  width: 25%;
-  float: left;
-}
-
-.cardHolder img{
-  max-width: 250px;
-  height: auto;
-}
-
-
-
-footer{
-    font-family: 'Poppins', sans-serif;
-    padding: 20px;
-    margin-top: 0px;
-    color: white;
-    background: #16a2ef;
-    text-align: center;
-}
-
-.mainTitle{
-  font-family: 'Poppins', sans-serif;
-  
-  text-align: center;
-  margin: auto;
-  width: 50%;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  padding: 10px;
- 
-  
-}
-
-#showcaseContact{
-  min-height: 100vh;
-  
-  background-image: url('WideFadeBackground.png'); 
-  text-align: center;
+.flexAppIcon {
+  width: 64px;
+  height: 64px;
+  margin-right: 16px;
   background-repeat: no-repeat;
-  background-size: cover;
-  
-  color:#14202b;
-  
-  
+  background-position: center;
+  background-size: contain;
+  background-image: url(../src/flex_icon_iphone.png);
 }
 
-.blob{
-  background-color: #e2e2e2;
-  border-radius: 40px;
-  max-height: 400px;
-  
-  width: 80%;
-  
+.iphoneUIImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.downloadTitle {
+  font-family: Raleway;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  color: #FFFFFF;
+}
+
+.downloadSubtitle {
+  font-family: Nunito;
+  font-size: 18px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.44;
+  letter-spacing: normal;
+  color: rgba(132, 164, 196, 0.6);
+  margin-top: 2px;
+}
+
+#iconGym {
+  background-image: url(../src/icon_gym.png);
+}
+
+#iconEdit {
+  background-image: url(../src/icon_edit.png);
+}
+
+.previewCard {
+  transition-property: all;
+  transition-duration: .7s;
+  width: 100%;
+  margin: 0 0 48px 0;
+  box-shadow: 0 16px 24px 0 rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.previewCardLeft {
+  display: block;
+  width: 100%;
+}
+
+.sectionLightGrey {
+  position: relative;
+  width: 100%;
+  background: #EDEEF2;
+  overflow: hidden;
+}
+
+.sectionDarkBlue {
+  position: relative;
+  width: 100%;
+  background: #002F48;
+  overflow: hidden;
+}
+
+#getInTouch {
+  margin: 0 auto 48px auto;
+  border-top: 1px solid #EDEEF2;
+}
+
+.featureCardsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 36px;
+}
+
+.featureCard {
+  width: 100%;
+  max-width: 519px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 72px;
+}
+
+.screenshotSmall {
+  width: 258px;
+  height: 527px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.introH2 {
+  margin: -10px 0 4px 0;
+  text-align: center;
+}
+
+.subtitleH1 {
+  font-family: Raleway;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #a1a7ae;
+}
+
+.AIh2 {
+  position: relative;
+  z-index: 4;
+  color: white;
+  margin-top: 72px;
+}
+
+.AIp {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+#aiPreview {
+  position: absolute;
+  width: 472px;
+  height: 820px;
+  margin-left: calc(50% - 236px);
+}
+
+#aiGradientBg {
+  width: 100%;
+  background-image: linear-gradient(to bottom, #e4e5ed, #ffffff);
+}
+
+#flexFooter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 40px;
 }
 
 
 
 
 
+#wordmarkLarge {
+  width: 123px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(Media/wishroll.png);
+  margin-bottom: 30px;
+}
 
 
+.footerCol {
+  margin-right: 90px;
+  padding-bottom: 72px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.footerLink {
+  margin-bottom: 8px;
+}
