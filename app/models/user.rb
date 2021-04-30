@@ -139,7 +139,7 @@ class User < ApplicationRecord
 
     has_many :blocked_users, through: :active_block_relationships, source: :blocked_user
 
-    has_many :blocker_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, through: :passive_block_relationships, source: :blocker_user
+    has_many :blocker_users, through: :passive_block_relationships, source: :blocker_user
 
     #the activities that have happended to the user
     has_many :activities, -> {order(created_at: :desc)}, class_name: "Activity", foreign_key: :user_id, dependent: :destroy
