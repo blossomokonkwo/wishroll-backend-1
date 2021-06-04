@@ -4,8 +4,13 @@ scope module: :api do
     constraints subdomain: Rails.env.eql?('production') ? 'api' : '', format: 'json' do
       namespace :v3 do
 
+        namespace :feed do
+          resources :posts, only: [:index]
+        end
+
         namespace :trending do
           resources :trending_tags, only: [:index, :show]
+          resources :posts, only: [:index]
         end
 
         namespace :discover do
@@ -154,6 +159,10 @@ scope module: :api do
         post 'signup', to: "signup#new"
         post 'signup/email', to: "signup#validate_email"
         post 'signup/username', to: "signup#validate_username"
+      end
+
+      scope module: :accounts do
+        post 'reset-password', to: 'forgot_password#reset_password'
       end
 
     end
