@@ -12,7 +12,7 @@ class Api::V3::Trending::PostsController < APIController
             offset = params[:offset]
             limit = 25
 
-            @posts = Post.joins(:user).where(restricted: false).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(share_count: :desc, popularity_rank: :desc, created_at: :desc).offset(offset).limit(25) 
+            @posts = Post.joins(:user).where(restricted: false).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(popularity_rank: :desc, created_at: :desc).offset(offset).limit(25) 
 
             # check that posts array isn't empty
             if @posts.any?
