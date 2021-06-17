@@ -23,11 +23,11 @@
   <body>
       
       <header id="menuBarB" style="background: #16a2ef;" >
-          <a>
-              <h3 style="font-family: Roboto;">WishRoll</h3>
+          <a style="font-family: Roboto;" >
+              <h3 >WishRoll</h3>
           </a>
-          <a><%= link_to "About", "/whatis" %> 
-                <div class="menuItem"> About</div>
+          <a class="menuItem" > <%= link_to "About", "/what-is-wishroll" %> 
+                
           </a>
       </header>     
 
@@ -36,7 +36,7 @@
               <div id="heroiPhonePreview" class="iphonePreviewS" data-parallax='{"y": 100, "smoothness": 5}'>
                 <div class="iphoneFrameS"></div>
                 <div class="iphoneScreenS">
-                  <%=  image_tag("discover_web@2x.png",  :alt => "Discover Page", :class =>"iphoneUIImage") %>
+                  <%# <%=  image_tag("discover_web@2x.png",  :alt => "Discover Page", :class =>"iphoneUIImage") %>  %>
                 </div>
               </div>
             </div>
@@ -47,8 +47,9 @@
       
       <div class="contentContainerWide" style="background: #16a2ef;" >
           <div id="heroTitleArea" > 
-            <h1 style="color: #FFFFFF;">Search, download & share</h1>
-            <h1 class="subtitleH1" style="color: #FFFFFF; font: Roboto; font-weight: 100;"> reaction pics and vids, all in one app.</h1>
+            <h1 style="color: #FFFFFF;">*insert nice, cool, funny,  </h1>
+            <h1 class="subtitleH1" style="color: #FFFFFF; font: Roboto; font-weight: 100;">
+             one-liner*</h1>
     
 
             <div class="downloadFlexCard" >
@@ -64,11 +65,12 @@
       </div>
       </div>
 
+ <%# 
       <div class="sectionDarkBlue">
 
           <div class="contentContainerWide">
             <div id="aiSection" class="contentContainer">
-              <h1 id="aiTitle" >Search, download & share.</h1>
+              <h1 id="aiTitle" >  lorem ipsum </h1>
               <p id="aiText" class="AIp">Find and download any reaction media by using the search feature.</p>
             </div>
       
@@ -85,8 +87,8 @@
                 <div class="iphonePreviewS">
                   <div class="iphoneFrameS"></div>
                   <div class="iphoneScreenS">
-                    <%# <video muted playsinline id="SGVideo" class="iphoneUIImage" src="src/session guide_recording.mov" poster="src/sg_set_rest@3x.png"> %>
-                      <!-- <source src="src/session guide_recording.mov" type="video/mp4"> -->
+                     <video muted playsinline id="SGVideo" class="iphoneUIImage" src="src/session guide_recording.mov" poster="src/sg_set_rest@3x.png"> 
+                       <source src="src/session guide_recording.mov" type="video/mp4"> 
                       <img src="src/sg_set_rest@3x.png" style="width: 100%; height: 100%;"/>
                     </video>
                   </div>
@@ -150,7 +152,7 @@
                 <div id="workoutEditorMockup" class="iphonePreviewXS">
                   <div class="iphoneFrameXS"></div>
                   <div class="iphoneScreenXS">
-                    <%# <img class="iphoneUIImage" src="src/edit set.png" /> %>
+                    <img class="iphoneUIImage" src="src/edit set.png" /> 
                   </div>
                 </div>
               </div>
@@ -159,7 +161,7 @@
       
         </div>
       
-      <%#    <div class="sectionDarkBlue">
+        <div class="sectionDarkBlue">
            <div class="contentContainerWide">
              <div class="contentContainer">
       
@@ -192,7 +194,7 @@
              </div>
            </div>
       
-         </div>  %>
+         </div> 
       
         <div id="moreFactsSection">
           <h3>More to love...</h3>
@@ -222,6 +224,7 @@
 
           <div class="downloadTitle" style="color: black;">Coming soon to Android</div>
         </div>
+         %>
       
 
 
@@ -256,7 +259,7 @@
                   <a href="https://www.twitter.com/wishroll/" target="_blank">Twitter</a>
               </div>
               <div class="footerLink">
-                  <a href="https://www.twitter.com/wishroll/" target="_blank">TikTok</a>
+                  <a href="https://www.tiktok.com/@wishroll?lang=en" target="_blank">TikTok</a>
               </div>
           </div>
 
