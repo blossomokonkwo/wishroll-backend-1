@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_192220) do
+ActiveRecord::Schema.define(version: 2021_06_17_205155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(version: 2021_04_19_192220) do
     t.index ["blocked_id"], name: "index_block_relationships_on_blocked_id"
     t.index ["blocker_id", "blocked_id"], name: "index_block_relationships_on_blocker_id_and_blocked_id", unique: true
     t.index ["blocker_id"], name: "index_block_relationships_on_blocker_id"
+  end
+
+  create_table "boards", force: :cascade do |t|
+    t.bigint "user_count", default: 0, null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "banner_media_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_boards_on_name", unique: true
   end
 
   create_table "bookmarks", force: :cascade do |t|
