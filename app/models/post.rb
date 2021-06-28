@@ -57,7 +57,6 @@ class Post < ApplicationRecord
     alias :region :state
 
     has_many :reported_relationships, class_name: "ReportedPost", foreign_key: :post_id, dependent: :destroy
-
     has_many :reporter_users, through: :reported_relationships, source: :user
 
     #callbacks APIs 

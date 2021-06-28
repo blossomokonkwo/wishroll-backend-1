@@ -150,6 +150,14 @@ scope module: :api do
       end
 
     namespace :v1 do
+
+      scope module: :boards do
+        resources :boards do
+          resources :board_members, except: [:show]
+          resource :board_member, only: [:destroy]
+        end
+      end
+
       scope module: :sessions do
         post 'login', to: 'login#new'
         delete 'logout', to: 'logout#destroy'

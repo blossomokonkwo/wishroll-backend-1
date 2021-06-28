@@ -164,6 +164,12 @@ class User < ApplicationRecord
     #all of the chat rooms that a user is responsible for creating 
     has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id, dependent: :destroy
 
+    # Joins table that joins the chat room and user model. A ChatRoomUser model is a user that is a member of a particular chat room.
+    has_many :board_members, dependent: :destroy
+
+    # All of the boards that a user is a member of
+    has_many :boards, through: :board_members
+
     #a user can have multiple devices
     has_many :devices, class_name: "Device", foreign_key: :user_id, dependent: :destroy
     
