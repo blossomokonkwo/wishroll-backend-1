@@ -22,17 +22,81 @@ class Api::V1::Boards::BoardsController < APIController
     end
 
     def update
+        board_id = params[:id]
+        # Authorization
+        # Authorize that a user is a member of a board and that they are the board admin.
+        if board_member = BoardMember.find_by(board_id: board_id, user: current_user) and board_member.is_admin
+
+            @board = Board.find(board_id)
+
+            @board.update(update_params)
+
+            if params[:avatar] and @board.avatar.attached?
+                @board.update!(avatar_url: url_for(@board.avatar))
+            end
+
+            if params[:banner] and @board.banner.attached?
+                @board.update!(banner_url: url_for(@board.banner))         
+            end
+
+            render json: nil, status: :ok
+        else
+            render json: nil, status: :unauthorized
+        end
+    end
+
+    def destroy_avatar
+        board_id = params[:board_id]
         
+        if board_member = BoardMember.find_by(board: board_id, user: current_user) and board_member.is_admin
+
+            @board = Board.find(board_id)
+
+            if @board.avatar.attached?
+                @board.avatar.purge_later
+                @board.update(avatar_url: nil)
+                render json: nil, status: :ok
+            else
+                render json: nil, status: :unprocessable_entity
+            end
+        else
+            render json: nil, status: :unauthorized
+        end 
+    end
+
+    def destroy_banner
+        board_id = params[:board_id]
+
+        if board_member = BoardMember.find_by(board: board_id, user: current_user) and board_member.is_admin
+
+            @board = Board.find(board_id)
+
+            if @board.banner.attached?
+                @board.banner.purge_later
+                @board.update(banner_url: nil)
+                render json: nil, status: :ok
+            else 
+                render json: nil, status: :unprocessable_entity
+            end
+        else
+            render json: nil, status: :unauthorized
+        end
     end
     
+    
     def destroy
-        @object = Object.find(params[:id])
-        if @object.destroy
-            flash[:success] = 'Object was successfully deleted.'
-            redirect_to objects_url
+        if board = Board.find(params[:id])
+            if board_member = BoardMember.find_by(board: board, user: current_user) and board_member.is_admin
+                if board.destroy
+                    render json: nil, status: :ok
+                else
+                    render json: nil, status: :internal_server_error
+                end
+            else
+                render json: nil, status: :not_found
+            end
         else
-            flash[:error] = 'Something went wrong'
-            redirect_to objects_url
+            render json: nil, status: :not_found
         end
     end
     
@@ -59,5 +123,9 @@ class Api::V1::Boards::BoardsController < APIController
         end
     end
 
+    private def update_params
+        params.permit(:name, :description, :avatar, :banner, :id)
+    end
+    
     
 end

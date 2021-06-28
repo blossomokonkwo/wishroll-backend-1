@@ -154,7 +154,9 @@ scope module: :api do
       scope module: :boards do
         resources :boards do
           resources :board_members, except: [:show]
-          resource :board_member, only: [:destroy]
+          delete ':remove-avatar', to: 'boards#destroy_avatar'
+          delete ':remove-banner', to: 'boards#destroy_banner'
+          resource :board_member, only: [:destroy, :update]
         end
       end
 
