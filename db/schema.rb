@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_27_022801) do
+ActiveRecord::Schema.define(version: 2021_06_29_032110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -67,18 +67,6 @@ ActiveRecord::Schema.define(version: 2021_06_27_022801) do
     t.index ["user_id"], name: "index_board_members_on_user_id"
   end
 
-  create_table "board_posts", force: :cascade do |t|
-    t.bigint "board_member_id", null: false
-    t.bigint "board_id", null: false
-    t.bigint "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.index ["board_id"], name: "index_board_posts_on_board_id"
-    t.index ["board_member_id"], name: "index_board_posts_on_board_member_id"
-    t.index ["post_id"], name: "index_board_posts_on_post_id"
-  end
-
   create_table "boards", force: :cascade do |t|
     t.bigint "board_member_count", default: 0, null: false
     t.string "name", null: false
@@ -89,8 +77,10 @@ ActiveRecord::Schema.define(version: 2021_06_27_022801) do
     t.string "avatar_url"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.boolean "featured", default: false, null: false
+    t.bigint "posts_count", default: 0, null: false
     t.index ["featured"], name: "index_boards_on_featured"
     t.index ["name"], name: "index_boards_on_name", unique: true
+    t.index ["posts_count"], name: "index_boards_on_posts_count"
     t.index ["uuid"], name: "index_boards_on_uuid"
   end
 
@@ -146,6 +136,8 @@ ActiveRecord::Schema.define(version: 2021_06_27_022801) do
     t.float "width", default: 0.0, null: false
     t.float "height", default: 0.0, null: false
     t.float "duration", default: 0.0, null: false
+    t.bigint "board_id"
+    t.index ["board_id"], name: "index_posts_on_board_id"
     t.index ["caption"], name: "index_posts_on_caption"
     t.index ["media_url"], name: "index_posts_on_media_url"
     t.index ["popularity_rank"], name: "index_posts_on_popularity_rank"
@@ -327,9 +319,6 @@ ActiveRecord::Schema.define(version: 2021_06_27_022801) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "board_members", "boards"
   add_foreign_key "board_members", "users"
-  add_foreign_key "board_posts", "board_members"
-  add_foreign_key "board_posts", "boards"
-  add_foreign_key "board_posts", "posts"
   add_foreign_key "devices", "users"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"

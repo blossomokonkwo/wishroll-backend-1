@@ -14,6 +14,8 @@ class Board < ApplicationRecord
     
     has_many :users, through: :board_members
 
+    has_many :posts
+
     # Cache Associations
     cache_has_many :board_members
 

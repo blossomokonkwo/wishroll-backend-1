@@ -6,6 +6,11 @@ class BoardMember < ApplicationRecord
   cache_belongs_to :user
   cache_index :board_id, :user_id
 
+  def board_posts(limit: 15, offset: 0)
+    Post.where(board_id: board_id, user_id: user_id).limit(limit).offset(offset)
+  end
+  
+
   after_destroy do
     #  Clear the cache for the is_member method after a BoardMember is destroyed
     logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Board:Member:#{user.id}:Board:#{board_id}"} if Rails.cache.delete("WishRoll:Cache:Board:Member:#{user.id}:Board:#{board_id}")

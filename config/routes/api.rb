@@ -157,6 +157,7 @@ scope module: :api do
           delete ':remove-avatar', to: 'boards#destroy_avatar'
           delete ':remove-banner', to: 'boards#destroy_banner'
           resource :board_member, only: [:destroy, :update]
+          resources :posts
         end
       end
 
