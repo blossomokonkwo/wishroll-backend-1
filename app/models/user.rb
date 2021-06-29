@@ -139,7 +139,7 @@ class User < ApplicationRecord
 
     has_many :blocked_users, through: :active_block_relationships, source: :blocked_user
 
-    has_many :blocker_users, -> { select([:username, :id, :name, :verified, :avatar_url])}, through: :passive_block_relationships, source: :blocker_user
+    has_many :blocker_users, through: :passive_block_relationships, source: :blocker_user
 
     #the activities that have happended to the user
     has_many :activities, -> {order(created_at: :desc)}, class_name: "Activity", foreign_key: :user_id, dependent: :destroy
@@ -163,6 +163,12 @@ class User < ApplicationRecord
 
     #all of the chat rooms that a user is responsible for creating 
     has_many :created_chatrooms, class_name: "ChatRoom", foreign_key: :creator_id, dependent: :destroy
+
+    # Joins table that joins the chat room and user model. A ChatRoomUser model is a user that is a member of a particular chat room.
+    has_many :board_members, dependent: :destroy
+
+    # All of the boards that a user is a member of
+    has_many :boards, through: :board_members
 
     #a user can have multiple devices
     has_many :devices, class_name: "Device", foreign_key: :user_id, dependent: :destroy

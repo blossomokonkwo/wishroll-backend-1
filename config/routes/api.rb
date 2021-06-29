@@ -1,11 +1,16 @@
 # Scope all api routes under the api namespace without requiring 'api' in the url
 scope module: :api do
     # all routes inteded for the WishRoll API must use the 'api' subdomain and have an Accept header of JSON
-    constraints subdomain: 'api', format: 'json' do
+    constraints subdomain: Rails.env.eql?('production') ? 'api' : '', format: 'json' do
       namespace :v3 do
+
+        namespace :feed do
+          resources :posts, only: [:index]
+        end
 
         namespace :trending do
           resources :trending_tags, only: [:index, :show]
+          resources :posts, only: [:index]
         end
 
         namespace :discover do
@@ -145,6 +150,17 @@ scope module: :api do
       end
 
     namespace :v1 do
+
+      scope module: :boards do
+        resources :boards do
+          resources :board_members, except: [:show]
+          delete ':remove-avatar', to: 'boards#destroy_avatar'
+          delete ':remove-banner', to: 'boards#destroy_banner'
+          resource :board_member, only: [:destroy, :update]
+          resources :posts
+        end
+      end
+
       scope module: :sessions do
         post 'login', to: 'login#new'
         delete 'logout', to: 'logout#destroy'
@@ -154,6 +170,10 @@ scope module: :api do
         post 'signup', to: "signup#new"
         post 'signup/email', to: "signup#validate_email"
         post 'signup/username', to: "signup#validate_username"
+      end
+
+      scope module: :accounts do
+        post 'reset-password', to: 'forgot_password#reset_password'
       end
 
     end

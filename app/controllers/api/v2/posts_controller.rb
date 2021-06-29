@@ -25,13 +25,13 @@ class Api::V2::PostsController < APIController
     def update
       @post = Post.find(params[:id])
       if @post.user.id == current_user.id
-        if @post.update(update_params)
+        if @post.update!(update_params)
           render :update, status: :ok
         else 
-          render json: {error: "Could not update Post: #{@post}"}, status: :bad_request
+          render json: {error: "Could not update post"}, status: :bad_request
         end
       else
-        render json: {error: "Only the creator of the post: #{@post} can update its attributes"}, status: :bad_request
+        render json: {error: "Only the creator of the post can update its attributes"}, status: :bad_request
       end
     end
     
@@ -41,7 +41,6 @@ class Api::V2::PostsController < APIController
       @user = @post.fetch_user
       @current_user = current_user
       render :show, status: :ok
-      CreateLocationJob.perform_later(params[:ip_address] || request.ip, params[:timezone], @user.id, @user.class.name) if !@user.location
     end
   
     def destroy

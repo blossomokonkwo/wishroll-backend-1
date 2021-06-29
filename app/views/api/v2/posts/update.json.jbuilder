@@ -9,6 +9,7 @@ json.like_count @post.likes_count
 json.liked @post.liked?(@current_user) if @current_user
 json.bookmark_count @post.bookmark_count 
 json.bookmarked @post.bookmarked?(@current_user) if @current_user
+json.share_count @post.share_count
 json.media_url @post.media_url
 json.thumbnail_url @post.thumbnail_url
 json.metadata do
@@ -22,5 +23,6 @@ json.user do
     json.username user.username
     json.name user.name
     json.avatar user.avatar_url
+    json.verified user.verified
     json.following @current_user.following?(user) if @current_user and @current_user != user
 end

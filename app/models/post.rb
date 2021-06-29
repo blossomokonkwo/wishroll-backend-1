@@ -7,6 +7,7 @@ class Post < ApplicationRecord
     has_many :shares, as: :shareable, dependent: :destroy
     has_one :location, as: :locateable, dependent: :destroy
     has_many :bookmarks, as: :bookmarkable, dependent: :destroy
+    belongs_to :board, optional: true, counter_cache: true # a post need not belong to a board
     has_one_attached(:media_item)
     has_one_attached(:thumbnail_item)
 
@@ -57,7 +58,6 @@ class Post < ApplicationRecord
     alias :region :state
 
     has_many :reported_relationships, class_name: "ReportedPost", foreign_key: :post_id, dependent: :destroy
-
     has_many :reporter_users, through: :reported_relationships, source: :user
 
     #callbacks APIs 
