@@ -151,6 +151,12 @@ scope module: :api do
 
     namespace :v1 do
 
+      namespace :feed do
+        namespace :boards do
+          resources :posts, only: [:index]
+        end
+      end
+      
       scope module: :boards do
         resources :boards do
           resources :board_members, except: [:show]

@@ -9,3 +9,4 @@ json.member_count @board.board_member_count
 json.avatar_url @board.avatar_url
 json.banner_url @board.banner_url
 json.is_member @board.member?(@current_user)
+json.is_admin @board.admin?(@current_user)

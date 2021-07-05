@@ -43,5 +43,19 @@ class Api::V1::Boards::PostsController < APIController
             render json: {error: "You are not a member of this board."}, status: :unauthorized
         end
     end
+
+    def index
+        @board = Board.fetch(params[:board_id])
+        limit = params[:limit] || 12
+        offset = params[:offset] || 0
+        @posts = @board.posts.limit(limit).offset(offset).order(created_at: :desc).to_a
+        if @posts.any?
+            current_user
+            render :index, status: :ok
+        else
+            render json: nil, status: :not_found
+        end
+    end
+    
     
 end
