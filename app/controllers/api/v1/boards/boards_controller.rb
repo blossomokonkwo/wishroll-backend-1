@@ -76,7 +76,7 @@ class Api::V1::Boards::BoardsController < APIController
                 @board.update(banner_url: nil)
                 render json: nil, status: :ok
             else 
-                render json: nil, status: :unprocessable_entity
+                render json: nil, status: :not_found
             end
         else
             render json: nil, status: :unauthorized

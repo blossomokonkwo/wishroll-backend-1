@@ -31,5 +31,11 @@ class Board < ApplicationRecord
         }        
     end
     
+    def admin?(user)
+        Rails.cache.fetch("WishRoll:Cache:Board:Admin:#{user.id}:Board:#{id}") {
+            board_members.where(user: user, is_admin: true).present?
+        }  
+    end
+    
     
 end
