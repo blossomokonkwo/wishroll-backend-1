@@ -2,7 +2,7 @@ class Api::V2::PostsController < APIController
     before_action :authorize_by_access_header!
 
     def create
-      # unless current_user.banned
+      unless current_user.banned
         begin
           @post = current_user.posts.create!(caption: params[:caption], restricted: current_user.restricted, popularity_rank: 1.0, width: params[:width], height: params[:height], duration: params[:duration])
           @post.media_item.attach params[:media_item]
@@ -17,9 +17,9 @@ class Api::V2::PostsController < APIController
         rescue => exception
           render json: {error: "An error occured when uploading post #{exception}"}, status: 500
         end
-      # else
-      #   render json: nil, status: :forbidden
-      # end
+      else
+        render json: nil, status: :forbidden
+      end
     end
 
     def update
