@@ -118,6 +118,7 @@ class Api::V1::Boards::BoardsController < APIController
         # @boards = current_user.boards.limit(limit).offset(offset).to_a # Cache this request later using a custom cache method for a user's boards
         @boards = Board.limit(limit).offset(offset).to_a #Return all boards for now
         if @boards.any?
+            current_user
             render :index, status: :ok
         else
             render json: nil, status: :not_found
