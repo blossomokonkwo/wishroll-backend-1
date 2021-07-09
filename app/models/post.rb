@@ -62,7 +62,7 @@ class Post < ApplicationRecord
 
     #callbacks APIs 
     after_destroy do
-        Activity.where(content_id: self.id, activity_type: self.class.name).destroy_all
+        # Activity.where(content_id: self.id, activity_type: self.class.name).destroy_all
     end
 
     #cache API's
