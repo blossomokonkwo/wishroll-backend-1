@@ -26,7 +26,7 @@ class Api::V1::Boards::PostsController < APIController
                 @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
 
                 # If the thumbnail item is attached, then create the thumbnail url using the url_for method.
-                @post.thumbnail_item = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?            
+                @post.thumbnail_url = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?            
                     
                 if @post.save
                     render json: {post_id: @post.id}, status: :created          
