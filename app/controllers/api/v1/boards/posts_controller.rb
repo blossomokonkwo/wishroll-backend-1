@@ -17,19 +17,16 @@ class Api::V1::Boards::PostsController < APIController
                         restricted: current_user.restricted,
                         width: params[:width],  
                         height: params[:height], 
-                        duration: params[:duration],
-                        media_item: media_item,
-                        thumbnail_item: params[:thumbnail_item]) # A thumbnail item is optional for videos and photos. However, it is helpful for displaying a preview of large images and videos.
+                        duration: params[:duration]) # A thumbnail item is optional for videos and photos. However, it is helpful for displaying a preview of large images and videos.
 
-                    # If the media item is attached, then create the media url using the url_for method.
-                    if @post.media_item.attached?
-                        @post.media_url = url_for(@post.media_item)
-                    end
+                @post.media_item.attach media_item
+                @post.thumbnail_item.attach params[:thumbnail_item] if params[:thumbnail_item]
 
-                    # If the thumbnail item is attached, then create the thumbnail url using the url_for method.
-                    if @post.thumbnail_item.attached?
-                        @post.thumbnail_item = url_for(@post.thumbnail_item) 
-                    end               
+                # If the media item is attached, then create the media url using the url_for method.
+                @post.media_url = url_for(@post.media_item) if @post.media_item.attached?
+
+                # If the thumbnail item is attached, then create the thumbnail url using the url_for method.
+                @post.thumbnail_item = url_for(@post.thumbnail_item) if @post.thumbnail_item.attached?            
                     
                 if @post.save
                     render json: {post_id: @post.id}, status: :created          
