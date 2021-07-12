@@ -1,19 +1,18 @@
 class Api::V3::Search::PostsController < ApplicationController
+    before_action :authorize_by_access_header!
 
     def index
-        limit = 18
+        limit = params[:limit] || 10
+        limit = 10 if limit.to_i > 10
         offset = params[:offset]
-        @posts = Post.where(id: Tag.joins(post: {media_item_attachment: :blob}).where("active_storage_blobs.content_type ILIKE ?", "%#{params['content-type']}%").search(params[:q]).limit(limit).offset(offset).pluck(:post_id)).distinct
+        current_user
+        @posts = Post.includes([:board]).where(id: Tag.joins(post: {media_item_attachment: :blob}).where("active_storage_blobs.content_type ILIKE ?", "%#{params['content-type']}%").search(params[:q]).pluck(:post_id))
+        .and(Post.where.not(id: @current_user.reported_posts, user: @current_user.blocked_users, user: @current_user.blocker_users))   
+        .limit(limit)
+        .offset(offset)
+        .distinct
         if @posts.any?            
-            begin
-                authorize_by_access_header!
-                @current_user = current_user
-                @posts = @posts.where.not(id: @current_user.reported_posts, user: @current_user.blocked_users, user: @current_user.blocker_users)
-                render :index, status: :ok
-            rescue => exception                
-                #   handle unauthorization
-                render :index, status: :ok
-            end
+            render :index, status: :ok
         else
             render json: nil, status: :not_found
         end

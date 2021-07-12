@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_032110) do
+ActiveRecord::Schema.define(version: 2021_07_12_210709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -94,6 +94,22 @@ ActiveRecord::Schema.define(version: 2021_06_29_032110) do
     t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_type_and_bookmarkable_id"
     t.index ["user_id", "bookmarkable_id", "bookmarkable_type"], name: "index_on_user_id_and_bookmarkable", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.bigint "likes_count", default: 0, null: false
+    t.bigint "original_comment_id"
+    t.bigint "replies_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["original_comment_id"], name: "index_comments_on_original_comment_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["uuid"], name: "index_comments_on_uuid"
   end
 
   create_table "devices", force: :cascade do |t|
@@ -274,6 +290,18 @@ ActiveRecord::Schema.define(version: 2021_06_29_032110) do
     t.index ["user_id", "shareable_id", "shareable_type", "shared_service"], name: "index_unique_share", unique: true
     t.index ["user_id"], name: "index_shares_on_user_id"
     t.index ["uuid"], name: "index_shares_on_uuid"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.text "text"
+    t.bigint "post_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.tsvector "tsv_text"
+    t.index ["post_id"], name: "index_tags_on_post_id"
+    t.index ["text"], name: "index_tags_on_text"
+    t.index ["tsv_text"], name: "index_tags_on_tsv_text", using: :gin
   end
 
   create_table "users", force: :cascade do |t|

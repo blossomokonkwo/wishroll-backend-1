@@ -5,13 +5,12 @@ class Tag < ApplicationRecord
     validates :text, presence: true
 
     #search API's 
-    pg_search_scope :search, against: :text, using: {tsearch: {dictionary: :english, prefix: true, any_word: true}}, order_within_rank: "tags.created_at DESC"
-    pg_search_scope :new_search, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, any_word: true}}, order_within_rank: "tags.created_at DESC"
+    pg_search_scope :search, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text}}, order_within_rank: "tags.created_at DESC"
     pg_search_scope :recommend, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, any_word: true}}, order_within_rank: "tags.created_at DESC"
     pg_search_scope :trending_tag, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, prefix: true}}, order_within_rank: "tags.created_at ASC"
 
-    after_create do
-        update(tsv_text: text)
-    end
+    # after_create do
+    #     update(tsv_text: text)
+    # end
 
 end
