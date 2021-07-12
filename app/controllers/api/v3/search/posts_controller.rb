@@ -2,8 +2,9 @@ class Api::V3::Search::PostsController < ApplicationController
     before_action :authorize_by_access_header!
 
     def index
-        limit = params[:limit] || 10
-        limit = 10 if limit.to_i > 10
+        default_limit = 15
+        limit = params[:limit] || default_limit
+        limit = default_limit if limit.to_i > default_limit
         offset = params[:offset]
         current_user
         @posts = Post.includes([:board]).where(id: Tag.joins(post: {media_item_attachment: :blob}).where("active_storage_blobs.content_type ILIKE ?", "%#{params['content-type']}%").search(params[:q]).pluck(:post_id))
