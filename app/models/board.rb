@@ -26,13 +26,13 @@ class Board < ApplicationRecord
     end
 
     def member?(user)
-        # Rails.cache.fetch("WishRoll:Cache:Board:Member:#{user.id}:Board:#{id}") {
+        Rails.cache.fetch("WishRoll:Cache:Board:Member:#{user.id}:Board:#{uuid}") {
             board_members.find_by(user: user).present?
-        # }        
+        }        
     end
     
     def admin?(user)
-        Rails.cache.fetch("WishRoll:Cache:Board:Admin:#{user.id}:Board:#{id}") {
+        Rails.cache.fetch("WishRoll:Cache:Board:Admin:#{user.id}:Board:#{uuid}") {
             board_members.where(user: user, is_admin: true).present?
         }  
     end

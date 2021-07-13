@@ -13,8 +13,9 @@ class BoardMember < ApplicationRecord
 
   after_destroy do
     #  Clear the cache for the is_member method after a BoardMember is destroyed
-    logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Board:Member:#{user.id}:Board:#{board_id}"} if Rails.cache.delete("WishRoll:Cache:Board:Member:#{user.id}:Board:#{board_id}")
+    logger.debug {"[WishRoll Cache] delete succeeded for WishRoll:Cache:Board:Member:#{user.id}:Board:#{board.uuid}"} if Rails.cache.delete("WishRoll:Cache:Board:Member:#{user.id}:Board:#{board.uuid}")
     user.touch; board.touch;
   end
+  
 
 end
