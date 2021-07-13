@@ -101,7 +101,7 @@ class Api::V1::Boards::BoardsController < APIController
     end
     
     def show
-        if @board = Board.find(params[:id])
+        if @board = Board.fetch(params[:id])
             current_user # Call the current user method
             render :show, status: :ok
         else
