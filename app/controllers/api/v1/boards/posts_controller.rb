@@ -45,7 +45,7 @@ class Api::V1::Boards::PostsController < APIController
         @board = Board.fetch(params[:board_id])
         limit = params[:limit] || 12
         offset = params[:offset] || 0
-        @posts = @board.posts.limit(limit).offset(offset).order(created_at: :desc).to_a
+        @posts = @board.posts.where(restricted: false).limit(limit).offset(offset).order(created_at: :desc).to_a
         if @posts.any?
             current_user
             render :index, status: :ok

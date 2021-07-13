@@ -18,6 +18,7 @@ json.array! @posts.each do |post|
         json.height post.height.to_f
         json.duration post.duration.to_f
     end
+
     if @board = post.board
         json.board do
             json.id @board.id
@@ -34,6 +35,32 @@ json.array! @posts.each do |post|
             json.is_admin @board.admin?(@current_user)
         end
     end
+
+    json.top_comments post.comments.limit(5) do |comment|
+        json.id comment.id
+        json.body comment.body
+        json.created_at comment.created_at
+        json.updated_at comment.updated_at
+        json.like_count comment.likes_count
+        json.reply_count comment.replies_count
+        json.liked comment.liked?(@current_user)
+        json.original_comment_id comment.original_comment_id
+        user = comment.user
+        json.user do
+            json.id user.id
+            json.username user.username
+            json.avatar user.avatar_url
+            json.verified user.verified
+        end
+    end
+
+    json.tags post.tags.limit(15) do |tag|
+        json.id tag.id
+        json.uuid tag.uuid
+        json.text tag.text
+        json.created_at tag.created_at
+    end
+    
     user = post.user
     json.user do
         json.id user.id
