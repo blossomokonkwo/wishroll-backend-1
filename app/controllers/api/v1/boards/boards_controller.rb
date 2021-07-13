@@ -116,7 +116,7 @@ class Api::V1::Boards::BoardsController < APIController
         limit = 25 if limit.to_i > 25
         offset = params[:offset] || 0
         # @boards = current_user.boards.limit(limit).offset(offset).to_a # Cache this request later using a custom cache method for a user's boards
-        @boards = Board.limit(limit).offset(offset).to_a #Return all boards for now
+        @boards = Board.limit(limit).offset(offset).order(board_member_count: :desc).to_a #Return all boards for now
         if @boards.any?
             current_user
             render :index, status: :ok
