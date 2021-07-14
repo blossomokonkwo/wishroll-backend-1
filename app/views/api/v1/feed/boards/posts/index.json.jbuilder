@@ -1,5 +1,5 @@
 json.array! @posts.each do |post| 
-    user = post.fetch_user
+    user = post.user
     json.id post.id
     json.created_at post.created_at
     json.updated_at post.updated_at
