@@ -14,6 +14,7 @@ json.array! @posts.each do |post|
     json.caption post.caption
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
+
     json.board do
         json.id @board.id
         json.uuid @board.uuid
@@ -28,11 +29,38 @@ json.array! @posts.each do |post|
         json.is_member @board.member?(user)
         json.is_admin @board.admin?(user)
     end
+
     json.metadata do
         json.width post.width.to_f
         json.height post.height.to_f
         json.duration post.duration.to_f
-    end     
+    end 
+
+    json.top_comments post.comments.limit(5) do |comment|
+        json.id comment.id
+        json.body comment.body
+        json.created_at comment.created_at
+        json.updated_at comment.updated_at
+        json.like_count comment.likes_count
+        json.reply_count comment.replies_count
+        json.liked comment.liked?(@current_user)
+        json.original_comment_id comment.original_comment_id
+        user = comment.user
+        json.user do
+            json.id user.id
+            json.username user.username
+            json.avatar user.avatar_url
+            json.verified user.verified
+        end
+    end
+
+    json.tags post.tags.limit(15) do |tag|
+        json.id tag.id
+        json.uuid tag.uuid
+        json.text tag.text
+        json.created_at tag.created_at
+    end
+
     json.user do 
         json.id user.id
         json.username user.username
@@ -41,4 +69,5 @@ json.array! @posts.each do |post|
         json.avatar user.avatar_url
         json.following @current_user.following?(user) if user != @current_user
     end
+    
 end

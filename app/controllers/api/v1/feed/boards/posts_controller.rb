@@ -5,7 +5,7 @@ class Api::V1::Feed::Boards::PostsController < APIController
         offset = params[:offset]
         limit = params[:limit] || 12 
         feed_users = current_user.followed_users.to_a << @current_user
-        @posts = Post.includes(:board).joins(:user).where(user: feed_users)
+        @posts = Post.includes([:board]).joins(:user).where(user: feed_users)
                 .or(Post.where(board: current_user.boards))
                 .and(Post.where.not(user: @current_user.blocked_users))
                 .and(Post.where.not(id: @current_user.reported_posts))
