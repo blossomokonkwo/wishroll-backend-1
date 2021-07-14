@@ -1,6 +1,5 @@
 class Tag < ApplicationRecord
     include PgSearch::Model
-    include IdentityCache
     belongs_to :post
     validates :text, presence: true
 
@@ -9,8 +8,7 @@ class Tag < ApplicationRecord
     pg_search_scope :recommend, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, any_word: true}}, order_within_rank: "tags.created_at DESC"
     pg_search_scope :trending_tag, against: :text, using: {tsearch: {dictionary: :english, tsvector_column: :tsv_text, prefix: true}}, order_within_rank: "tags.created_at ASC"
 
-    # after_create do
-    #     update(tsv_text: text)
-    # end
-
+    # Caching API
+    include IdentityCache
+    cache_belongs_to :post
 end

@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  belongs_to :user, -> { select([:username, :id, :name, :verified, :avatar_url])}
+  belongs_to :user
   belongs_to :post, counter_cache: :comments_count, optional: true
   belongs_to :roll, counter_cache: :comments_count, optional: true
   has_many :replies, class_name: "Comment", foreign_key: :original_comment_id, dependent: :destroy
@@ -26,5 +26,6 @@ class Comment < ApplicationRecord
   include IdentityCache
   cache_belongs_to :post
   cache_belongs_to :roll
+  cache_belongs_to :user
 
 end
