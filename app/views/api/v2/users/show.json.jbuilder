@@ -11,5 +11,5 @@ json.avatar @user.avatar_url
 json.profile_background_url @user.profile_background_url
 json.posts_count @user.posts_count
 json.following @user.following?(@current_user)
-json.mutual_status @user.mutual_status_with?(@current_user)
+json.mutual_status @user.mutual_status_with?(@current_user) if @current_user != @user
 json.mutual_relationships_count @user.mutual_relationships_count

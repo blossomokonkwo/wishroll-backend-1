@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_20_211157) do
+ActiveRecord::Schema.define(version: 2021_07_22_171057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -343,10 +343,12 @@ ActiveRecord::Schema.define(version: 2021_07_20_211157) do
     t.bigint "rolls_count", default: 0, null: false
     t.bigint "posts_count", default: 0, null: false
     t.bigint "mutual_relationships_count", default: 0, null: false
+    t.jsonb "social_media"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["mutual_relationships_count"], name: "index_users_on_mutual_relationships_count"
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"
+    t.index ["social_media"], name: "index_users_on_social_media", using: :gin
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["verified"], name: "index_users_on_verified"
   end
