@@ -13,7 +13,7 @@ class Api::V2::UsersController < APIController
             elsif @user.blocked?(current_user)
                 render json: {id: @user.id, can_unblock: false}, status: :forbidden
             else
-                @following = current_user.following?(@user) if current_user.id != @user.id
+                # @following = current_user.following?(@user) if current_user.id != @user.id
                 render :show, status: :ok
             end
         else

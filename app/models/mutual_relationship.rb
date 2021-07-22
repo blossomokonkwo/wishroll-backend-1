@@ -1,6 +1,6 @@
 class MutualRelationship < ApplicationRecord
-  belongs_to :user, counter_cache: true
-  belongs_to :mutual, class_name: "User", counter_cache: true
+  belongs_to :user, counter_cache: :mutual_relationships_count
+  belongs_to :mutual, class_name: "User", counter_cache: :mutual_relationships_count
   # validations
   validate :mutual_id_and_user_id_must_be_different
 
@@ -9,4 +9,7 @@ class MutualRelationship < ApplicationRecord
   end
 
   
+  include IdentityCache
+  cache_belongs_to :user
+  cache_belongs_to :mutual
 end
