@@ -151,6 +151,27 @@ scope module: :api do
 
     namespace :v1 do
 
+      scope module: :mutuals do
+        scope :mutual_relationship_requests do
+          post 'accept', to: 'mutual_relationship_requests#accept_request'
+          delete 'deny', to: 'mutual_relationship_requests#deny_request'
+          get 'pending', to: 'mutual_relationship_requests#pending_requests'
+          get 'sent', to: 'mutual_relationship_requests#sent_requests'
+          delete 'delete', to: 'mutual_relationship_requests#destroy'
+        end
+
+        resources :mutual_relationship_requests, only: [:create]
+
+        resources :mutual_relationships, only: [:index]
+
+        scope :mutual_relationships do
+          delete 'delete', to: 'mutual_relationships#destroy'
+        end
+
+
+
+      end
+
       namespace :feed do
         namespace :boards do
           resources :posts, only: [:index]

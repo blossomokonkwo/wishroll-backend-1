@@ -1,0 +1,1 @@
+json.array! @mutuals, :id, :username, :name, :verified, :avatar_url

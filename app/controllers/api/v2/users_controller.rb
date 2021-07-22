@@ -2,12 +2,12 @@ class Api::V2::UsersController < APIController
     before_action :authorize_by_access_header!
 
     def show
-        if params[:username]
-            @user = User.fetch_by_username(params[:username])
-        elsif params[:id]
-            @user =  User.fetch(params[:id])
-        end
-        if @user
+        # if params[:username]
+        #     @user = User.fetch_by_username(params[:username])
+        # elsif params[:id]
+        #     @user =  User.fetch(params[:id])
+        # end
+        if @user = (User.fetch_by_username(params[:username]) or User.fetch(params[:id]))
             if current_user.blocked?(@user)
                 render json: {id: @user.id, can_unblock: true}, status: :forbidden
             elsif @user.blocked?(current_user)
@@ -17,7 +17,7 @@ class Api::V2::UsersController < APIController
                 render :show, status: :ok
             end
         else
-            render json: {error: "#{params[:username]} does not have an account on WishRoll"}, status: :not_found
+            render json: {error: "Not Found"}, status: :not_found
         end
     end
 
