@@ -176,7 +176,7 @@ class Api::V2::UsersController < APIController
     end
 
     private def update_params
-        params.permit :username, :email, :name, :avatar, :profile_background_media, :bio
+        params.permit :username, :email, :name, :avatar, :profile_background_media, :bio, :social_media
     end
     
     
