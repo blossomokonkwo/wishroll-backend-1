@@ -2,7 +2,7 @@ class Api::V2::UsersController < APIController
     before_action :authorize_by_access_header!
 
     def show
-        if @user = (User.fetch_by_username(params[:username]) or User.fetch(params[:id]))
+        if @user = (User.find_by(username: params[:username]) or User.find(params[:id]))
             if current_user.blocked?(@user)
                 render json: {id: @user.id, can_unblock: true}, status: :forbidden
             elsif @user.blocked?(current_user)
