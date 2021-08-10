@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_210709) do
+ActiveRecord::Schema.define(version: 2021_07_22_171057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -132,6 +132,27 @@ ActiveRecord::Schema.define(version: 2021_07_12_210709) do
     t.index ["likeable_type", "likeable_id", "user_id"], name: "index_likes_on_likeable_type_and_likeable_id_and_user_id", unique: true
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "mutual_relationship_requests", force: :cascade do |t|
+    t.bigint "requesting_user_id", null: false
+    t.bigint "requested_user_id", null: false
+    t.boolean "accepted"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["requested_user_id", "requesting_user_id"], name: "index_mutual_relationship_requests_users_uniqueness", unique: true
+    t.index ["requested_user_id"], name: "index_mutual_relationship_requests_on_requested_user_id"
+    t.index ["requesting_user_id"], name: "index_mutual_relationship_requests_on_requesting_user_id"
+  end
+
+  create_table "mutual_relationships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "mutual_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mutual_id", "user_id"], name: "index_mutual_relationships_on_mutual_id_and_user_id", unique: true
+    t.index ["mutual_id"], name: "index_mutual_relationships_on_mutual_id"
+    t.index ["user_id"], name: "index_mutual_relationships_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -321,9 +342,13 @@ ActiveRecord::Schema.define(version: 2021_07_12_210709) do
     t.boolean "restricted", default: false
     t.bigint "rolls_count", default: 0, null: false
     t.bigint "posts_count", default: 0, null: false
+    t.bigint "mutual_relationships_count", default: 0, null: false
+    t.jsonb "social_media"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["mutual_relationships_count"], name: "index_users_on_mutual_relationships_count"
     t.index ["name"], name: "index_users_on_name"
     t.index ["restricted"], name: "index_users_on_restricted"
+    t.index ["social_media"], name: "index_users_on_social_media", using: :gin
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["verified"], name: "index_users_on_verified"
   end
@@ -349,6 +374,8 @@ ActiveRecord::Schema.define(version: 2021_07_12_210709) do
   add_foreign_key "board_members", "users"
   add_foreign_key "devices", "users"
   add_foreign_key "likes", "users"
+  add_foreign_key "mutual_relationships", "users"
+  add_foreign_key "mutual_relationships", "users", column: "mutual_id"
   add_foreign_key "posts", "users"
   add_foreign_key "rolls", "users"
 end

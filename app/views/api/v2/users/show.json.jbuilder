@@ -10,4 +10,7 @@ json.num_following @user.following_count
 json.avatar @user.avatar_url
 json.profile_background_url @user.profile_background_url
 json.posts_count @user.posts_count
-json.following @following
+json.following @user.following?(@current_user)
+json.mutual_status @user.mutual_status_with?(@current_user) if @current_user != @user
+json.mutual_relationships_count @user.mutual_relationships_count
+json.social_media @user.social_media

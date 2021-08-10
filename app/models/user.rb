@@ -29,6 +29,7 @@ class User < ApplicationRecord
     #cache API's 
     cache_index :username, unique: true
     cache_index :name
+    cache_has_many :posts
 
     def liked_posts(limit: 25, offset: nil)
         Post.select([:id, :created_at, :updated_at, :caption, :media_url, :thumbnail_url, :view_count, :likes_count, :comments_count, :bookmark_count, :share_count, :user_id, :uuid, :width, :height, :duration])
@@ -130,6 +131,10 @@ class User < ApplicationRecord
     has_many :active_block_relationships, class_name: "BlockRelationship", foreign_key: :blocker_id
 
     has_many :passive_block_relationships, class_name: "BlockRelationship", foreign_key: :blocked_id
+
+    has_many :sent_mutual_relationship_requests, class_name: "MutualRelationshipRequest", foreign_key: :requesting_user_id, dependent: :destroy
+
+    has_many :recieved_mutual_relationship_requests, class_name: "MutualRelationshipRequest", foreign_key: :requested_user_id, dependent: :destroy
     
     #the users that a specific user is currently following 
     has_many :followed_users, -> { select ([:username, :id, :name, :verified, :avatar_url, :following_count])}, through: :active_relationships, source: :followed_user
@@ -200,6 +205,31 @@ class User < ApplicationRecord
         Rails.cache.fetch("WishRoll:Cache:Relationship:Follower#{self.id}:Following#{user.id}"){
             followed_users.include?(user)
         }
+    end
+
+    def mutuals(limit: nil, offset: 0) 
+        created_mutual_relationships = MutualRelationship.where(user: self).limit(limit).offset(offset).pluck(:mutual_id)
+        recieved_mutual_relationships = MutualRelationship.where(mutual: self).limit(limit).offset(offset).pluck(:user_id)
+        User.fetch_multi(created_mutual_relationships + recieved_mutual_relationships)
+        # return mutuals
+    end
+
+    def mutual?(user) 
+        Rails.cache.fetch("WishRoll:Cache:MutualRelationship:#{self.id}:Mutual?#{user.id}") {
+            mutuals.include?(user)
+        }
+    end
+
+    def mutual_status_with?(user)
+        if MutualRelationship.find_by("(user_id = #{id} AND mutual_id = #{user.id}) OR (user_id = #{user.id} AND mutual_id = #{id})").present?
+            return "mutuals"
+        elsif MutualRelationshipRequest.find_by(requested_user_id: user.id, requesting_user_id: id) 
+            return "pending_sent"
+        elsif MutualRelationshipRequest.find_by(requested_user_id: self.id, requesting_user_id: id)
+            return "pending_recieved"
+        else
+            return "none"
+        end
     end
     
 end

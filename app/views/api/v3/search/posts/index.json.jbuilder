@@ -13,30 +13,14 @@ json.array! @posts.each do |post|
     json.caption post.caption
     json.media_url post.media_url
     json.thumbnail_url post.thumbnail_url
+
     json.metadata do
         json.width post.width.to_f
         json.height post.height.to_f
         json.duration post.duration.to_f
     end
-    
-    if @board = post.board
-        json.board do
-            json.id @board.id
-            json.uuid @board.uuid
-            json.name @board.name
-            json.description @board.description
-            json.created_at @board.created_at
-            json.updated_at @board.updated_at
-            json.member_count @board.board_member_count
-            json.is_featured @board.featured
-            json.avatar_url @board.avatar_url
-            json.banner_url @board.banner_url
-            json.is_member @board.member?(@current_user)
-            json.is_admin @board.admin?(@current_user)
-        end
-    end
 
-    json.top_comments post.comments.limit(5) do |comment|
+    json.top_comments post.fetch_comments do |comment|
         json.id comment.id
         json.body comment.body
         json.created_at comment.created_at
@@ -45,16 +29,18 @@ json.array! @posts.each do |post|
         json.reply_count comment.replies_count
         json.liked comment.liked?(@current_user)
         json.original_comment_id comment.original_comment_id
-        user = comment.user
+        user = comment.fetch_user
+
         json.user do
             json.id user.id
             json.username user.username
             json.avatar user.avatar_url
             json.verified user.verified
         end
+
     end
 
-    json.tags post.tags.limit(15) do |tag|
+    json.tags post.fetch_tags do |tag|
         json.id tag.id
         json.uuid tag.uuid
         json.text tag.text
@@ -62,7 +48,8 @@ json.array! @posts.each do |post|
     end
 
 
-    user = post.user
+    user = post.fetch_user
+    
     json.user do
         json.id user.id
         json.username user.username
