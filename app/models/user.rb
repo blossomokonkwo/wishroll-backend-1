@@ -224,9 +224,9 @@ class User < ApplicationRecord
         if MutualRelationship.find_by("(user_id = #{id} AND mutual_id = #{user.id}) OR (user_id = #{user.id} AND mutual_id = #{id})").present?
             return "mutuals"
         elsif MutualRelationshipRequest.find_by(requested_user_id: user.id, requesting_user_id: id)
-            return "pending_sent"
-        elsif MutualRelationshipRequest.find_by(requested_user_id: self.id, requesting_user_id: user.id)
             return "pending_recieved"
+        elsif MutualRelationshipRequest.find_by(requested_user_id: self.id, requesting_user_id: user.id)
+            return "pending_sent"
         else
             return "none"
         end
