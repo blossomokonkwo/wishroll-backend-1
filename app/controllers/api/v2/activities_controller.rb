@@ -10,6 +10,7 @@ class Api::V2::ActivitiesController < APIController
             @activities = current_user.activities.order(created_at: :desc).limit(limit)
         end
         if @activities.any?
+            @request = request
             @current_user = current_user
             render :index, status: :ok
         else

@@ -10,6 +10,7 @@ class Api::V1::Mutuals::MutualRelationshipRequestsController < APIController
             unless requested_user.mutual?(current_user)
                 @request = MutualRelationshipRequest.new(requesting_user: current_user, requested_user_id: params[:requested_user_id])
                 if @request.save
+                    MutualRelationshipRequestActivityJob.perform_now(mutual_request_id: @request.id, requesting_user_id: current_user.id, requested_user_id: params[:requested_user_id])
                     render json: nil, status: :created
                 else
                     render json: {error: @request.errors.full_messages}, status: :bad_request
@@ -63,6 +64,7 @@ class Api::V1::Mutuals::MutualRelationshipRequestsController < APIController
                 @mutual_relationship = MutualRelationship.new(user: @request.requesting_user, mutual: @request.requested_user)
                 if @mutual_relationship.save
                     @request.destroy # Can move this action to a background job
+                    MutualRelationshipActivityJob.perform_now(mutual_relationship_id: @mutual_relationship.id, mutual_id: @request.requested_user.id, user_id: @request.requesting_user.id)
                     render json: nil, status: :created
                 else
                     render json: {error: @mutual_relationship.errors.full_messages}, status: :bad_request
