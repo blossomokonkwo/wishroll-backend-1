@@ -66,7 +66,7 @@ json.array! @activities.each do |activity|
                 end               
             end
         elsif activity.activity_type == "MutualRelationshipRequest"
-            action_items = [{title: "Accept", url: "#{@request.protocol}#{@request.raw_host_with_port}/v1/mutual_relationship_requests/accept", type: "button", style: "destructive"}, {title: "Deny", url: "#{@request.protocol}#{@request.raw_host_with_port}/v1/mutual_relationship_requests/deny", type: "button", style: "destructive"}]
+            action_items = [{title: "Accept", url: "#{@request.protocol}#{@request.raw_host_with_port}/v1/mutual_relationship_requests/accept", type: "button", style: "default"}, {title: "Deny", url: "#{@request.protocol}#{@request.raw_host_with_port}/v1/mutual_relationship_requests/deny", type: "button", style: "destructive"}]
             json.action_items action_items
         elsif activity.activity_type == "Comment" and comment = Comment.where(id: activity.content_id).first
             if post = comment.post                
