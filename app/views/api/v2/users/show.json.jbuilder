@@ -14,3 +14,14 @@ json.following @user.following?(@current_user)
 json.mutual_status @user.mutual_status_with?(@current_user) if @current_user != @user
 json.mutual_relationships_count @user.mutual_relationships_count
 json.social_media @user.social_media
+json.mutuals @user.mutuals(limit: 5).each do |mutual|
+    json.id mutual.id
+    json.username mutual.username
+    json.name mutual.name
+    json.verified mutual.verified
+    json.avatar mutual.avatar_url
+    json.profile_background_url mutual.profile_background_url
+    json.bio mutual.bio    
+    json.created_at mutual.created_at
+    json.updated_at mutual.updated_at
+end

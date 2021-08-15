@@ -65,6 +65,9 @@ json.array! @activities.each do |activity|
                     json.verified user.verified
                 end               
             end
+        elsif activity.activity_type == "MutualRelationshipRequest"
+            action_items = [{title: "Accept", url: "#{@request.url}/v1/mutual_relationship_requests/accept", type: "button"}, {title: "Deny", url: "#{@request.url}/v1/mutual_relationship_requests/deny", type: "button"}]
+            json.action_items action_items
         elsif activity.activity_type == "Comment" and comment = Comment.where(id: activity.content_id).first
             if post = comment.post                
                 json.post do

@@ -210,8 +210,7 @@ class User < ApplicationRecord
     def mutuals(limit: nil, offset: 0) 
         created_mutual_relationships = MutualRelationship.where(user: self).limit(limit).offset(offset).pluck(:mutual_id)
         recieved_mutual_relationships = MutualRelationship.where(mutual: self).limit(limit).offset(offset).pluck(:user_id)
-        User.fetch_multi(created_mutual_relationships + recieved_mutual_relationships)
-        # return mutuals
+        return User.fetch_multi(created_mutual_relationships + recieved_mutual_relationships)
     end
 
     def mutual?(user) 

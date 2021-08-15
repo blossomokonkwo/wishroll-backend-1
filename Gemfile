@@ -34,7 +34,6 @@ gem 'pg_search'
 gem 'identity_cache'
 gem 'cityhash'
 gem 'unread'
-gem 'ahoy_matey'
 gem 'sendgrid-ruby'
 
 # Use Capistrano for deployment
