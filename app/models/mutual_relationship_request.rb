@@ -12,7 +12,9 @@ class MutualRelationshipRequest < ApplicationRecord
   after_destroy :destroy_activity
 
   def destroy_activity
-    Activity.where(content_id: id, active_user_id: requesting_user_id, user_id: requested_user_id, activity_type: self.class.name).first.destroy
+    if activity = Activity.where(content_id: id, active_user_id: requesting_user_id, user_id: requested_user_id, activity_type: self.class.name).first
+      activity.destroy
+    end
   end
   
   
