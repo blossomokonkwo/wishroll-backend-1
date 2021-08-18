@@ -148,8 +148,9 @@ json.array! @activities.each do |activity|
             end
         end
         json.active_user do 
-            json.id active_user.id
+            json.id active_user.id            
             json.username active_user.username
+            json.name active_user.name
             json.avatar active_user.avatar_url
             json.verified active_user.verified
         end
