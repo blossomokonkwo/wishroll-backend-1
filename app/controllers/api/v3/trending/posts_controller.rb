@@ -11,8 +11,8 @@ class Api::V3::Trending::PostsController < APIController
             # set the offset and limit
             offset = params[:offset]
             limit = 25
-            trending_users = User.where(id: [5500, 2997, 4493, 123])
-            @posts = Post.joins(:user).where(restricted: false).where(user: trending_users).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(25) 
+            trending_users = [5500, 2997, 4493, 123, 392, 4853, 7827, 1798, 5451, 4930, 140, 8667, 749, 1658, 11310, 2856]
+            @posts = Post.joins(:user).where(restricted: false).where(user_id: trending_users).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(25) 
 
             # check that posts array isn't empty
             if @posts.any?
