@@ -5,7 +5,7 @@ class Api::V1::Mutuals::MutualRelationshipsController < APIController
     def index
         limit = params[:limit]
         offset = params[:offset]
-        if @mutuals = current_user.mutuals(limit: limit, offset: offset) and @mutuals.any?
+        if @mutuals = User.fetch(params[:user_id]).mutuals(limit: limit, offset: offset) and @mutuals.any?
             render :index, status: :ok
         else
             render json: nil, status: :not_found
