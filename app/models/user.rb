@@ -215,9 +215,9 @@ class User < ApplicationRecord
     end
 
     def mutual?(user) 
-        Rails.cache.fetch("WishRoll:Cache:MutualRelationship:#{self.id}:Mutual?#{user.id}") {
+        # Rails.cache.fetch("WishRoll:Cache:MutualRelationship:#{self.id}:Mutual?#{user.id}") {
             mutuals.include?(user)
-        }
+        # }
     end
 
     def mutual_status_with?(user)
