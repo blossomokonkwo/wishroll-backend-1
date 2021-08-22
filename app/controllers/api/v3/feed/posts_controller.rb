@@ -10,7 +10,7 @@ class Api::V3::Feed::PostsController < APIController
 
             # set the offset and limit
             offset = params[:offset]
-            limit = params[:limit] || 12
+            limit = params[:limit] || 8
 
             # create an array of the current user's followed users and appen the current user to the array.
             feed_users = current_user.mutuals.to_a << @current_user
