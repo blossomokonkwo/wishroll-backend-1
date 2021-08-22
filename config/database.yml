@@ -93,8 +93,10 @@ production:
   primary: 
     <<: *default
     url: <%= ENV['DATABASE_CONNECTION_POOL_URL'] || ENV['DATABASE_URL'] %>
+    prepared_statements: false
 
   primary_replica:
     <<: *default
     url: <%= ENV['FOLLOWER_DATABASE_CONNECTION_POOL'] || ENV['HEROKU_POSTGRESQL_COPPER_URL']%>
     replica: true
+    prepared_statements: false
