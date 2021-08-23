@@ -20,42 +20,12 @@ json.array! @posts.each do |post|
         json.duration post.duration.to_f
     end
 
-    json.top_comments post.fetch_comments do |comment|
-        json.id comment.id
-        json.body comment.body
-        json.created_at comment.created_at
-        json.updated_at comment.updated_at
-        json.like_count comment.likes_count
-        json.reply_count comment.replies_count
-        json.liked comment.liked?(@current_user)
-        json.original_comment_id comment.original_comment_id
-        user = comment.fetch_user
-
-        json.user do
-            json.id user.id
-            json.username user.username
-            json.avatar user.avatar_url
-            json.verified user.verified
-        end
-
-    end
-
-    json.tags post.fetch_tags do |tag|
-        json.id tag.id
-        json.uuid tag.uuid
-        json.text tag.text
-        json.created_at tag.created_at
-    end
-
-
     user = post.fetch_user
-    
     json.user do
         json.id user.id
         json.username user.username
         json.name user.name
         json.verified user.verified
         json.avatar user.avatar_url
-        json.following @current_user.following?(user) if @current_user and user != @current_user
     end
 end
