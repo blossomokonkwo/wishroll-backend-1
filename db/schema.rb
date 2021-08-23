@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_171057) do
+ActiveRecord::Schema.define(version: 2021_08_23_034355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -43,6 +43,17 @@ ActiveRecord::Schema.define(version: 2021_07_22_171057) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "active_user_id", null: false
+    t.string "activity_type"
+    t.bigint "content_id"
+    t.string "activity_phrase"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
   create_table "block_relationships", force: :cascade do |t|
@@ -200,6 +211,8 @@ ActiveRecord::Schema.define(version: 2021_07_22_171057) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id", "user_id"], name: "index_reported_posts_on_post_id_and_user_id", unique: true
+    t.index ["post_id"], name: "index_reported_posts_on_post_id"
+    t.index ["user_id"], name: "index_reported_posts_on_user_id"
   end
 
   create_table "rolls", force: :cascade do |t|
@@ -370,6 +383,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_171057) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "activities", "users"
   add_foreign_key "board_members", "boards"
   add_foreign_key "board_members", "users"
   add_foreign_key "devices", "users"
