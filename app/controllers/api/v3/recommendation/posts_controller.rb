@@ -1,7 +1,7 @@
 class Api::V3::Recommendation::PostsController < ApplicationController
     before_action :authorize_by_access_header!
     def index
-        limit = 15
+        limit = 4
         offset = params[:offset]
         post_id = params[:post_id]
         document_text = Post.fetch(post_id).tags.pluck(:text).flatten[0]
