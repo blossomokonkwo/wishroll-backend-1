@@ -25,7 +25,7 @@ class Api::V2::UsersController < APIController
                 if @posts = @user.created_posts(limit: limit, offset: offset, reported_posts: current_user.reported_posts).to_a and @posts.any?
                     render :posts, status: :ok
                 else
-                    render json: nil, status: :not_found
+                    render json: {error: "No posts yet"}, status: :not_found
                 end 
 
             else
@@ -33,7 +33,7 @@ class Api::V2::UsersController < APIController
             end
 
         else
-            render json: nil, status: :not_found 
+            render json: {error: "Profile couldn't be found"}, status: :not_found 
         end
     end
 
