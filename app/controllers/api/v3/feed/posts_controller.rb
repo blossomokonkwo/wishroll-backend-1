@@ -16,7 +16,7 @@ class Api::V3::Feed::PostsController < APIController
             feed_users = current_user.mutuals.to_a << @current_user
 
             # return all posts created by the users in the feed_users array
-            @posts = Post.joins(:user).where(user: feed_users).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc).offset(offset).limit(limit)
+            @posts = Post.includes([:board]).joins(:user).where(user: feed_users).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc).offset(offset).limit(limit)
 
             # check that posts array isn't empty
             if @posts.any?
