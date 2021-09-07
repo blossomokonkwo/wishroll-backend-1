@@ -19,7 +19,7 @@ class CommentActivityJob < ApplicationJob
                             return
                         end
                     end
-                    Activity.create(user_id: user_id, active_user_id: active_user.id, activity_phrase: activity_phrase, activity_type: comment.class.name, content_id: comment.id, media_url: commentable.thumbnail_url || commentable.media_url)
+                    Activity.create(user_id: user_id, active_user_id: active_user.id, activity_phrase: activity_phrase, activity_type: comment.class.name, content_id: comment.id)
                 end
             end
         end

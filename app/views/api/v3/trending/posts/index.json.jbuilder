@@ -20,6 +20,13 @@ json.array! @posts.each do |post|
         json.height post.height.to_f
         json.duration post.duration.to_f
     end     
+
+    json.board do
+        json.id board.id
+        json.uuid board.uuid
+        json.is_featured board.featured
+        json.name board.name
+    end if board = post.board
     
     json.top_comments post.fetch_comments do |comment|
         json.id comment.id
