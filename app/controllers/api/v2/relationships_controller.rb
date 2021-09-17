@@ -88,17 +88,24 @@ class Api::V2::RelationshipsController < APIController
     def block
         if @blocked_user = User.find(params[:user_id])
             if current_user != @blocked_user
+
                 if @current_user.following?(@blocked_user)
                     Relationship.find_by(followed_id: @blocked_user.id, follower_id: current_user.id).destroy
                 elsif @blocked_user.following?(current_user)
                     Relationship.find_by(followed_id: current_user.id, follower_id: @blocked_user.id).destroy
                 end
+                # Destroy any mutual relationships when blocking a user
+                if mutual_relationship = MutualRelationship.find_by("(mutual_id = #{@blocked_user.id} AND user_id = #{current_user.id}) OR (mutual_id = #{current_user.id} AND user_id = #{@blocked_user.id})")
+                    mutual_relationship.destroy
+                end
+
                 if !current_user.blocked?(@blocked_user)
                     current_user.blocked_users << @blocked_user
                     render json: nil, status: :ok
                 else
                     render json: {error: "#{params[:username]} is already blocked by #{current_user.username}"}, status: :bad_request
                 end
+
             else
                 render json: {error: "Unable to fulfill request. Cannot block a current user."}, status: :bad_request
             end
