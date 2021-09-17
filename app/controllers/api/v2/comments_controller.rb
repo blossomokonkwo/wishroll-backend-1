@@ -38,7 +38,7 @@ class Api::V2::CommentsController < APIController
         offset = params[:offset]
         limit = 15
         if params[:post_id] and post = Post.fetch(params[:post_id])
-            @comments = post.comments.offset(offset).limit(limit).order(created_at: :asc).to_a
+            @comments = post.comments.includes([:user]).where.not(user: current_user.blocked_users).where.not(user: current_user.blocker_users).offset(offset).limit(limit).order(created_at: :asc).to_a
             if @comments.any?
                 @current_user = current_user
                 render :index, status: :ok
