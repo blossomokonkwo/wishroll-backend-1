@@ -6,6 +6,6 @@ class Activity < ApplicationRecord
   after_create do
     #we want to delete instances of the activity class after 3 days.
     ActivitiesCleanupJob.set(wait: 3.weeks).perform_later(self.id)
-    ActivityNotificationJob.perform_now(self.id)
+    ActivityNotificationJob.perform_now(self.id) if activity_type != "Like" and activity_type != "Share"
   end
 end
