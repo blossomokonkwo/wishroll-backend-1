@@ -220,7 +220,6 @@ h4 {
   height: 54px;
   border-radius: 32px;
   background-color: #002F48;
-  font-size: 18px;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
@@ -230,6 +229,15 @@ h4 {
   color: #ffffff;
   cursor: pointer;
 }
+
+.button a{
+  color: white;
+  font-size: 19px;
+}
+
+
+
+
 
 .button:hover {
   transition-property: all;
@@ -352,6 +360,16 @@ h4 {
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
+  
+}
+
+.androidText a{
+  color: white;
+  font-size: 19px;
+}
+
+.androidText a:hover{
+  color: #99DBFF;
   
 }
 
