@@ -10,9 +10,9 @@ class Api::V3::Trending::PostsController < APIController
 
             # set the offset and limit
             offset = params[:offset]
-            limit = 4
-            trending_users = [5500, 2997, 4493, 123, 392, 4853, 7827, 1798, 4930, 140, 8667, 749, 1658, 11310, 2856, 1256, 10459, 10224, 362, 2732, 2032, 10023, 3936, 1027, 2931, 5166, 8034, 1608, 5760, 1912, 3044, 2192, 7281, 8715, 7959, 4161, 11924, 2101, 11602, 2976, 9007, 10698, 8569, 4135, 8093, 80, 1050, 1, 7891, 81, 7403, 1436, 12258, 11602, 5834, 11200, 10919, 265, 10919, 3044, 1256, 1435, 871, 1817, 12913, 396, 12824, 1445, 4304, 10367, 1460, 9902, 4781, 9960, 13090, 12848, 13090, 9706, 4733, 13152, 12923, 11602, 7747, 3019, 3290, 7740, 7106, 10050, 6486, 8033, 11912, 13296, 13565, 13647, 13662, 13632, 13605, 13594, 13600, 13590, 583, 13550, 13585, 13521, 13538, 13569, 13532, 13523, 13506]
-            @posts = Post.includes([:board]).joins(:user).where(restricted: false).where(user: trending_users).where.not(user: @current_user.blocked_users.select(:id)).and(Post.where.not(id: @current_user.reported_posts)).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(limit) 
+            limit = 15
+            # trending_users = [13213, 9706, 318, 14645, 14652, 33, 598, 8715, 1912, 10869, 4493, 13191, 14512, 2856, 13090, 4662, 8569, 140, 10224, 13265, 14562, 123, 6070, 2931, 4161, 13139, 7959, 14405, 2934, 851, 11864, 4642, 13796, 5466, 1658, 101, 7176, 11912, 13594, 5500, 14441, 392, 3673, 11474, 13799, 114, 13707, 6293, 13426, 14363, 3290, 13213, 14413, 213, 13650, 871, 362, 3636, 1649, 1798, 5834, 11907, 8472, 6549, 1256, 4635, 768, 749, 315, 3266, 11578, 7980, 2192, 680, 9311, 13581, 10023, 4868, 14431, 1478, 3044, 5916, 10749, 7377, 293, 4304, 7143, 430, 8829, 14493, 4930, 4267, 12824, 870, 2963, 3127, 12822, 11715, 13585, 14182, 6908, 13422, 5378, 13634, 16698, 13605, 6886, 12562, 14426, 4853, 2694, 478, 2890, 1924, 7891, 1792, 2997, 6606]
+            @posts = Post.includes([:board]).joins(:user).where(restricted: false).where.not(user: @current_user.blocked_users.select(:id)).where.not(user: @current_user.blocker_users.select(:id)).where.not(id: @current_user.reported_posts).order(created_at: :desc, popularity_rank: :desc).offset(offset).limit(limit) 
 
             # check that posts array isn't empty
             if @posts.any?
